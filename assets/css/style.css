@@ -1,0 +1,504 @@
+/* ============================================
+   AUMIGOS - SISTEMA DE AUTENTICAÇÃO
+   Prefixo: auth- para componentes de autenticação
+   ============================================ */
+
+/* ===== CONFIGURAÇÕES GLOBAIS ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --color-primary: #006666;
+    --color-secondary: #f9f7f2;
+    --color-text-dark: #333;
+    --color-text-light: #666;
+    --color-white: #ffffff;
+    --color-overlay: rgba(0, 0, 0, 0.3);
+}
+
+body {
+    background-color: var(--color-secondary);
+}
+
+/* ===== PÁGINAS COM BACKGROUND ===== */
+
+/* Página inicial */
+body.home-page {
+    background-image: url('../img/workinprogress.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+}
+
+body.home-page::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-overlay);
+    z-index: 1;
+}
+
+/* Página de login */
+body.auth-page--login {
+    background-image: url('../img/Beagle-park.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+}
+
+body.auth-page--login::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-overlay);
+    z-index: 1;
+}
+
+/* Página de cadastro */
+body.auth-page--cadastro {
+    background-image: url('../img/Cat-gray.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+}
+
+body.auth-page--cadastro::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-overlay);
+    z-index: 1;
+}
+
+/* ===== BOTÃO DE VOLTAR/NAVEGAÇÃO ===== */
+
+.back-button {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.9);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.back-button:hover {
+    background-color: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.back-button__icon {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+}
+
+/* ===== ESTRUTURA DE AUTENTICAÇÃO ===== */
+
+/* Container principal (para login centralizado) */
+.auth-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Container split (para cadastro com imagem) */
+.auth-container--split {
+    display: flex;
+    padding: 0;
+}
+
+/* Seção de imagem (lado esquerdo) */
+.auth-image-section {
+    display: none;
+    width: 50%;
+    position: relative;
+}
+
+.auth-image-section__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Seção do formulário (lado direito) */
+.auth-form-section {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: var(--color-white);
+}
+
+/* ===== CARD DE AUTENTICAÇÃO ===== */
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+/* Card de cadastro (fundo verde) */
+.auth-card--cadastro {
+    background-color: var(--color-primary);
+}
+
+/* ===== CABEÇALHO DO CARD ===== */
+
+.auth-header {
+    margin-bottom: 2rem;
+}
+
+.auth-logo {
+    width: 140px;
+    margin-bottom: 1rem;
+}
+
+.auth-title {
+    color: var(--color-text-dark);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+}
+
+/* Título no card de cadastro (cor clara) */
+.auth-card--cadastro .auth-title {
+    color: var(--color-secondary);
+}
+
+/* ===== FORMULÁRIO ===== */
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+/* ===== INPUTS ===== */
+
+/* Input base */
+.auth-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Input com borda (login) */
+.auth-input--bordered {
+    border: 2px solid var(--color-primary);
+    background: transparent;
+    color: var(--color-text-dark);
+}
+
+.auth-input--bordered:focus {
+    box-shadow: 0 0 0 3px rgba(0, 102, 102, 0.2);
+}
+
+.auth-input--bordered::placeholder {
+    color: var(--color-text-light);
+}
+
+/* Input preenchido (cadastro) */
+.auth-input--filled {
+    border: none;
+    background-color: var(--color-secondary);
+    color: var(--color-text-dark);
+}
+
+.auth-input--filled::placeholder {
+    color: #888;
+}
+
+/* ===== SELECT CUSTOMIZADO ===== */
+
+.auth-select {
+    appearance: none;
+    cursor: pointer;
+    background-image: url('../img/seta-para-baixo.png');
+    background-repeat: no-repeat;
+    background-position: right 1.5rem center;
+    background-size: 1.2rem;
+}
+
+/* ===== CAMPO DE SENHA COM TOGGLE ===== */
+
+.auth-password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.auth-password-wrapper .auth-input {
+    padding-right: 3.5rem;
+}
+
+.auth-password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s;
+}
+
+.auth-password-toggle:hover {
+    opacity: 0.7;
+}
+
+.auth-password-toggle__icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* ===== BOTÕES ===== */
+
+/* Botão base */
+.auth-button {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Botão primário (preenchido verde) */
+.auth-button--primary {
+    border: none;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.auth-button--primary:hover {
+    opacity: 0.9;
+}
+
+/* Botão outline (bordado creme) */
+.auth-button--outline {
+    border: 2px solid var(--color-secondary);
+    background: transparent;
+    color: var(--color-secondary);
+    margin-top: 1rem;
+}
+
+.auth-button--outline:hover {
+    background-color: rgba(249, 247, 242, 0.1);
+}
+
+/* ===== LINKS ===== */
+
+/* Link "Esqueci minha senha" */
+.auth-forgot-link {
+    margin-top: 0.5rem;
+}
+
+.auth-forgot-link a {
+    text-decoration: none;
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.auth-forgot-link a:hover {
+    color: var(--color-primary);
+}
+
+/* Link "Não tenho conta" / "Já tenho conta" */
+.auth-link-text {
+    margin-top: 1.5rem;
+    font-weight: 600;
+}
+
+.auth-link-text a {
+    text-decoration: none;
+    color: var(--color-text-dark);
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.auth-link-text a:hover {
+    color: var(--color-primary);
+}
+
+/* Link no card de cadastro (cor clara) */
+.auth-card--cadastro .auth-link-text a {
+    color: rgba(249, 247, 242, 0.8);
+}
+
+.auth-card--cadastro .auth-link-text a:hover {
+    color: var(--color-secondary);
+}
+
+/* ======================================
+   RESPONSIVIDADE
+   ====================================== */
+
+/* Mobile pequeno (≤ 375px) */
+@media (max-width: 375px) {
+    .back-button {
+        top: 1rem;
+        left: 1rem;
+        width: 36px;
+        height: 36px;
+    }
+
+    .auth-card {
+        padding: 1.5rem;
+        border-radius: 25px;
+    }
+
+    .auth-logo {
+        width: 120px;
+    }
+
+    .auth-title {
+        font-size: 1.8rem;
+    }
+
+    .auth-input {
+        padding: 0.9rem 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    .auth-button {
+        padding: 0.9rem;
+        font-size: 1rem;
+    }
+}
+
+/* Mobile (≤ 767px) */
+@media (max-width: 767px) {
+    body.auth-page--login,
+    body.auth-page--cadastro,
+    body.home-page {
+        background-attachment: scroll;
+    }
+
+    .back-button {
+        top: 1.5rem;
+        left: 1.5rem;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Tablet (≥ 768px) */
+@media (min-width: 768px) {
+    .auth-container {
+        padding: 2rem;
+    }
+
+    .auth-card {
+        max-width: 450px;
+        padding: 2.5rem;
+    }
+
+    .auth-logo {
+        width: 160px;
+    }
+
+    .auth-title {
+        font-size: 2.2rem;
+    }
+}
+
+/* Desktop (≥ 1024px) */
+@media (min-width: 1024px) {
+    /* Login: alinha card à direita */
+    .auth-page--login .auth-container {
+        justify-content: right;
+        padding-right: 8rem;
+    }
+
+    .auth-page--login .auth-card {
+        max-width: 480px;
+        padding: 3rem;
+        border-radius: 40px;
+    }
+
+    .auth-logo {
+        width: 180px;
+        margin-bottom: 1.5rem;
+    }
+
+    .auth-title {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Cadastro: alinha card à direita (igual ao login) */
+    .auth-page--cadastro .auth-container {
+        justify-content: right;
+        padding-right: 8rem;
+    }
+
+    .auth-page--cadastro .auth-card {
+        max-width: 480px;
+        padding: 3rem;
+        border-radius: 40px;
+    }
+}
+
+/* Desktop grande (≥ 1440px) */
+@media (min-width: 1440px) {
+    .auth-page--login .auth-container {
+        padding-right: 10rem;
+    }
+
+    .auth-page--cadastro .auth-container {
+        padding-right: 10rem;
+    }
+
+    .auth-card {
+        max-width: 500px;
+        padding: 3.5rem;
+    }
+}

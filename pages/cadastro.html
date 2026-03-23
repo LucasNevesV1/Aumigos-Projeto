@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuMigos - Cadastro</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body class="auth-page auth-page--cadastro">
+    <!-- Botão de Voltar -->
+    <a href="login.html" class="back-button" title="Voltar para login">
+        <img src="../assets/img/arrowback.png" alt="Voltar" class="back-button__icon">
+    </a>
+
+    <div class="auth-container">
+        <div class="auth-card auth-card--cadastro">
+                <div class="auth-header">
+                    <img src="../assets/img/Prancheta 4.png" alt="AuMigos Logo" class="auth-logo">
+                </div>
+
+                <form method="POST" action="processar.php" class="auth-form">
+                    <select name="perfil" required class="auth-input auth-input--filled auth-select">
+                        <option value="" disabled selected>Selecione seu Perfil</option>
+                        <option value="ong">ONG</option>
+                        <option value="apoiador">Apoiador</option>
+                        <option value="adotante">Adotante</option>
+                    </select>
+
+                    <input type="text" name="nome" placeholder="Nome Completo" required class="auth-input auth-input--filled">
+                    
+                    <input type="text" name="cpf_cnpj" placeholder="CPF/CNPJ" required class="auth-input auth-input--filled">
+                    
+                    <input type="email" name="email" placeholder="Email" required class="auth-input auth-input--filled">
+                    
+                    <div class="auth-password-wrapper">
+                        <input type="password" name="senha" id="cadastro-password-input" placeholder="Senha" required class="auth-input auth-input--filled">
+                        <button type="button" class="auth-password-toggle" id="cadastro-password-toggle">
+                            <img src="../assets/img/eyeclose.png" alt="Mostrar senha" id="cadastro-eye-icon" class="auth-password-toggle__icon">
+                        </button>
+                    </div>
+
+                    <button type="submit" class="auth-button auth-button--outline">
+                        Criar conta!
+                    </button>
+                </form>
+
+                <p class="auth-link-text">
+                    <a href="login.html">Já tenho uma conta</a>
+                </p>
+        </div>
+    </div>
+
+    <script src="../assets/js/script.js"></script>
+</body>
+
+</html>
