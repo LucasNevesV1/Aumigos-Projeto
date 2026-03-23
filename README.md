@@ -1,4 +1,4 @@
-# 🐾 AuMigos
+# 🐾 AuMigos - Em Desenvolvimento
 
 O **AuMigos** é uma plataforma web desenvolvida com o objetivo de auxiliar organizações e iniciativas de cuidado animal no gerenciamento de suas operações, promovendo mais organização, transparência e engajamento com a sociedade.
 
