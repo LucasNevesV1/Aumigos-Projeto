@@ -184,12 +184,12 @@ body.auth-page--cadastro::before {
 /* ===== CABEÇALHO DO CARD ===== */
 
 .auth-header {
-    margin-bottom: 2rem;
+    margin-bottom: 0.4rem;
 }
 
 .auth-logo {
     width: 140px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.4rem;
 }
 
 .auth-title {
@@ -326,7 +326,7 @@ body.auth-page--cadastro::before {
     border: 2px solid var(--color-secondary);
     background: transparent;
     color: var(--color-secondary);
-    margin-top: 1rem;
+    margin-top: 0.1rem;
 }
 
 .auth-button--outline:hover {
@@ -375,6 +375,35 @@ body.auth-page--cadastro::before {
 
 .auth-card--cadastro .auth-link-text a:hover {
     color: var(--color-secondary);
+}
+
+/* ===== MENSAGEM DE VALIDAÇÃO DE SENHA ===== */
+
+.password-match-message {
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: -0.5rem;
+    min-height: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.password-match-message.success {
+    color: #4CAF50;
+    font-weight: 600;
+}
+
+.password-match-message.error {
+    color: #ff4444;
+    font-weight: 600;
+}
+
+/* Mensagem no card de cadastro (fundo verde) */
+.auth-card--cadastro .password-match-message.success {
+    color: var(--color-secondary);
+}
+
+.auth-card--cadastro .password-match-message.error {
+    color: #ffcccc;
 }
 
 /* ======================================

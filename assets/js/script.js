@@ -49,4 +49,144 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // ===== MÁSCARA DE TELEFONE - CADASTRO =====
+    const telefoneInput = document.getElementById('cadastro-telefone-input');
+
+    if (telefoneInput) {
+        telefoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+            
+            // Aplica a máscara
+            if (value.length <= 10) {
+                // Formato: (XX) XXXX-XXXX
+                value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                value = value.replace(/(\d{4})(\d)/, '$1-$2');
+            } else {
+                // Formato: (XX) XXXXX-XXXX
+                value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            }
+            
+            e.target.value = value;
+        });
+    }
+
+    // ===== FILTRO DE PERFIL E MÁSCARAS CPF/CNPJ =====
+    const perfilSelect = document.getElementById('cadastro-perfil-select');
+    const nomeInput = document.getElementById('cadastro-nome-input');
+    const cpfCnpjInput = document.getElementById('cadastro-cpf-cnpj-input');
+
+    function aplicarMascaraCPF(value) {
+        value = value.replace(/\D/g, '');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        return value;
+    }
+
+    function aplicarMascaraCNPJ(value) {
+        value = value.replace(/\D/g, '');
+        value = value.replace(/(\d{2})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d)/, '$1/$2');
+        value = value.replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+        return value;
+    }
+
+    if (perfilSelect && nomeInput && cpfCnpjInput) {
+        perfilSelect.addEventListener('change', function() {
+            const perfil = this.value;
+            
+            // Limpa o campo CPF/CNPJ ao trocar perfil
+            cpfCnpjInput.value = '';
+            
+            if (perfil === 'ong') {
+                // ONG: Nome da Instituição + CNPJ
+                nomeInput.placeholder = 'Nome da Instituição';
+                cpfCnpjInput.placeholder = 'CNPJ';
+                cpfCnpjInput.maxLength = 18; // XX.XXX.XXX/XXXX-XX
+            } else {
+                // Apoiador/Adotante: Nome Completo + CPF
+                nomeInput.placeholder = 'Nome Completo';
+                cpfCnpjInput.placeholder = 'CPF';
+                cpfCnpjInput.maxLength = 14; // XXX.XXX.XXX-XX
+            }
+        });
+
+        // Aplica máscara no campo CPF/CNPJ conforme digita
+        cpfCnpjInput.addEventListener('input', function(e) {
+            const perfil = perfilSelect.value;
+            let value = e.target.value;
+            
+            if (perfil === 'ong') {
+                e.target.value = aplicarMascaraCNPJ(value);
+            } else if (perfil === 'apoiador' || perfil === 'adotante') {
+                e.target.value = aplicarMascaraCPF(value);
+            }
+        });
+    }
+
+    // ===== TOGGLE SENHA - CONFIRMAR SENHA (CADASTRO) =====
+    const confirmPasswordToggle = document.getElementById('cadastro-confirm-toggle');
+    const confirmPasswordInput = document.getElementById('cadastro-confirm-password-input');
+    const confirmEyeIcon = document.getElementById('cadastro-confirm-eye-icon');
+
+    if (confirmPasswordToggle && confirmPasswordInput && confirmEyeIcon) {
+        confirmPasswordToggle.addEventListener('click', function() {
+            const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPasswordInput.setAttribute('type', type);
+
+            if (type === 'text') {
+                confirmEyeIcon.src = '../assets/img/eyeopen.png';
+                confirmEyeIcon.alt = 'Ocultar senha';
+            } else {
+                confirmEyeIcon.src = '../assets/img/eyeclose.png';
+                confirmEyeIcon.alt = 'Mostrar senha';
+            }
+        });
+    }
+
+    // ===== VALIDAÇÃO DE CONFIRMAÇÃO DE SENHA =====
+    const passwordInput = document.getElementById('cadastro-password-input');
+    const passwordMessage = document.getElementById('password-match-message');
+    const submitBtn = document.getElementById('cadastro-submit-btn');
+
+    function validatePasswords() {
+        if (passwordInput && confirmPasswordInput && passwordMessage) {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            if (confirmPassword === '') {
+                passwordMessage.textContent = '';
+                passwordMessage.className = 'password-match-message';
+                return;
+            }
+
+            if (password === confirmPassword) {
+                passwordMessage.textContent = '✓ As senhas coincidem';
+                passwordMessage.className = 'password-match-message success';
+            } else {
+                passwordMessage.textContent = '✗ As senhas não coincidem';
+                passwordMessage.className = 'password-match-message error';
+            }
+        }
+    }
+
+    if (passwordInput && confirmPasswordInput) {
+        passwordInput.addEventListener('input', validatePasswords);
+        confirmPasswordInput.addEventListener('input', validatePasswords);
+    }
+
+    // Validação no submit do formulário
+    const cadastroForm = document.querySelector('.auth-page--cadastro .auth-form');
+    if (cadastroForm && passwordInput && confirmPasswordInput) {
+        cadastroForm.addEventListener('submit', function(e) {
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                e.preventDefault();
+                alert('As senhas não coincidem. Por favor, verifique.');
+                confirmPasswordInput.focus();
+            }
+        });
+    }
 });

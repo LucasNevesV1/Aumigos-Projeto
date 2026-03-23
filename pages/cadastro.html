@@ -21,18 +21,20 @@
                 </div>
 
                 <form method="POST" action="processar.php" class="auth-form">
-                    <select name="perfil" required class="auth-input auth-input--filled auth-select">
+                    <select name="perfil" id="cadastro-perfil-select" required class="auth-input auth-input--filled auth-select">
                         <option value="" disabled selected>Selecione seu Perfil</option>
                         <option value="ong">ONG</option>
                         <option value="apoiador">Apoiador</option>
                         <option value="adotante">Adotante</option>
                     </select>
 
-                    <input type="text" name="nome" placeholder="Nome Completo" required class="auth-input auth-input--filled">
+                    <input type="text" name="nome" id="cadastro-nome-input" placeholder="Nome Completo" required class="auth-input auth-input--filled">
                     
-                    <input type="text" name="cpf_cnpj" placeholder="CPF/CNPJ" required class="auth-input auth-input--filled">
+                    <input type="text" name="cpf_cnpj" id="cadastro-cpf-cnpj-input" placeholder="CPF/CNPJ" required class="auth-input auth-input--filled">
                     
                     <input type="email" name="email" placeholder="Email" required class="auth-input auth-input--filled">
+                    
+                    <input type="tel" name="telefone" id="cadastro-telefone-input" placeholder="Telefone/Celular" required class="auth-input auth-input--filled" maxlength="15">
                     
                     <div class="auth-password-wrapper">
                         <input type="password" name="senha" id="cadastro-password-input" placeholder="Senha" required class="auth-input auth-input--filled">
@@ -41,7 +43,15 @@
                         </button>
                     </div>
 
-                    <button type="submit" class="auth-button auth-button--outline">
+                    <div class="auth-password-wrapper">
+                        <input type="password" name="confirmar-senha" id="cadastro-confirm-password-input" placeholder="Confirmar Senha" required class="auth-input auth-input--filled">
+                        <button type="button" class="auth-password-toggle" id="cadastro-confirm-toggle">
+                            <img src="../assets/img/eyeclose.png" alt="Mostrar senha" id="cadastro-confirm-eye-icon" class="auth-password-toggle__icon">
+                        </button>
+                    </div>
+                    <div id="password-match-message" class="password-match-message"></div>
+
+                    <button type="submit" class="auth-button auth-button--outline" id="cadastro-submit-btn">
                         Criar conta!
                     </button>
                 </form>
