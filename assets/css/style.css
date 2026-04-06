@@ -987,6 +987,281 @@ body.dashboard-page {
     padding-left: 8px; /* Leve empurrãozinho pro lado ao passar o mouse */
 }
 
+/* ============================================
+   AUMIGOS - NAVBAR: TEMA DA CONSULTA
+   ============================================ */
+
+/* Altera a cor de fundo da base da barra */
+.nav-consulta {
+    background-color: #0E6B65; 
+}
+
+/* Altera o fundo da parte principal da barra */
+.nav-consulta .navbar-content {
+    background-color: #0E6B65; 
+}
+
+/* Altera a cor dos traços do ícone de Hamburguer (menu) */
+.nav-consulta .menu-toggle svg path {
+    stroke: #ffffff; 
+}
+
+/* Altera o fundo da caixinha do menu que desce */
+.nav-consulta .dropdown-menu {
+    background-color: #0E6B65;
+}
+
+/* Altera a cor dos links dentro do menu */
+.nav-consulta .menu-list a {
+    color: #ffffff;
+}
+
+/* Altera a cor da linha fininha que divide os links no menu */
+.nav-consulta .menu-list li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+}
+
+/* ============================================
+   AUMIGOS - CONSULTA DE ANIMAIS (Estilo Card)
+   ============================================ */
+
+/* Fundo Verde Diagonal (Igual ao Registro) aplicado à página de consulta */
+body.consulta-page {
+    /* Mágica do Hard Stop Diagonal image_7d3b9f.png */
+    background: linear-gradient(
+        to bottom right, 
+        #498884 50%, /* Verde Claro */
+        #0C5F5B 50%  /* Verde Escuro */
+    );
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+   align-items: stretch; /* A MÁGICA 1: Faz o filho (card) esticar de cima a baixo */
+    padding: 0 20px 0 20px; /* Mantém espaço em cima pra Navbar, mas encosta embaixo */
+    margin: 0;
+}
+
+/* O container vira o Card Creme flutuante */
+.consulta-container {
+   width: 90%;
+    max-width: 1450px;
+    background-color: #FCF9F2;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+    padding: 130px 50px 40px 50px;
+    margin: 0 auto;
+    overflow: hidden;
+    
+    /* A MÁGICA 2: Transforma o card em uma estrutura flexível */
+    display: flex;
+    flex-direction: column;
+}
+
+.consulta-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #000;
+    margin-bottom: 30px;
+    margin-top: 0; /* Garante alinhamento no topo do card */
+}
+
+/* --- Barra de Ferramentas --- */
+.consulta-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.btn-adicionar {
+    background-color: #00A89D;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-adicionar:hover {
+    opacity: 0.9;
+}
+
+.toolbar-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-icon {
+    background-color: transparent;
+    border: 2px solid #F89E19;
+    color: #F89E19;
+    border-radius: 8px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border: 2px solid #F89E19;
+    border-radius: 8px;
+    padding: 0 15px;
+    background-color: white; /* Fundo branco interno */
+    width: 350px;
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    padding: 10px;
+    width: 100%;
+    outline: none;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.search-icon {
+    color: #F89E19;
+}
+
+.clear-icon {
+    background: none;
+    border: none;
+    color: #F89E19;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* --- Grade (Grid) da Tabela --- */
+.consulta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Menos espaço entre linhas no card */
+}
+
+/* Estrutura Grid image_fa321a.png */
+.grid-layout {
+    display: grid;
+    /* Tamanho das colunas: Check | ID | Nome | Perfil | Caracteristicas | Entrada | Status */
+    grid-template-columns: 40px 80px 2fr 1.5fr 1.5fr 1.5fr 1.2fr;
+    align-items: center;
+    padding: 12px 20px; /* Ajuste leve no padding */
+}
+
+.list-header {
+    border: 1px solid #F0DFCC; /* Borda bege clara */
+    border-radius: 8px;
+    background-color: white; /* Cabeçalho branco sobressai no fundo creme */
+    font-size: 0.85rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.list-row {
+    border: 1px solid #F0DFCC;
+    border-radius: 8px;
+    background-color: white; /* Linhas brancas sobressaem no fundo creme */
+    font-size: 0.9rem;
+    color: #000;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+/* Checkbox e Foto vazada */
+.custom-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: #F89E19;
+    cursor: pointer;
+}
+
+.col-nome {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.animal-photo {
+    width: 45px;
+    height: 45px;
+    border: 1px solid #F89E19; /* Borda laranja da foto image_fa321a.png */
+    border-radius: 10px;
+    background-color: white;
+}
+
+/* Badges de Status (Pílulas Coloridas) */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    width: 140px; /* Padroniza o tamanho das pílulas */
+    cursor: pointer;
+}
+
+.status-disponivel { background-color: #4ECB82; }
+.status-tratamento { background-color: #F4C150; }
+.status-processo   { background-color: #FA8A4D; }
+.status-adotado    { background-color: #D2BFE0; }
+
+/* --- Paginação --- */
+.pagination {
+    display: flex;
+    justify-content: flex-end; /* Alinha os botões à direita (padrão de sistemas) */
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 2px solid #F0DFCC; /* Linha sutil separando a tabela da paginação */
+}
+
+.page-btn {
+    background-color: white;
+    border: 1px solid #F0DFCC;
+    color: #333;
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Efeito ao passar o mouse */
+.page-btn:hover:not(.active) {
+    border-color: #F89E19; /* Laranja */
+    color: #F89E19;
+}
+
+/* Página atual (ativa) ganha destaque em verde */
+.page-btn.active {
+    background-color: #00A89D;
+    color: white;
+    border-color: #00A89D;
+    cursor: default;
+}
+
+.page-dots {
+    color: #888;
+    font-weight: 700;
+    padding: 0 5px;
+}
 /* ======================================
    RESPONSIVIDADE
    ====================================== */
@@ -1150,5 +1425,17 @@ body.dashboard-page {
         justify-content: flex-start !important;
         padding-bottom: 0;
         margin-top: 10px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .consulta-container {
+        overflow-x: auto;
+    }
+    .consulta-list {
+        min-width: 900px; /* Força a tabela a não espremer demais */
+    }
+    .search-box {
+        width: 200px;
     }
 }
