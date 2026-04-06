@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,18 +9,18 @@
 </head>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const navbar = document.getElementById('floatingNavbar');
         const menuToggle = document.getElementById('menuToggle');
 
         // Alterna o estado do menu ao clicar no ícone
-        menuToggle.addEventListener('click', function(event) {
+        menuToggle.addEventListener('click', function (event) {
             navbar.classList.toggle('menu-open');
             event.stopPropagation(); // Evita que o clique feche o menu na mesma hora
         });
 
         // Fecha o menu se o usuário clicar em qualquer outro lugar da página
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             if (!navbar.contains(event.target) && navbar.classList.contains('menu-open')) {
                 navbar.classList.remove('menu-open');
             }
@@ -28,30 +29,30 @@
 </script>
 
 <body class="dashboard-page">
-    
+
     <nav class="floating-navbar" id="floatingNavbar">
-    <div class="navbar-content">
-        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 6H21" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                <path d="M3 12H21" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                <path d="M3 18H21" stroke="white" stroke-width="3" stroke-linecap="round"/>
-            </svg>
-        </button>
+        <div class="navbar-content">
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 6H21" stroke="#34210a" stroke-width="3" stroke-linecap="round" />
+                    <path d="M3 12H21" stroke="#34210a" stroke-width="3" stroke-linecap="round" />
+                    <path d="M3 18H21" stroke="#34210a" stroke-width="3" stroke-linecap="round" />
+                </svg>
+            </button>
 
-        <img src="../assets/img/Prancheta 4.png" alt="AuMigos Logo" class="navbar-logo">
+            <img src="../assets/img/Prancheta 5.png" alt="AuMigos Logo" class="navbar-logo">
 
-        <div class="menu-spacer"></div>
-    </div>
+            <div class="menu-spacer"></div>
+        </div>
 
-    <div class="dropdown-menu">
-        <ul class="menu-list">
-            <li><a href="tela_inicial.html">Tela inicial</a></li>
-            <li><a href="registroanimal.html">Registro de Animais</a></li>
-            <li><a href="#">Consulta de Animais</a></li>
-        </ul>
-    </div>
-</nav>
+        <div class="dropdown-menu">
+            <ul class="menu-list">
+                <li><a href="tela_inicial.html">Tela inicial</a></li>
+                <li><a href="registroanimal.html">Registro de Animais</a></li>
+                <li><a href="#">Consulta de Animais</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <div class="dashboard-container">
         <header class="dash-header">
@@ -64,7 +65,7 @@
         </header>
 
         <main class="dash-main">
-            
+
             <section class="stats-container">
                 <div class="stat-item">
                     <h2>76</h2>
@@ -86,7 +87,7 @@
 
             <section class="urgency-section">
                 <h3 class="section-title">Painel de Urgências</h3>
-                
+
                 <div class="urgency-grid">
                     <div class="urgency-card">
                         <div class="urgency-icon warning">⚠️</div>
@@ -125,7 +126,7 @@
             <div class="peeking-pets">
                 <img src="../assets/img/animaisolhando.png" alt="Cães e gatos espiando">
             </div>
-            
+
         </main>
 
         <footer class="dash-footer">
@@ -134,4 +135,5 @@
     </div>
 
 </body>
+
 </html>
