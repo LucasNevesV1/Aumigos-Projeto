@@ -9,13 +9,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
 :root {
     --color-primary: #006666;
     --color-secondary: #f9f7f2;
-    --color-text-dark: #333;
+    --color-text-dark: #34210a;
     --color-text-light: #666;
     --color-white: #ffffff;
     --color-overlay: rgba(0, 0, 0, 0.3);
@@ -25,28 +25,276 @@ body {
     background-color: var(--color-secondary);
 }
 
-/* ===== PÁGINAS COM BACKGROUND ===== */
-
-/* Página inicial */
-body.home-page {
-    background-image: url('../img/workinprogress.png');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    position: relative;
+header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--color-secondary);
 }
 
-body.home-page::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
+header .container {
+    max-width: 84rem;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+}
+
+.logo img {
+  height: 70px; /* ou o tamanho que quiser */
+}
+
+.header-nav {
+    display: flex;
+    gap: 62px;
+    flex: 1;
+    justify-content: center;
+    color: var(--color-text-dark);
+}
+
+.header-nav a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-dark);
+    transition: color 0.2s;
+}
+
+.header-nav a:hover {
+    color: var(--color-primary);
+}
+
+.btn-login {
+    background: var(--color-primary);
+    width: 130px;
+    padding: 10px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-white);
+    transition: background 0.2s;
+}
+
+.btn-login:hover {
+    background: #004d4d;
+}
+
+/* ===== HERO SECTION ===== */
+
+.hero-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    /* background: #f7ac0a; */
+}
+
+.hero-content {
+    flex: 1;
+    margin-left: 8.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    
+}
+
+.hero-badge {
+    background: #f3e8d0;
+    color: #7a6040;
+    font-size: 14px;
+    font-weight: 1000;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.hero-title {
+    font-size: 72px;
+    font-weight: 900;
+    color: var(--color-primary);
+    line-height: 1.1;
+    margin-bottom: 13px;
+}
+
+.hero-subtitle {
+    font-size: 15px;
+    color: var(--color-text-light);
+    line-height: 1.8;
+    max-width: 680px;
+    margin-bottom: 20px;
+}
+
+.btn-saiba-mais {
+    background: var(--color-primary);
+    color: var(--color-white);
+    text-decoration: none;
+    padding: 16px 0;
+    width: 420px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-saiba-mais:hover {
+    background: #004d4d;
+}
+
+.hero-image {
+    /* flex: 1; */
+    margin-right: 6.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-image img {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+}
+
+/* ===== SOBRE NÓS SECTION ===== */
+
+.sobre {
+    padding: 80px 24px;
+    background: var(--color-secondary);
+}
+
+.sobre-card {
+    max-width: 1300px;
+    margin: 0 auto;
+    background: var(--color-primary);
+    border-radius: 28px;
+    display: flex;
+    overflow: hidden;
+    min-height: 140px;
+    max-height: 650px
+}
+
+.sobre-image-side {
+    width: 48%;
+    flex-shrink: 0;
+}
+
+.sobre-image-side img {
     width: 100%;
     height: 100%;
-    background-color: var(--color-overlay);
-    z-index: 1;
+    object-fit: cover;
+    object-position: center bottom;
+    display: block;
 }
+
+.sobre-content-side {
+    flex: 1;
+    padding: 48px 52px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.sobre-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--color-secondary);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: fit-content;
+}
+
+.sobre-tag img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.sobre-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--color-white);
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+}
+
+.sobre-desc {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+    text-align: justify;
+    margin-bottom: 32px;
+}
+
+.sobre-beneficios {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sobre-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 10px;
+    padding: 14px 18px;
+}
+
+.sobre-item img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    flex-shrink: 0;
+}
+
+.sobre-item p {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.5;
+}
+
+.sobre-item p strong {
+    color: var(--color-white);
+}
+
+@media (max-width: 768px) {
+    .sobre-card {
+        flex-direction: column;
+    }
+
+    .sobre-image-side {
+        width: 100%;
+        height: 240px;
+    }
+
+    .sobre-content-side {
+        padding: 32px 24px;
+    }
+
+    .sobre-title {
+        font-size: 30px;
+    }
+}
+
+/* ===== PÁGINAS COM BACKGROUND ===== */
 
 /* Página de login */
 body.auth-page--login {
@@ -129,7 +377,7 @@ body.auth-page--cadastro::before {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 1.5rem;
+    padding: 1rem;
     position: relative;
     z-index: 2;
 }

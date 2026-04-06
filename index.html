@@ -5,14 +5,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuMigos - Página Inicial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body class="home-page">
-    <!-- Botão de Login -->
-    <a href="pages/login.html" class="back-button back-button--home" title="Ir para Login">
-        <img src="assets/img/arrowback.png" alt="Login" class="back-button__icon">
-    </a>
+    <header>
+        <div class="container">
+
+            <!-- Logo -->
+            <a href="index.html" class="logo">
+                <img src="assets/img/Prancheta 3.png" alt="AUmigos">
+            </a>
+
+            <!-- Menu -->
+            <nav class="header-nav">
+                <a href="#sobre">Sobre nós</a>
+                <a href="#equipe">Equipe</a>
+                <a href="#depoimentos">Depoimentos</a>
+                <a href="#faq">FAQ</a>
+            </nav>
+
+            <!-- Botão Login -->
+            <a href="pages/login.html" class="btn-login">Login</a>
+
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-container">
+
+            <!-- Coluna esquerda -->
+            <div class="hero-content">
+                <span class="hero-badge">Sistema de Gerenciamento para ONG's</span>
+                <h1 class="hero-title">A mão amiga que toda pata precisa!</h1>
+                <p class="hero-subtitle">Controle de vacinas, banho, credenciamento de novos bichinhos e muito mais em
+                    um só lugar.</p>
+                <a href="#sobre" class="btn-saiba-mais">Saiba mais!</a>
+            </div>
+
+            <!-- Coluna direita: imagem conceitual -->
+            <div class="hero-image">
+                <img src="assets/img/Prancheta 7.png" alt="Animais felizes">
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Sobre Nós Section -->
+    <section class="sobre" id="sobre">
+        <article class="sobre-card">
+
+            <!-- Lado esquerdo: foto -->
+            <div class="sobre-image-side">
+                <img src="assets/img/Passeando-Dog.jpeg" alt="Pessoa com cachorro">
+            </div>
+
+            <!-- Lado direito: conteúdo -->
+            <div class="sobre-content-side">
+
+                <div class="sobre-tag">
+                    <img src="assets/img/house-heart.png" alt="casinha">
+                    <span>Sobre Nós</span>
+                </div>
+
+                <h2 class="sobre-title">Quem somos</h2>
+
+                <p class="sobre-desc">A rede de apoio digital que transforma o caos das planilhas em cuidado real.
+                    Conectamos quem protege, quem doa e quem adota. Criando soluções eficazes para ajudar ONGs e
+                    protetores.</p>
+
+                <div class="sobre-beneficios">
+
+                    <div class="sobre-item">
+                        <img src="assets/img/paw.png" alt="ONGs">
+                        <p><strong>Para ONGs:</strong> Gestão completa e organizada para salvar mais vidas.</p>
+                    </div>
+
+                    <div class="sobre-item">
+                        <img src="assets/img/handshake.png" alt="Apoiadores">
+                        <p><strong>Para Apoiadores:</strong> Transparência e facilidade para suas doações chegarem ao
+                            destino.</p>
+                    </div>
+
+                    <div class="sobre-item">
+                        <img src="assets/img/heart.png" alt="Adotantes">
+                        <p><strong>Para Adotantes:</strong> O caminho mais seguro e carinhoso para encontrar seu novo
+                            melhor amigo.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+    </section>
 
 </body>
 
