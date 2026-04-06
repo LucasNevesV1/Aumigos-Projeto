@@ -648,6 +648,345 @@ body.registro-page {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* ============================================
+   AUMIGOS - TELA INICIAL (DASHBOARD)
+   ============================================ */
+
+/* Fundo da página e alinhamento */
+body.dashboard-page {
+    background-color: var(--color-primary); /* Verde escuro do seu projeto */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+}
+
+/* Container central (limita a largura para parecer um app/painel) */
+.dashboard-container {
+    width: 95%;
+    max-width: 1500px;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Cabeçalho --- */
+.dash-header {
+    padding: 60px 50px 30px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.dash-header__content {
+    color: var(--color-white);
+    max-width: 60%;
+    z-index: 2;
+}
+
+.dash-header__content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.dash-header__content p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.btn-notificacoes {
+    background-color: #F89E19; /* Laranja da imagem */
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.2s;
+}
+
+.btn-notificacoes:hover {
+    transform: scale(1.05);
+}
+
+.dash-header__dog {
+    position: absolute;
+    right: 60px;
+    bottom: 0; /* Cola a imagem do cachorro na borda de baixo do header */
+    height: 320px; /* Ajuste conforme o tamanho real da sua imagem */
+    z-index: 1;
+}
+
+/* --- Painel Principal Creme --- */
+.dash-main {
+    background-color: var(--color-secondary); /* Cor creme do seu projeto */
+    border-radius: 40px 40px 0 0;
+    padding: 50px 60px 0 60px;
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    z-index: 3;
+    overflow: hidden;
+}
+
+/* --- Estatísticas --- */
+.stats-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0 30px 0;
+    border-bottom: 2px solid #F0E8D9;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-item h2 {
+    font-size: 4.5rem;
+    color: var(--color-text-dark);
+    line-height: 1;
+}
+
+.stat-item p {
+    font-size: 1.1rem;
+    color: var(--color-text-dark);
+    line-height: 1.2;
+    font-weight: 600;
+}
+
+.stat-item p span {
+    font-weight: 400;
+    color: var(--color-text-light);
+}
+
+/* --- Painel de Urgências --- */
+.urgency-section {
+    padding: 30px 0;
+}
+
+.section-title {
+    color: #E2943A; /* Laranja do título */
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.urgency-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.urgency-card {
+    border: 2px solid #E2943A; /* Borda Laranja */
+    border-radius: 15px;
+    padding: 25px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background-color: transparent;
+}
+
+.urgency-icon {
+    font-size: 2rem;
+    background-color: #E2943A;
+    color: white;
+    width: 65px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.urgency-text h4 {
+    font-size: 1.3rem;
+    color: var(--color-text-dark);
+    margin-bottom: 5px;
+}
+
+.urgency-text p {
+    font-size: 1.1rem;
+    color: var(--color-text-light);
+    line-height: 1.3;
+}
+
+.urgency-text a {
+    color: #E2943A;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* --- Pets Espiando (Footer do Main) --- */
+.peeking-pets {
+    width: calc(100% + 120px);
+    margin-left: -60px;
+    margin-right: -60px;
+    margin-top: auto; /* A mágica acontece aqui: empurra a div para o extremo sul do card */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    line-height: 0;
+}
+
+.peeking-pets img {
+    width: 100%;
+    max-width: 1200px; /* Mantém a imagem num tamanho bom sem estourar */
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Rodapé --- */
+.dash-footer {
+    background-color: var(--color-primary); /* Volta pro verde */
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dash-footer img {
+    width: 200px; /* Tamanho da logo */
+}
+
+/* ============================================
+   AUMIGOS - NAVBAR FLUTUANTE
+   ============================================ */
+
+.floating-navbar {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1000px;
+    background-color: #0E6B65; /* Verde da barra */
+    border-radius: 50px; /* Formato de pílula arredondada */
+    z-index: 9999;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    transition: border-radius 0.3s ease;
+}
+
+/* Quando o menu está aberto, removemos o arredondamento do canto inferior esquerdo
+   para ele se fundir perfeitamente com a caixa do dropdown */
+.floating-navbar.menu-open {
+    border-bottom-left-radius: 0;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    position: relative;
+    z-index: 10;
+    background-color: #0E6B65;
+    border-radius: inherit; /* Herda a mudança de borda quando abre */
+}
+
+/* Botão Hamburguer */
+.menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.menu-toggle svg {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.2s ease;
+}
+
+.menu-toggle:hover svg {
+    transform: scale(1.1); /* Dá um leve zoom ao passar o mouse */
+}
+
+/* Logo da Navbar */
+.navbar-logo {
+    height: 35px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Espaçador para manter a flexbox balanceada e a logo no meio */
+.menu-spacer {
+    width: 32px; 
+}
+
+/* Caixa do Dropdown */
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* Começa exatamente onde a barra termina */
+    left: 0;
+    width: 250px;
+    background-color: #0E6B65;
+    border-radius: 0 0 25px 25px; /* Arredonda apenas as pontas de baixo */
+    box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.2);
+    padding: 10px 25px 25px 25px;
+    
+    /* Configurações de animação (Escondido por padrão) */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 5;
+}
+
+/* Mostra o menu quando a classe .menu-open está ativa */
+.floating-navbar.menu-open .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Lista de Links */
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-list li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4); /* Linha divisória fina e transparente */
+}
+
+.menu-list li:last-child {
+    border-bottom: none; /* Tira a linha do último item */
+}
+
+.menu-list a {
+    display: block;
+    padding: 18px 0;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: opacity 0.2s ease, padding-left 0.2s ease;
+}
+
+.menu-list a:hover {
+    opacity: 0.7;
+    padding-left: 8px; /* Leve empurrãozinho pro lado ao passar o mouse */
+}
+
 /* ======================================
    RESPONSIVIDADE
    ====================================== */
