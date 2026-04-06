@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuMigos - Registro de Animal</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body class="registro-page">
+
+    <div class="modal-container">
+        <button class="btn-close" title="Fechar">&times;</button>
+        
+        <div class="form-content">
+            <h2>Registro de Animal</h2>
+            
+            <form id="registroAnimalForm">
+                <div id="step1" class="step active">
+                    <div class="subtitle">Dados Básicos</div>
+                    
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Nome</label>
+                            <input type="text" placeholder="">
+                        </div>
+                        
+                        <div class="input-group" style="justify-content: flex-end; padding-bottom: 5px;">
+                            <div class="photo-upload">
+                                <div class="photo-icon">📷</div>
+                                <span>Adicionar Foto</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Espécie</label>
+                            <select>
+                                <option value=""></option>
+                                <option value="cachorro">Cachorro</option>
+                                <option value="gato">Gato</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Data de Nascimento</label>
+                            <input type="date">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Raça</label>
+                            <input type="text">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Cor</label>
+                            <input type="text">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Gênero</label>
+                            <div class="gender-toggle">
+                                <button type="button" class="active">Fêmea</button>
+                                <button type="button">Macho</button>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Porte/Tamanho</label>
+                            <select>
+                                <option value=""></option>
+                                <option value="pequeno">Pequeno</option>
+                                <option value="medio">Médio</option>
+                                <option value="grande">Grande</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="step2" class="step">
+                    <div class="subtitle">Dados de Entrada</div>
+                    
+                    <div class="form-grid">
+                        <div class="input-group full-width" style="max-width: 48%;">
+                            <label>Data de Entrada</label>
+                            <input type="date">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Motivo da Entrada</label>
+                            <select>
+                                <option value=""></option>
+                                <option value="resgate">Resgate</option>
+                                <option value="abandono">Abandono</option>
+                                <option value="devolucao">Devolução</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Status de Saúde</label>
+                            <select>
+                                <option value=""></option>
+                                <option value="saudavel">Saudável</option>
+                                <option value="em_tratamento">Em Tratamento</option>
+                                <option value="critico">Crítico</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group full-width">
+                            <label>Descrição/Observações:</label>
+                            <textarea></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal-footer" id="modalFooter">
+            </div>
+    </div>
+
+    <script>
+        // Elementos do DOM
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const modalFooter = document.getElementById('modalFooter');
+
+        // Lógica do Toggle de Gênero
+        const genderButtons = document.querySelectorAll('.gender-toggle button');
+        genderButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                genderButtons.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+            });
+        });
+
+        // Função para renderizar os botões do rodapé dependendo da etapa
+        function showStep(stepNumber) {
+            if (stepNumber === 1) {
+                step1.classList.add('active');
+                step2.classList.remove('active');
+                
+                modalFooter.className = 'modal-footer';
+                modalFooter.innerHTML = `
+                    <button type="button" class="btn btn-primary" onclick="showStep(2)">Proximo</button>
+                `;
+            } else if (stepNumber === 2) {
+                step1.classList.remove('active');
+                step2.classList.add('active');
+                
+                modalFooter.className = 'modal-footer footer-between';
+                modalFooter.innerHTML = `
+                    <button type="button" class="btn btn-secondary" onclick="showStep(1)">Voltar</button>
+                    <button type="submit" class="btn btn-primary" form="registroAnimalForm">Finalizar</button>
+                `;
+            }
+        }
+
+        // Inicializa o formulário na etapa 1
+        showStep(1);
+
+        // Previne o envio padrão do formulário para demonstração
+        document.getElementById('registroAnimalForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Animal registrado com sucesso (simulação)!');
+        });
+    </script>
+</body>
+</html>

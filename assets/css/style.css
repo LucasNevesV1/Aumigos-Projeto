@@ -13,12 +13,23 @@
 }
 
 :root {
+    /* Autenticação */
     --color-primary: #006666;
     --color-secondary: #f9f7f2;
     --color-text-dark: #333;
     --color-text-light: #666;
     --color-white: #ffffff;
     --color-overlay: rgba(0, 0, 0, 0.3);
+
+    /* Registro de Animal */
+    --bg-color: #1B6C67;
+    --card-bg: #FCF9F2;
+    --footer-bg: #FCB063;
+    --btn-primary: #00A89D;
+    --btn-close: #FC6662;
+    --input-border: #F6D6B3;
+    --text-main: #000000;
+    --text-label: #333333;
 }
 
 body {
@@ -406,6 +417,237 @@ body.auth-page--cadastro::before {
     color: #ffcccc;
 }
 
+/* ============================================
+   ESTILOS DA PÁGINA DE REGISTRO
+   ============================================ */
+
+body.registro-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(
+        to bottom right, 
+        #46928d 50%, 
+        #0C5F5B 50%  
+    );
+}
+
+/* Container do Modal */
+.modal-container {
+    width: 100%;
+    max-width: 800px;
+    min-height: 700px; 
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Botão de Fechar */
+.modal-container .btn-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: var(--btn-close);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.modal-container .btn-close:hover {
+    transform: scale(1.1);
+}
+
+/* Cabeçalho e Conteúdo do Formulário */
+.modal-container .form-content {
+    padding: 40px 50px 30px 50px;
+    flex: 1;
+}
+
+.modal-container h2 {
+    font-size: 24px;
+    color: var(--text-main);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.modal-container .subtitle {
+    font-size: 12px;
+    color: var(--text-label);
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #EAEAEA;
+}
+
+/* Layout em Grid para os inputs */
+.modal-container .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.modal-container .full-width {
+    grid-column: span 2;
+}
+
+/* Estilização dos Inputs */
+.modal-container .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modal-container label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-label);
+}
+
+.modal-container input[type="text"],
+.modal-container input[type="date"],
+.modal-container select,
+.modal-container textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background-color: white;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.modal-container input:focus,
+.modal-container select:focus,
+.modal-container textarea:focus {
+    border-color: var(--btn-primary);
+}
+
+.modal-container textarea {
+    resize: none;
+    height: 150px;
+}
+
+/* Toggle de Gênero (Fêmea / Macho) */
+.modal-container .gender-toggle {
+    display: flex;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-container .gender-toggle button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.modal-container .gender-toggle button.active {
+    background-color: #F8D4A8;
+    font-weight: bold;
+    color: var(--text-main);
+}
+
+/* Botão de Adicionar Foto */
+.modal-container .photo-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: var(--text-label);
+    font-size: 14px;
+    font-weight: bold;
+    transition: opacity 0.3s;
+}
+
+.modal-container .photo-upload:hover {
+    opacity: 0.8;
+}
+
+.modal-container .photo-icon {
+    width: 35px;
+    height: 35px;
+    background-color: #F8D4A8;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #D38529;
+}
+
+/* Rodapé do Modal (Barra Laranja) */
+.modal-container .modal-footer {
+    background-color: var(--footer-bg);
+    padding: 20px 50px;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+}
+
+/* Classe para quando houver botão Voltar e Avançar */
+.modal-container .footer-between {
+    justify-content: space-between;
+}
+
+/* Botões do Rodapé */
+.modal-container .btn {
+    padding: 10px 30px;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-container .btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.modal-container .btn-primary {
+    background-color: var(--btn-primary);
+    color: white;
+}
+
+.modal-container .btn-secondary {
+    background-color: white;
+    color: var(--text-main);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Ocultar steps inativos no JavaScript */
+.modal-container .step {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.modal-container .step.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* ======================================
    RESPONSIVIDADE
    ====================================== */
@@ -529,5 +771,45 @@ body.auth-page--cadastro::before {
     .auth-card {
         max-width: 500px;
         padding: 3.5rem;
+    }
+}
+
+@media (max-width: 767px) {
+    body.registro-page {
+        padding: 0; /* Remove o padding no mobile para o modal colar nas bordas */
+    }
+
+    .modal-container {
+        border-radius: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .modal-container .form-content {
+        flex: 1; /* Faz o conteúdo empurrar o rodapé para baixo */
+        padding: 30px 20px;
+    }
+
+    .modal-container .form-grid {
+        grid-template-columns: 1fr; /* Coloca os inputs um embaixo do outro */
+        gap: 15px;
+    }
+    
+    .modal-container .full-width,
+    .modal-container .input-group[style*="max-width"] {
+        grid-column: span 1;
+        max-width: 100% !important;
+    }
+    
+    .modal-container .modal-footer {
+        padding: 20px;
+    }
+
+    /* Ajuste no botão de adicionar foto para alinhar melhor no celular */
+    .modal-container .input-group[style*="justify-content: flex-end"] {
+        justify-content: flex-start !important;
+        padding-bottom: 0;
+        margin-top: 10px;
     }
 }
