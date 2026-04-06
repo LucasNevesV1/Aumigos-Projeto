@@ -680,7 +680,7 @@ body.dashboard-page {
 
 /* --- Cabeçalho --- */
 .dash-header {
-    padding: 350px 50px 30px 50px;
+    padding: 250px 50px 30px 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -856,7 +856,7 @@ body.dashboard-page {
 
 .peeking-pets img {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1500px;
     /* Mantém a imagem num tamanho bom sem estourar */
     display: block;
     margin: 0;
@@ -867,14 +867,14 @@ body.dashboard-page {
 .dash-footer {
     background-color: var(--color-primary);
     /* Volta pro verde */
-    padding: 40px;
+    padding: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .dash-footer img {
-    width: 200px;
+    width: 500px;
     /* Tamanho da logo */
 }
 
