@@ -13,12 +13,23 @@
 }
 
 :root {
+    /* Autenticação */
     --color-primary: #006666;
     --color-secondary: #f9f7f2;
     --color-text-dark: #34210a;
     --color-text-light: #666;
     --color-white: #ffffff;
     --color-overlay: rgba(0, 0, 0, 0.3);
+
+    /* Registro de Animal */
+    --bg-color: #1B6C67;
+    --card-bg: #FCF9F2;
+    --footer-bg: #FCB063;
+    --btn-primary: #00A89D;
+    --btn-close: #FC6662;
+    --input-border: #F6D6B3;
+    --text-main: #000000;
+    --text-label: #333333;
 }
 
 body {
@@ -654,6 +665,908 @@ body.auth-page--cadastro::before {
     color: #ffcccc;
 }
 
+/* ============================================
+   ESTILOS DA PÁGINA DE REGISTRO
+   ============================================ */
+
+body.registro-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(to bottom right,
+            #46928d 50%,
+            #0C5F5B 50%);
+}
+
+/* Container do Modal */
+.modal-container {
+    width: 100%;
+    max-width: 800px;
+    min-height: 700px;
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Botão de Fechar */
+.modal-container .btn-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: var(--btn-close);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.modal-container .btn-close:hover {
+    transform: scale(1.1);
+}
+
+/* Cabeçalho e Conteúdo do Formulário */
+.modal-container .form-content {
+    padding: 40px 50px 30px 50px;
+    flex: 1;
+}
+
+.modal-container h2 {
+    font-size: 24px;
+    color: var(--text-main);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.modal-container .subtitle {
+    font-size: 12px;
+    color: var(--text-label);
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #EAEAEA;
+}
+
+/* Layout em Grid para os inputs */
+.modal-container .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.modal-container .full-width {
+    grid-column: span 2;
+}
+
+/* Estilização dos Inputs */
+.modal-container .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modal-container label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-label);
+}
+
+.modal-container input[type="text"],
+.modal-container input[type="date"],
+.modal-container select,
+.modal-container textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background-color: white;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.modal-container input:focus,
+.modal-container select:focus,
+.modal-container textarea:focus {
+    border-color: var(--btn-primary);
+}
+
+.modal-container textarea {
+    resize: none;
+    height: 150px;
+}
+
+/* Toggle de Gênero (Fêmea / Macho) */
+.modal-container .gender-toggle {
+    display: flex;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-container .gender-toggle button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.modal-container .gender-toggle button.active {
+    background-color: #F8D4A8;
+    font-weight: bold;
+    color: var(--text-main);
+}
+
+/* Botão de Adicionar Foto */
+.modal-container .photo-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: var(--text-label);
+    font-size: 14px;
+    font-weight: bold;
+    transition: opacity 0.3s;
+}
+
+.modal-container .photo-upload:hover {
+    opacity: 0.8;
+}
+
+.modal-container .photo-icon {
+    width: 35px;
+    height: 35px;
+    background-color: #F8D4A8;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #D38529;
+}
+
+/* Rodapé do Modal (Barra Laranja) */
+.modal-container .modal-footer {
+    background-color: var(--footer-bg);
+    padding: 20px 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Classe para quando houver botão Voltar e Avançar */
+.modal-container .footer-between {
+    justify-content: space-between;
+}
+
+/* Botões do Rodapé */
+.modal-container .btn {
+    padding: 10px 30px;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-container .btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.modal-container .btn-primary {
+    background-color: var(--btn-primary);
+    color: white;
+}
+
+.modal-container .btn-secondary {
+    background-color: white;
+    color: var(--text-main);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Ocultar steps inativos no JavaScript */
+.modal-container .step {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.modal-container .step.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   AUMIGOS - TELA INICIAL (DASHBOARD)
+   ============================================ */
+
+/* Fundo da página e alinhamento */
+body.dashboard-page {
+    background-color: var(--color-primary);
+    /* Verde escuro do seu projeto */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+}
+
+/* Container central (limita a largura para parecer um app/painel) */
+.dashboard-container {
+    width: 95%;
+    max-width: 1500px;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Cabeçalho --- */
+.dash-header {
+    padding: 250px 50px 30px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.dash-header__content {
+    color: var(--color-white);
+    max-width: 60%;
+    z-index: 2;
+}
+
+.dash-header__content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.dash-header__content p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.btn-notificacoes {
+    background-color: #F89E19;
+    /* Laranja da imagem */
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.2s;
+}
+
+.btn-notificacoes:hover {
+    transform: scale(1.05);
+}
+
+.dash-header__dog {
+    position: absolute;
+    right: 60px;
+    bottom: 0;
+    /* Cola a imagem do cachorro na borda de baixo do header */
+    height: 320px;
+    /* Ajuste conforme o tamanho real da sua imagem */
+    z-index: 1;
+}
+
+/* --- Painel Principal Creme --- */
+.dash-main {
+    background-color: var(--color-secondary);
+    /* Cor creme do seu projeto */
+    border-radius: 40px 40px 0 0;
+    padding: 50px 60px 0 60px;
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    z-index: 3;
+    overflow: hidden;
+}
+
+/* --- Estatísticas --- */
+.stats-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0 30px 0;
+    border-bottom: 2px solid #F0E8D9;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-item h2 {
+    font-size: 4.5rem;
+    color: var(--color-text-dark);
+    line-height: 1;
+}
+
+.stat-item p {
+    font-size: 1.1rem;
+    color: var(--color-text-dark);
+    line-height: 1.2;
+    font-weight: 600;
+}
+
+.stat-item p span {
+    font-weight: 400;
+    color: var(--color-text-light);
+}
+
+/* --- Painel de Urgências --- */
+.urgency-section {
+    padding: 30px 0;
+}
+
+.section-title {
+    color: #E2943A;
+    /* Laranja do título */
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.urgency-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.urgency-card {
+    border: 2px solid #E2943A;
+    /* Borda Laranja */
+    border-radius: 15px;
+    padding: 25px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background-color: transparent;
+}
+
+.urgency-icon {
+    font-size: 2rem;
+    background-color: #E2943A;
+    color: white;
+    width: 65px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.urgency-text h4 {
+    font-size: 1.3rem;
+    color: var(--color-text-dark);
+    margin-bottom: 5px;
+}
+
+.urgency-text p {
+    font-size: 1.1rem;
+    color: var(--color-text-light);
+    line-height: 1.3;
+}
+
+.urgency-text a {
+    color: #E2943A;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* --- Pets Espiando (Footer do Main) --- */
+.peeking-pets {
+    width: calc(100% + 120px);
+    margin-left: -60px;
+    margin-right: -60px;
+    margin-top: auto;
+    /* A mágica acontece aqui: empurra a div para o extremo sul do card */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    line-height: 0;
+}
+
+.peeking-pets img {
+    width: 100%;
+    max-width: 1500px;
+    /* Mantém a imagem num tamanho bom sem estourar */
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Rodapé --- */
+.dash-footer {
+    background-color: var(--color-primary);
+    /* Volta pro verde */
+    padding: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dash-footer img {
+    width: 500px;
+    /* Tamanho da logo */
+}
+
+/* ============================================
+   AUMIGOS - NAVBAR FLUTUANTE
+   ============================================ */
+
+.floating-navbar {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1450px;
+    background-color: #0E6B65;
+    /* Verde da barra */
+    border-radius: 50px;
+    /* Formato de pílula arredondada */
+    z-index: 9999;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    transition: border-radius 0.3s ease;
+}
+
+/* Quando o menu está aberto, removemos o arredondamento do canto inferior esquerdo
+   para ele se fundir perfeitamente com a caixa do dropdown */
+.floating-navbar.menu-open {
+    border-bottom-left-radius: 0;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    position: relative;
+    z-index: 10;
+    background-color: #ffffff;
+    border-radius: inherit;
+    /* Herda a mudança de borda quando abre */
+}
+
+/* Botão Hamburguer */
+.menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.menu-toggle svg {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.2s ease;
+}
+
+.menu-toggle:hover svg {
+    transform: scale(1.1);
+    /* Dá um leve zoom ao passar o mouse */
+}
+
+/* Logo da Navbar */
+.navbar-logo {
+    height: 60px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Espaçador para manter a flexbox balanceada e a logo no meio */
+.menu-spacer {
+    width: 32px;
+}
+
+/* Caixa do Dropdown */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    /* Começa exatamente onde a barra termina */
+    left: 0;
+    width: 250px;
+    background-color: #ffffff;
+    border-radius: 0 0 25px 25px;
+    /* Arredonda apenas as pontas de baixo */
+    box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.2);
+    padding: 10px 25px 25px 25px;
+
+    /* Configurações de animação (Escondido por padrão) */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 5;
+}
+
+/* Mostra o menu quando a classe .menu-open está ativa */
+.floating-navbar.menu-open .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Lista de Links */
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-list li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    /* Linha divisória fina e transparente */
+}
+
+.menu-list li:last-child {
+    border-bottom: none;
+    /* Tira a linha do último item */
+}
+
+.menu-list a {
+    display: block;
+    padding: 18px 0;
+    color: #34210a;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: opacity 0.2s ease, padding-left 0.2s ease;
+}
+
+.menu-list a:hover {
+    opacity: 0.7;
+    padding-left: 8px;
+    /* Leve empurrãozinho pro lado ao passar o mouse */
+}
+
+/* ============================================
+   AUMIGOS - NAVBAR: TEMA DA CONSULTA
+   ============================================ */
+
+/* Altera a cor de fundo da base da barra */
+.nav-consulta {
+    background-color: #0E6B65;
+    position: sticky !important; /* Muda de fixed para sticky, assim ela respeita a barra de rolagem */
+    top: 30px !important;
+    left: auto !important; /* Desliga as regras antigas */
+    transform: none !important; /* Desliga as regras antigas */
+    margin-top: 30px; 
+    width: 50% !important; /* Agora ela usa os EXATOS 90% do bloco bege */
+    max-width: 1450px !important;
+    z-index: 10;
+}
+
+/* Altera o fundo da parte principal da barra */
+.nav-consulta .navbar-content {
+    background-color: #0E6B65;
+}
+
+/* Altera a cor dos traços do ícone de Hamburguer (menu) */
+.nav-consulta .menu-toggle svg path {
+    stroke: #ffffff;
+}
+
+/* Altera o fundo da caixinha do menu que desce */
+.nav-consulta .dropdown-menu {
+    background-color: #0E6B65;
+}
+
+/* Altera a cor dos links dentro do menu */
+.nav-consulta .menu-list a {
+    color: #ffffff;
+}
+
+/* Altera a cor da linha fininha que divide os links no menu */
+.nav-consulta .menu-list li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   AUMIGOS - CONSULTA DE ANIMAIS (Estilo Card)
+   ============================================ */
+
+/* Fundo Verde Diagonal (Igual ao Registro) aplicado à página de consulta */
+body.consulta-page {
+    background: linear-gradient(to bottom right, #498884 0%, #0C5F5B 50%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* Transforma o corpo em uma pilha vertical */
+    align-items: center;
+    /* Garante que tudo use o mesmo centro matemático */
+    padding: 0;
+    margin: 0;
+}
+
+/* O container vira o Card Creme flutuante */
+.consulta-container {
+    width: 90%; 
+    max-width: 1450px;
+    background-color: #FCF9F2;
+    border-radius: 0;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    
+    /* A MÁGICA: Puxa o bloco bege para CIMA, encostando no topo! */
+    margin-top: -120px; 
+    padding: 150px 50px 40px 50px; /* Espaço para o título "Consulta" não ficar escondido atrás da barra */
+    
+    flex-grow: 1; /* Estica até o rodapé */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.consulta-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #000;
+    margin-bottom: 30px;
+    margin-top: 0;
+    /* Garante alinhamento no topo do card */
+}
+
+/* --- Barra de Ferramentas --- */
+.consulta-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.btn-adicionar {
+    background-color: #00A89D;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-adicionar:hover {
+    opacity: 0.9;
+}
+
+.toolbar-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-icon {
+    background-color: transparent;
+    border: 2px solid #F89E19;
+    color: #F89E19;
+    border-radius: 8px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border: 2px solid #F89E19;
+    border-radius: 8px;
+    padding: 0 15px;
+    background-color: white;
+    /* Fundo branco interno */
+    width: 350px;
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    padding: 10px;
+    width: 100%;
+    outline: none;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.search-icon {
+    color: #F89E19;
+}
+
+.clear-icon {
+    background: none;
+    border: none;
+    color: #F89E19;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* --- Grade (Grid) da Tabela --- */
+.consulta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Menos espaço entre linhas no card */
+}
+
+/* Estrutura Grid image_fa321a.png */
+.grid-layout {
+    display: grid;
+    /* Tamanho das colunas: Check | ID | Nome | Perfil | Caracteristicas | Entrada | Status */
+    grid-template-columns: 40px 80px 2fr 1.5fr 1.5fr 1.5fr 1.2fr;
+    align-items: center;
+    padding: 12px 20px;
+    /* Ajuste leve no padding */
+}
+
+.list-header {
+    border: 1px solid #F0DFCC;
+    /* Borda bege clara */
+    border-radius: 8px;
+    background-color: white;
+    /* Cabeçalho branco sobressai no fundo creme */
+    font-size: 0.85rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.list-row {
+    border: 1px solid #F0DFCC;
+    border-radius: 8px;
+    background-color: white;
+    /* Linhas brancas sobressaem no fundo creme */
+    font-size: 0.9rem;
+    color: #000;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+/* Checkbox e Foto vazada */
+.custom-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: #F89E19;
+    cursor: pointer;
+}
+
+.col-nome {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.animal-photo {
+    width: 45px;
+    height: 45px;
+    border: 1px solid #F89E19;
+    /* Borda laranja da foto image_fa321a.png */
+    border-radius: 10px;
+    background-color: white;
+}
+
+/* Badges de Status (Pílulas Coloridas) */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    width: 140px;
+    /* Padroniza o tamanho das pílulas */
+    cursor: pointer;
+}
+
+.status-disponivel {
+    background-color: #4ECB82;
+}
+
+.status-tratamento {
+    background-color: #F4C150;
+}
+
+.status-processo {
+    background-color: #FA8A4D;
+}
+
+.status-adotado {
+    background-color: #D2BFE0;
+}
+
+/* --- Paginação --- */
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    /* Alinha os botões à direita (padrão de sistemas) */
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 2px solid #F0DFCC;
+    /* Linha sutil separando a tabela da paginação */
+}
+
+.page-btn {
+    background-color: white;
+    border: 1px solid #F0DFCC;
+    color: #333;
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Efeito ao passar o mouse */
+.page-btn:hover:not(.active) {
+    border-color: #F89E19;
+    /* Laranja */
+    color: #F89E19;
+}
+
+/* Página atual (ativa) ganha destaque em verde */
+.page-btn.active {
+    background-color: #00A89D;
+    color: white;
+    border-color: #00A89D;
+    cursor: default;
+}
+
+.page-dots {
+    color: #888;
+    font-weight: 700;
+    padding: 0 5px;
+}
+
 /* ======================================
    RESPONSIVIDADE
    ====================================== */
@@ -693,6 +1606,7 @@ body.auth-page--cadastro::before {
 
 /* Mobile (≤ 767px) */
 @media (max-width: 767px) {
+
     body.auth-page--login,
     body.auth-page--cadastro,
     body.home-page {
@@ -729,6 +1643,7 @@ body.auth-page--cadastro::before {
 
 /* Desktop (≥ 1024px) */
 @media (min-width: 1024px) {
+
     /* Login: alinha card à direita */
     .auth-page--login .auth-container {
         justify-content: right;
@@ -777,5 +1692,63 @@ body.auth-page--cadastro::before {
     .auth-card {
         max-width: 500px;
         padding: 3.5rem;
+    }
+}
+
+@media (max-width: 767px) {
+    body.registro-page {
+        padding: 0;
+        /* Remove o padding no mobile para o modal colar nas bordas */
+    }
+
+    .modal-container {
+        border-radius: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-container .form-content {
+        flex: 1;
+        /* Faz o conteúdo empurrar o rodapé para baixo */
+        padding: 30px 20px;
+    }
+
+    .modal-container .form-grid {
+        grid-template-columns: 1fr;
+        /* Coloca os inputs um embaixo do outro */
+        gap: 15px;
+    }
+
+    .modal-container .full-width,
+    .modal-container .input-group[style*="max-width"] {
+        grid-column: span 1;
+        max-width: 100% !important;
+    }
+
+    .modal-container .modal-footer {
+        padding: 20px;
+    }
+
+    /* Ajuste no botão de adicionar foto para alinhar melhor no celular */
+    .modal-container .input-group[style*="justify-content: flex-end"] {
+        justify-content: flex-start !important;
+        padding-bottom: 0;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .consulta-container {
+        overflow-x: auto;
+    }
+
+    .consulta-list {
+        min-width: 900px;
+        /* Força a tabela a não espremer demais */
+    }
+
+    .search-box {
+        width: 200px;
     }
 }
