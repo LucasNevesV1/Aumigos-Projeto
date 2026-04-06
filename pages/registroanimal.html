@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,21 +11,21 @@
 <body class="registro-page">
 
     <div class="modal-container">
-        <button class="btn-close" title="Fechar">&times;</button>
-        
+        <button class="btn-close" title="Fechar" onclick="window.location.href='consultaanimal.html'">&times;</button>
+
         <div class="form-content">
             <h2>Registro de Animal</h2>
-            
+
             <form id="registroAnimalForm">
                 <div id="step1" class="step active">
                     <div class="subtitle">Dados Básicos</div>
-                    
+
                     <div class="form-grid">
                         <div class="input-group">
                             <label>Nome</label>
                             <input type="text" placeholder="">
                         </div>
-                        
+
                         <div class="input-group" style="justify-content: flex-end; padding-bottom: 5px;">
                             <div class="photo-upload">
                                 <div class="photo-icon">📷</div>
@@ -78,7 +79,7 @@
 
                 <div id="step2" class="step">
                     <div class="subtitle">Dados de Entrada</div>
-                    
+
                     <div class="form-grid">
                         <div class="input-group full-width" style="max-width: 48%;">
                             <label>Data de Entrada</label>
@@ -115,7 +116,7 @@
         </div>
 
         <div class="modal-footer" id="modalFooter">
-            </div>
+        </div>
     </div>
 
     <script>
@@ -138,7 +139,7 @@
             if (stepNumber === 1) {
                 step1.classList.add('active');
                 step2.classList.remove('active');
-                
+
                 modalFooter.className = 'modal-footer';
                 modalFooter.innerHTML = `
                     <button type="button" class="btn btn-primary" onclick="showStep(2)">Proximo</button>
@@ -146,7 +147,7 @@
             } else if (stepNumber === 2) {
                 step1.classList.remove('active');
                 step2.classList.add('active');
-                
+
                 modalFooter.className = 'modal-footer footer-between';
                 modalFooter.innerHTML = `
                     <button type="button" class="btn btn-secondary" onclick="showStep(1)">Voltar</button>
@@ -159,10 +160,11 @@
         showStep(1);
 
         // Previne o envio padrão do formulário para demonstração
-        document.getElementById('registroAnimalForm').addEventListener('submit', function(e) {
+        document.getElementById('registroAnimalForm').addEventListener('submit', function (e) {
             e.preventDefault();
             alert('Animal registrado com sucesso (simulação)!');
         });
     </script>
 </body>
+
 </html>
