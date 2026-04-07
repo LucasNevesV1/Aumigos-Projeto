@@ -49,11 +49,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 24px;
+    padding: 14px 68px;
 }
 
 .logo img {
-  height: 70px; /* ou o tamanho que quiser */
+    height: 65px;
+    /* ou o tamanho que quiser */
 }
 
 .header-nav {
@@ -99,7 +100,7 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
-    /* background: #f7ac0a; */
+    padding: 0 42px;
 }
 
 .hero-content {
@@ -109,7 +110,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
-    
+
 }
 
 .hero-badge {
@@ -126,7 +127,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
 }
 
 .hero-title {
@@ -179,19 +180,19 @@ body {
 /* ===== SOBRE NÓS SECTION ===== */
 
 .sobre {
-    padding: 80px 24px;
+    padding: 40px 24px;
     background: var(--color-secondary);
 }
 
 .sobre-card {
-    max-width: 1300px;
+    max-width: 1200px;
     margin: 0 auto;
     background: var(--color-primary);
     border-radius: 28px;
     display: flex;
     overflow: hidden;
     min-height: 140px;
-    max-height: 650px
+    max-height: 600px
 }
 
 .sobre-image-side {
@@ -209,7 +210,7 @@ body {
 
 .sobre-content-side {
     flex: 1;
-    padding: 48px 52px;
+    padding: 32px 40px;
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -302,6 +303,134 @@ body {
 
     .sobre-title {
         font-size: 30px;
+    }
+}
+
+/* ===== EQUIPE SECTION ===== */
+
+.equipe {
+    padding: 80px 160px;
+    background: var(--color-secondary);
+}
+
+.equipe-header {
+    text-align: center;
+    margin: 0 auto 56px;
+
+}
+
+.equipe-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ede8e0;
+    color: #5a3e28;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    
+}
+
+.equipe-badge img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(22%) sepia(30%) saturate(600%) hue-rotate(340deg);
+}
+
+.equipe-title {
+    font-size: 52px;
+    font-weight: 800;
+    color: #3b2412;
+    line-height: 1.15;
+}
+
+.equipe-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 60px;
+    padding: 0;
+    margin: 0;
+}
+
+.equipe-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.equipe-card-foto {
+    flex-shrink: 0;
+    width: 180px;
+    height: 170px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #d9d5cf;
+    border-color: #5a3e28;
+    border: 0.5px solid;
+}
+
+.equipe-card-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    max-width: 100%;
+    transform: scale(1.1);
+}
+
+.foto-1 img {
+    object-position: center right;
+}
+
+.foto-2 img {
+    object-position: center right;
+}
+
+.equipe-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 8px;
+}
+
+.equipe-card-info h3 {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #3b2412;
+}
+
+.equipe-cargo {
+    font-size: 12px;
+    font-weight: 300;
+    color: #5a3e28;
+    line-height: 1.4;
+    font-weight: 20;
+}
+
+.equipe-card-info p {
+    font-size: 16px;
+    color: #5a4030;
+    line-height: 1.7;
+    text-align: justify;
+    margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+    .equipe-title {
+        font-size: 36px;
+    }
+
+    .equipe-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
     }
 }
 
@@ -1267,12 +1396,16 @@ body.dashboard-page {
 /* Altera a cor de fundo da base da barra */
 .nav-consulta {
     background-color: #0E6B65;
-    position: sticky !important; /* Muda de fixed para sticky, assim ela respeita a barra de rolagem */
+    position: sticky !important;
+    /* Muda de fixed para sticky, assim ela respeita a barra de rolagem */
     top: 30px !important;
-    left: auto !important; /* Desliga as regras antigas */
-    transform: none !important; /* Desliga as regras antigas */
-    margin-top: 30px; 
-    width: 50% !important; /* Agora ela usa os EXATOS 90% do bloco bege */
+    left: auto !important;
+    /* Desliga as regras antigas */
+    transform: none !important;
+    /* Desliga as regras antigas */
+    margin-top: 30px;
+    width: 50% !important;
+    /* Agora ela usa os EXATOS 90% do bloco bege */
     max-width: 1450px !important;
     z-index: 10;
 }
@@ -1351,17 +1484,19 @@ body.consulta-page {
 
 /* O container vira o Card Creme flutuante */
 .consulta-container {
-    width: 90%; 
+    width: 90%;
     max-width: 1450px;
     background-color: #FCF9F2;
     border-radius: 0;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
-    
+
     /* A MÁGICA: Puxa o bloco bege para CIMA, encostando no topo! */
-    margin-top: -120px; 
-    padding: 150px 50px 40px 50px; /* Espaço para o título "Consulta" não ficar escondido atrás da barra */
-    
-    flex-grow: 1; /* Estica até o rodapé */
+    margin-top: -120px;
+    padding: 150px 50px 40px 50px;
+    /* Espaço para o título "Consulta" não ficar escondido atrás da barra */
+
+    flex-grow: 1;
+    /* Estica até o rodapé */
     display: flex;
     flex-direction: column;
     position: relative;
