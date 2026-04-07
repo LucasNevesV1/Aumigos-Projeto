@@ -1,14 +1,14 @@
 // ===== TOGGLE DE MOSTRAR/OCULTAR SENHA =====
 // Padronização: kebab-case para IDs
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // ===== TOGGLE SENHA - LOGIN =====
     const loginPasswordToggle = document.getElementById('login-password-toggle');
     const loginPasswordInput = document.getElementById('login-password-input');
     const loginEyeIcon = document.getElementById('login-eye-icon');
 
     if (loginPasswordToggle && loginPasswordInput && loginEyeIcon) {
-        loginPasswordToggle.addEventListener('click', function() {
+        loginPasswordToggle.addEventListener('click', function () {
             // Alterna entre 'password' e 'text'
             const type = loginPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             loginPasswordInput.setAttribute('type', type);
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cadastroEyeIcon = document.getElementById('cadastro-eye-icon');
 
     if (cadastroPasswordToggle && cadastroPasswordInput && cadastroEyeIcon) {
-        cadastroPasswordToggle.addEventListener('click', function() {
+        cadastroPasswordToggle.addEventListener('click', function () {
             // Alterna entre 'password' e 'text'
             const type = cadastroPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             cadastroPasswordInput.setAttribute('type', type);
@@ -54,9 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const telefoneInput = document.getElementById('cadastro-telefone-input');
 
     if (telefoneInput) {
-        telefoneInput.addEventListener('input', function(e) {
+        telefoneInput.addEventListener('input', function (e) {
             let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
-            
+
             // Aplica a máscara
             if (value.length <= 10) {
                 // Formato: (XX) XXXX-XXXX
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 value = value.replace(/(\d{2})(\d)/, '($1) $2');
                 value = value.replace(/(\d{5})(\d)/, '$1-$2');
             }
-            
+
             e.target.value = value;
         });
     }
@@ -95,12 +95,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (perfilSelect && nomeInput && cpfCnpjInput) {
-        perfilSelect.addEventListener('change', function() {
+        perfilSelect.addEventListener('change', function () {
             const perfil = this.value;
-            
+
             // Limpa o campo CPF/CNPJ ao trocar perfil
             cpfCnpjInput.value = '';
-            
+
             if (perfil === 'ong') {
                 // ONG: Nome da Instituição + CNPJ
                 nomeInput.placeholder = 'Nome da Instituição';
@@ -115,10 +115,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Aplica máscara no campo CPF/CNPJ conforme digita
-        cpfCnpjInput.addEventListener('input', function(e) {
+        cpfCnpjInput.addEventListener('input', function (e) {
             const perfil = perfilSelect.value;
             let value = e.target.value;
-            
+
             if (perfil === 'ong') {
                 e.target.value = aplicarMascaraCNPJ(value);
             } else if (perfil === 'apoiador' || perfil === 'adotante') {
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmEyeIcon = document.getElementById('cadastro-confirm-eye-icon');
 
     if (confirmPasswordToggle && confirmPasswordInput && confirmEyeIcon) {
-        confirmPasswordToggle.addEventListener('click', function() {
+        confirmPasswordToggle.addEventListener('click', function () {
             const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             confirmPasswordInput.setAttribute('type', type);
 
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Validação no submit do formulário
     const cadastroForm = document.querySelector('.auth-page--cadastro .auth-form');
     if (cadastroForm && passwordInput && confirmPasswordInput) {
-        cadastroForm.addEventListener('submit', function(e) {
+        cadastroForm.addEventListener('submit', function (e) {
             if (passwordInput.value !== confirmPasswordInput.value) {
                 e.preventDefault();
                 alert('As senhas não coincidem. Por favor, verifique.');
@@ -189,4 +189,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // ===== LÓGICA DE PERSISTÊNCIA (LOCALSTORAGE) =====
+
+    // Função para salvar um animal
+    function salvarAnimal(animal) {
+        const animais = JSON.parse(localStorage.getItem('aumigos_animais') || '[]');
+        animais.push(animal);
+        localStorage.setItem('aumigos_animais', JSON.stringify(animais));
+    }
+
+    // Função para formatar a data para o padrão brasileiro
+    function formatarData(data) {
+        if (!data) return "N/A";
+        const [ano, mes, dia] = data.split('-');
+        return `${dia}/${mes}/${ano}`;
+    }
+
 });
