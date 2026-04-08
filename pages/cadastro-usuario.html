@@ -10,7 +10,7 @@
 
 <body class="auth-page auth-page--cadastro">
     <!-- Botão de Voltar -->
-    <a href="login.html" class="back-button" title="Voltar para login">
+    <a href="login-usuario.html" class="back-button" title="Voltar para login">
         <img src="../assets/img/arrowback.png" alt="Voltar" class="back-button__icon">
     </a>
 
@@ -20,7 +20,7 @@
                     <img src="../assets/img/Prancheta 4.png" alt="AuMigos Logo" class="auth-logo">
                 </div>
 
-                <form method="POST" action="processar.php" class="auth-form">
+                <form method="POST" action="../actions/cadastro.php" class="auth-form">
                     <select name="perfil" id="cadastro-perfil-select" required class="auth-input auth-input--filled auth-select">
                         <option value="" disabled selected>Selecione seu Perfil</option>
                         <option value="ong">ONG</option>
@@ -63,6 +63,23 @@
     </div>
 
     <script src="../assets/js/script.js"></script>
+    <script>
+        const erros = {
+            campos_vazios:      'Preencha todos os campos.',
+            senhas_diferentes:  'As senhas não coincidem.',
+            perfil_invalido:    'Selecione um perfil válido.',
+            ja_cadastrado:      'E-mail ou CPF/CNPJ já cadastrado.',
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const erro = params.get('erro');
+
+        if (erro && erros[erro]) {
+            const msg = document.getElementById('password-match-message');
+            msg.textContent = erros[erro];
+            msg.className = 'password-match-message error';
+        }
+    </script>
 </body>
 
 </html>

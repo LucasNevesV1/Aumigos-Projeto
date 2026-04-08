@@ -147,10 +147,36 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // ===== TOGGLE SENHA - REDEFINIR SENHA =====
+    const novaSenhaToggle = document.getElementById('nova-senha-toggle');
+    const novaSenhaInput = document.getElementById('nova-senha-input');
+    const novaSenhaEye = document.getElementById('nova-senha-eye');
+
+    if (novaSenhaToggle && novaSenhaInput && novaSenhaEye) {
+        novaSenhaToggle.addEventListener('click', function() {
+            const type = novaSenhaInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            novaSenhaInput.setAttribute('type', type);
+            novaSenhaEye.src = type === 'text' ? '../assets/img/eyeopen.png' : '../assets/img/eyeclose.png';
+            novaSenhaEye.alt = type === 'text' ? 'Ocultar senha' : 'Mostrar senha';
+        });
+    }
+
+    const confirmarNovaToggle = document.getElementById('confirmar-nova-toggle');
+    const confirmarNovaInput = document.getElementById('confirmar-nova-senha-input');
+    const confirmarNovaEye = document.getElementById('confirmar-nova-eye');
+
+    if (confirmarNovaToggle && confirmarNovaInput && confirmarNovaEye) {
+        confirmarNovaToggle.addEventListener('click', function() {
+            const type = confirmarNovaInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmarNovaInput.setAttribute('type', type);
+            confirmarNovaEye.src = type === 'text' ? '../assets/img/eyeopen.png' : '../assets/img/eyeclose.png';
+            confirmarNovaEye.alt = type === 'text' ? 'Ocultar senha' : 'Mostrar senha';
+        });
+    }
+
     // ===== VALIDAÇÃO DE CONFIRMAÇÃO DE SENHA =====
     const passwordInput = document.getElementById('cadastro-password-input');
     const passwordMessage = document.getElementById('password-match-message');
-    const submitBtn = document.getElementById('cadastro-submit-btn');
 
     function validatePasswords() {
         if (passwordInput && confirmPasswordInput && passwordMessage) {

@@ -21,7 +21,7 @@
                 <h1 class="auth-title">Bem-vindo!</h1>
             </div>
 
-            <form method="POST" action="processar.php" class="auth-form">
+            <form method="POST" action="../actions/login.php" class="auth-form">
                 <input type="text" name="email" placeholder="Email" required class="auth-input auth-input--bordered">
                 
                 <div class="auth-password-wrapper">
@@ -36,7 +36,7 @@
                 </button>
                 
                 <div class="auth-forgot-link">
-                    <a href="#">Esqueci minha senha</a>
+                    <a href="esqueci-senha.html">Esqueci minha senha</a>
                 </div>
             </form>
 
@@ -47,6 +47,28 @@
     </div>
 
     <script src="../assets/js/script.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.get('cadastro') === 'sucesso') {
+            const msg = document.createElement('p');
+            const texto = params.get('msg') === 'senha_redefinida'
+                ? 'Senha redefinida com sucesso! Faça seu login.'
+                : 'Cadastro realizado com sucesso! Faça seu login.';
+            msg.textContent = texto;
+            msg.style.cssText = 'color:#006666;font-size:13px;text-align:center;margin-bottom:12px;';
+            const form = document.querySelector('.auth-form');
+            form.insertAdjacentElement('beforebegin', msg);
+        }
+
+        if (params.get('erro') === 'credenciais_invalidas') {
+            const msg = document.createElement('p');
+            msg.textContent = 'E-mail ou senha incorretos.';
+            msg.style.cssText = 'color:#e07a2f;font-size:13px;text-align:center;margin-bottom:12px;';
+            const form = document.querySelector('.auth-form');
+            form.insertAdjacentElement('beforebegin', msg);
+        }
+    </script>
 </body>
 
 </html>

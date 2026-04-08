@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuMigos - Esqueci minha senha</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body class="auth-page auth-page--login">
+    <!-- Botão de Voltar -->
+    <a href="login-usuario.html" class="back-button" title="Voltar para login">
+        <img src="../assets/img/arrowback.png" alt="Voltar" class="back-button__icon">
+    </a>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="../assets/img/Prancheta 3.png" alt="AuMigos Logo" class="auth-logo">
+                <h1 class="auth-title">Esqueci minha senha</h1>
+                <p class="auth-subtitle">Informe seu e-mail cadastrado e enviaremos um link para redefinir sua senha.</p>
+            </div>
+
+            <form method="POST" action="../actions/esqueci-senha.php" class="auth-form">
+                <input type="email" name="email" placeholder="Email" required class="auth-input auth-input--bordered">
+
+                <button type="submit" class="auth-button auth-button--primary">
+                    Enviar link
+                </button>
+            </form>
+
+            <div id="feedback-message"></div>
+
+            <p class="auth-link-text">
+                <a href="login-usuario.html">Voltar para o login</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.get('status') === 'enviado') {
+            const msg = document.getElementById('feedback-message');
+            msg.textContent = 'Se esse e-mail estiver cadastrado, você receberá o link em instantes.';
+            msg.style.cssText = 'color:#006666;font-size:13px;text-align:center;margin-bottom:12px;';
+        }
+
+        if (params.get('erro') === 'email_vazio') {
+            const msg = document.getElementById('feedback-message');
+            msg.textContent = 'Informe um e-mail válido.';
+            msg.style.cssText = 'color:#e07a2f;font-size:13px;text-align:center;margin-bottom:12px;';
+        }
+    </script>
+</body>
+
+</html>

@@ -1065,7 +1065,7 @@ body.auth-page--cadastro::before {
 }
 
 .password-match-message.error {
-    color: #ff4444;
+    color: #e07a2f;
     font-weight: 600;
 }
 
@@ -1075,7 +1075,7 @@ body.auth-page--cadastro::before {
 }
 
 .auth-card--cadastro .password-match-message.error {
-    color: #ffcccc;
+    color: #e07a2f;
 }
 
 /* ============================================
