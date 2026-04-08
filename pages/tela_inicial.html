@@ -10,73 +10,141 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        
+        // ===== ELEMENTOS DA NAVBAR =====
         const navbar = document.getElementById('floatingNavbar');
-        const menuToggle = document.getElementById('menuToggle');
+        const menuToggle = document.getElementById('menuToggle'); // Botão da Esquerda (Hamburguer)
+        const mainDropdown = document.getElementById('mainDropdown'); // Menu da Esquerda
+        
+        // ===== ELEMENTOS DO PERFIL =====
+        const profileToggle = document.getElementById('profileToggle'); // Botão da Direita (Foto)
+        const profileDropdown = document.getElementById('profileDropdown'); // Menu da Direita
 
-        // ===== NOVA LÓGICA DE ROLAGEM (SCROLL) =====
+        // ==========================================
+        // 1. LÓGICA DE ROLAGEM (SCROLL)
+        // ==========================================
         window.addEventListener('scroll', function () {
-            // Se rolar mais de 50px para baixo, adiciona a classe 'scrolled'
             if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
-                // Se voltar para o topo, remove a classe
                 navbar.classList.remove('scrolled');
             }
         });
 
-        // ===== LÓGICA DO MENU DROPDOWN (EXISTENTE) =====
+        // ==========================================
+        // 2. LÓGICA DOS MENUS DROPDOWN
+        // ==========================================
+        
+        // --- AÇÃO: Clicou no Menu Principal (Esquerda) ---
         if (menuToggle && navbar) {
-            // Alterna o estado do menu ao clicar no ícone
             menuToggle.addEventListener('click', function (event) {
+                // Abre/fecha o menu da esquerda
                 navbar.classList.toggle('menu-open');
-                event.stopPropagation(); // Evita que o clique feche o menu na mesma hora
-            });
-
-            // Fecha o menu se o usuário clicar em qualquer outro lugar da página
-            document.addEventListener('click', function (event) {
-                if (!navbar.contains(event.target) && navbar.classList.contains('menu-open')) {
-                    navbar.classList.remove('menu-open');
+                
+                // Se estiver abrindo este, FORÇA o fechamento do perfil (direita)
+                if (profileDropdown) {
+                    profileDropdown.classList.remove('profile-open');
+                    navbar.classList.remove('profile-open'); // Tira a classe que altera a borda direita
                 }
+                event.stopPropagation();
             });
         }
+
+        // --- AÇÃO: Clicou no Menu de Perfil (Direita) ---
+        if (profileToggle && profileDropdown) {
+            profileToggle.addEventListener('click', function (event) {
+                // Abre/fecha o menu da direita
+                profileDropdown.classList.toggle('profile-open');
+                
+                // Altera a borda da navbar apenas se abrir
+                if (navbar) {
+                    navbar.classList.toggle('profile-open');
+                    // Se estiver abrindo este, FORÇA o fechamento do principal (esquerda)
+                    navbar.classList.remove('menu-open'); 
+                }
+                event.stopPropagation();
+            });
+        }
+
+        // --- AÇÃO: Clicou fora de qualquer menu ---
+        document.addEventListener('click', function (event) {
+            
+            // Verifica se deve fechar o Principal
+            if (navbar && !menuToggle.contains(event.target) && navbar.classList.contains('menu-open')) {
+                navbar.classList.remove('menu-open');
+            }
+            
+            // Verifica se deve fechar o Perfil
+            if (profileToggle && !profileToggle.contains(event.target) && profileDropdown.classList.contains('profile-open')) {
+                profileDropdown.classList.remove('profile-open');
+                if (navbar) navbar.classList.remove('profile-open');
+            }
+        });
+
+        // ==========================================
+        // 3. LÓGICA DAS ESTATÍSTICAS (DASHBOARD)
+        // (Mantenha se estiver na tela inicial)
+        // ==========================================
+        const dadosAnimais = JSON.parse(localStorage.getItem('aumigos_dados') || '[]');
+        
+        const statTotal = document.getElementById('stat-total-animais');
+        if (statTotal) statTotal.textContent = dadosAnimais.length;
+
+        const statDisp = document.getElementById('stat-disponiveis');
+        if (statDisp) statDisp.textContent = dadosAnimais.filter(a => a.status === 'disponivel').length;
+        
+        const statAdot = document.getElementById('stat-adotados');
+        if (statAdot) statAdot.textContent = dadosAnimais.filter(a => a.status === 'adotado').length;
+        
     });
 </script>
 
 <body class="dashboard-page">
 
-<nav class="floating-navbar navbar-fixed-top" id="floatingNavbar">
+<nav class="floating-navbar" id="floatingNavbar">
         <div class="navbar-content">
             <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path class="burger-line" d="M3 6H21" stroke="#3A1F02" stroke-width="3" stroke-linecap="round" />
-                    <path class="burger-line" d="M3 12H21" stroke="#3A1F02" stroke-width="3" stroke-linecap="round" />
-                    <path class="burger-line" d="M3 18H21" stroke="#3A1F02" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 6H21" stroke="#391F01" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 12H21" stroke="#391F01" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 18H21" stroke="#391F01" stroke-width="3" stroke-linecap="round" />
                 </svg>
             </button>
 
             <img src="../assets/img/Prancheta 5.png" alt="AuMigos Logo" class="navbar-logo" id="navLogo">
 
-            <div class="navbar-profile-wrapper">
-                <span class="profile-name-nav">Full Name</span>
-                <div class="profile-photo-nav"></div>
+            <div class="profile-section" id="profileToggle">
+                
+                <div class="navbar-profile-wrapper">
+                    <span class="profile-name-nav" style="color: #391F01; font-weight: bold; font-size: 15px;">Full Name</span>
+                    <div class="profile-photo-nav" style="width: 40px; height: 40px; background-color: rgba(255,255,255,0.3); border: 2px solid #036564; border-radius: 50%; margin-left: 10px; display: inline-block; vertical-align: middle;"></div>
+                </div>
+
+                <div class="profile-dropdown-menu" id="profileDropdown">
+                    <ul class="menu-list">
+                        <li><a href="tela_config_usuario.html">Configurações</a></li>
+                    </ul>
+                    <a href="../index.html" class="menu-sair">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Sair
+                    </a>
+                </div>
+
             </div>
         </div>
 
-        <div class="dropdown-menu">
+        <div class="dropdown-menu" id="mainDropdown">
             <ul class="menu-list">
                 <li><a href="tela_inicial.html">Tela inicial</a></li>
                 <li><a href="consultaanimal.html">Consulta de Animais</a></li>
             </ul>
-            <a href="../index.html" class="menu-sair">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/>
-                    <line x1="21" y1="12" x2="9" y2="12"/>
-                </svg>
-                Sair
-            </a>
         </div>
     </nav>
+    
     <div class="dashboard-container">
         <header class="dash-header">
             <div class="dash-header__content">

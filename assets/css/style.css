@@ -1474,8 +1474,7 @@ body.dashboard-page {
     /* 2. Redução da Largura */
     width: 90%; /* <-- AJUSTE AQUI: Pode colocar 80%, 95%, etc. */
     max-width: 1450px; 
-    
-    
+        
     /* 3. Bordas inferiores (Opcional) */
     border-radius: 0 0 20px 20px; /* Como não encosta mais na lateral, arredondar embaixo fica mais bonito */
     
@@ -1629,6 +1628,82 @@ body.dashboard-page {
 }
 
 /* ============================================
+   AUMIGOS - MENU DROPDOWN DE PERFIL
+   ============================================ */
+
+.navbar-profile-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.profile-section {
+    position: static; /* Isso faz o dropdown ignorar a foto e procurar a borda da Navbar */
+    cursor: pointer;
+}
+
+/* Quando o menu de perfil abre, removemos o arredondamento do canto inferior DIREITO */
+.floating-navbar.profile-open,
+.floating-navbar.profile-open .navbar-content {
+    border-bottom-right-radius: 0 !important;
+}
+
+/* A caixa flutuante do perfil (Mesmo padrão visual, mas na direita) */
+.profile-dropdown-menu {
+    position: absolute;
+    top: 100%;       /* Cola perfeitamente embaixo da barra */
+    right: 0;        /* Trava na extrema direita da barra inteira */
+    width: 250px;
+    background-color: #F9F6F1;
+    border-radius: 0 0 25px 25px;
+    box-shadow: -5px 15px 25px rgba(0, 0, 0, 0.2);
+    padding: 10px 25px 25px 25px;
+
+    /* Configurações de animação */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 5;
+}
+
+/* Mostra o menu quando aberto */
+.profile-dropdown-menu.profile-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Formatação dos links do perfil para o fundo claro */
+.profile-dropdown-menu .menu-list a {
+    display: block;
+    padding: 18px 0;
+    color: #34210a; /* Cor de texto escura */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: opacity 0.2s ease, padding-left 0.2s ease;
+}
+
+.profile-dropdown-menu .menu-list a:hover {
+    opacity: 0.7;
+    padding-left: 8px; /* Efeito de empurrar pro lado */
+}
+
+/* Linha divisória fina */
+.profile-dropdown-menu .menu-list li {
+    border-bottom: 1px solid rgba(134, 132, 132, 0.4);
+}
+
+.profile-dropdown-menu .menu-list li:last-child {
+    border-bottom: none;
+}
+
+/* Botão Sair dentro do menu claro */
+.profile-dropdown-menu .menu-sair {
+    color: #e05555; /* Mantém o vermelho do botão sair */
+    font-weight: 600;
+}
+/* ============================================
    AUMIGOS - NAVBAR: TEMA DA CONSULTA
    ============================================ */
 
@@ -1647,6 +1722,20 @@ body.dashboard-page {
     /* Agora ela usa os EXATOS 90% do bloco bege */
     max-width: 1450px !important;
     z-index: 10;
+    border-radius: 10px;
+}
+
+.floating-navbar.nav-consulta {
+    border-radius: 50px !important;
+}
+
+.floating-navbar.nav-consulta .navbar-content {
+    border-radius: 50px !important;
+}
+
+.floating-navbar.nav-consulta.menu-open,
+.floating-navbar.nav-consulta.menu-open .navbar-content {
+    border-bottom-left-radius: 0 !important;
 }
 
 /* Altera o fundo da parte principal da barra */
