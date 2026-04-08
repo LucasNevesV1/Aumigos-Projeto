@@ -1745,7 +1745,7 @@ body.dashboard-page {
 
 /* Altera a cor dos traços do ícone de Hamburguer (menu) */
 .nav-consulta .menu-toggle svg path {
-    stroke: #3A1F02;
+    stroke: #ffffff;
 }
 
 /* Altera o fundo da caixinha do menu que desce */
@@ -1761,6 +1761,38 @@ body.dashboard-page {
 /* Altera a cor da linha fininha que divide os links no menu */
 .nav-consulta .menu-list li {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.nav-consulta .profile-dropdown-menu  {
+    background-color: #0E6B65;
+    /* Deixa o menu do perfil com o mesmo fundo da barra de consulta */
+}
+/* 1. Força o texto a ficar escuro e visível */
+.profile-dropdown-menu .menu-list a {
+    color: #34210a !important; 
+}
+
+.nav-consulta .profile-dropdown-menu .menu-list a {
+    color: #ffffff !important; 
+}
+
+/* 2. Obriga a Navbar da consulta a ficar com o canto RETO quando o perfil abre */
+.floating-navbar.nav-consulta.profile-open,
+.floating-navbar.nav-consulta.profile-open .navbar-content {
+    border-bottom-right-radius: 0 !important;
+}
+
+/* 3. Garante o alinhamento perfeito na extrema direita da barra verde */
+.floating-navbar .navbar-content {
+    position: relative !important; 
+}
+
+.profile-section {
+    position: static !important; /* Faz o menu ignorar a foto e colar na barra */
+}
+
+.profile-dropdown-menu {
+    top: 100% !important;
+    right: 0 !important; /* Crava na extrema direita */
 }
 
 /* Botão Sair */
