@@ -28,7 +28,7 @@
     --btn-primary: #00A89D;
     --btn-close: #FC6662;
     --input-border: #F6D6B3;
-    --text-main: #000000;
+    --text-main: #34210a;
     --text-label: #333333;
 }
 
@@ -350,56 +350,25 @@ body {
 
 .equipe-grid {
     list-style: none;
-    display: flex; /* Mudamos de grid para flex */
-    flex-direction: column; /* Um embaixo do outro */
-    gap: 60px; /* Espaço maior entre as linhas */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Retorna para 2 colunas perfeitamente alinhadas */
+    gap: 40px 60px; /* Espaço entre os cards */
     padding: 0;
-    margin: 0 auto;
-    max-width: 1000px; /* Limita a largura para não ficar muito esticado */
+    margin: 0;
 }
 
-/* 2. Padrão: Imagem na Esquerda, Texto Alinhado à Esquerda (Ímpares: 1, 3, 5) */
 .equipe-card {
     display: flex;
-    align-items: center; /* Centraliza a foto e o texto verticalmente */
-    gap: 30px;
-    width: 100%;
+    align-items: flex-start; /* Alinha a foto e o texto pelo topo */
+    gap: 20px;
 }
 
-/* 3. A Mágica do Zigue-Zague: Inverte os membros Pares (2 e 4) */
-.equipe-card:nth-child(even) {
-    flex-direction: row-reverse; /* Inverte a ordem (Foto vai pra direita) */
-    text-align: right; /* Alinha o texto para a direita */
-}
-
-/* Garante que o conteúdo do texto acompanhe o alinhamento na direita nos pares */
-.equipe-card:nth-child(even) .equipe-card-info {
-    align-items: flex-end; /* Empurra os itens do flexbox (H3, Badge, P) para a direita */
-}
-
-/* Ajusta o texto justificado que você tinha antes para combinar com o novo layout */
-.equipe-card-info p {
-    font-size: 16px;
-    color: #5a4030;
-    line-height: 1.7;
-    text-align: left; /* Padrão (Ímpares) */
-    margin-top: 4px;
-}
-
-/* Texto à direita nos pares */
-.equipe-card:nth-child(even) .equipe-card-info p {
-    text-align: right; 
-}
-
-
-/* ====================================
-   FOTOS DA EQUIPE (500x500 PNGs)
-   ==================================== */
+/* Fotos Ajustadas para o formato PNG 500x500 */
 .equipe-card-foto {
     flex-shrink: 0;
-    width: 160px; /* Tamanho da foto */
-    height: 160px;
-    border-radius: 20px; /* Cantos arredondados (ou 50% para círculo) */
+    width: 150px;
+    height: 150px;
+    border-radius: 20px; /* Mantém os cantinhos redondos */
     overflow: hidden;
     background: #d9d5cf;
     border: 2px solid #5a3e28;
@@ -409,7 +378,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center; /* Centraliza suas fotos redondas */
+    object-position: center; /* Centraliza o rosto de vocês */
 }
 
 .equipe-card-info {
@@ -417,43 +386,47 @@ body {
     flex-direction: column;
     gap: 6px;
     padding-top: 8px;
-    flex: 1; /* Faz o texto ocupar o espaço restante */
 }
 
-/* ... (Mantenha h3 e cargo como estão) ... */
+.equipe-card-info h3 {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #3b2412;
+}
 
+.equipe-cargo {
+    font-size: 12px;
+    color: #5a3e28;
+    line-height: 1.4;
+    font-weight: 600; 
+}
 
-/* ====================================
-   RESPONSIVIDADE (Celular)
-   ==================================== */
+.equipe-card-info p {
+    font-size: 16px;
+    color: #5a4030;
+    line-height: 1.7;
+    text-align: justify; /* Retorna o texto para justificado (bloquinho certinho) */
+    margin-top: 4px;
+}
+
+/* Responsividade (Celular) */
 @media (max-width: 768px) {
     .equipe {
-        padding: 40px 20px; /* Reduz o padding gigante nas laterais */
+        padding: 40px 20px; /* Reduz padding lateral no celular */
     }
 
     .equipe-title {
         font-size: 36px;
     }
 
-    /* No celular, quebra o zigue-zague e coloca tudo um embaixo do outro (Foto, depois Texto) */
-    .equipe-card, 
-    .equipe-card:nth-child(even) {
-        flex-direction: column;
-        align-items: center; /* Tudo centralizado */
-        text-align: center;
-        gap: 20px;
-    }
-
-    .equipe-card-info,
-    .equipe-card:nth-child(even) .equipe-card-info {
-        align-items: center;
-    }
-
-    .equipe-card-info p,
-    .equipe-card:nth-child(even) .equipe-card-info p {
-        text-align: center;
+    .equipe-grid {
+        grid-template-columns: 1fr; /* Vira 1 coluna só no celular */
+        gap: 32px;
     }
 }
+
 /* ===== DEPOIMENTOS ===== */
 
 .depoimentos {
@@ -462,9 +435,12 @@ body {
 }
 
 .depoimentos-container {
-   max-width: 1200px; /* Reduzi um pouco para ficar elegante, mas pode usar 1300px se preferir */
-    margin: 0 auto;    /* 'auto' centraliza perfeitamente a div na tela sem esmagar as laterais */
-    width: 90%;        /* Garante que sempre terá uma pequena margem (5% de cada lado) em telas menores */
+    max-width: 1200px;
+    /* Reduzi um pouco para ficar elegante, mas pode usar 1300px se preferir */
+    margin: 0 auto;
+    /* 'auto' centraliza perfeitamente a div na tela sem esmagar as laterais */
+    width: 90%;
+    /* Garante que sempre terá uma pequena margem (5% de cada lado) em telas menores */
 }
 
 
@@ -1488,18 +1464,20 @@ body.dashboard-page {
 .floating-navbar {
     position: fixed;
     top: 0;
-    
+
     /* 1. Centralização */
     left: 50%;
     transform: translateX(-50%);
-    
+
     /* 2. Redução da Largura */
-    width: 90%; /* <-- AJUSTE AQUI: Pode colocar 80%, 95%, etc. */
-    max-width: 1450px; 
-        
+    width: 90%;
+    /* <-- AJUSTE AQUI: Pode colocar 80%, 95%, etc. */
+    max-width: 1450px;
+
     /* 3. Bordas inferiores (Opcional) */
-    border-radius: 0 0 20px 20px; /* Como não encosta mais na lateral, arredondar embaixo fica mais bonito */
-    
+    border-radius: 0 0 20px 20px;
+    /* Como não encosta mais na lateral, arredondar embaixo fica mais bonito */
+
     z-index: 9999;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.4s ease;
@@ -1511,7 +1489,8 @@ body.dashboard-page {
     align-items: center;
     padding: 15px 40px;
     background-color: #F9F6F1;
-    border-radius: 0 0 20px 20px; /* Arredonda só em baixo */
+    border-radius: 0 0 20px 20px;
+    /* Arredonda só em baixo */
     transition: all 0.4s ease;
 }
 
@@ -1524,7 +1503,8 @@ body.dashboard-page {
 
 /* Estado 2: Pílula Flutuante (Quando rola a página) */
 .floating-navbar.scrolled {
-    top: 20px; /* Desce um pouco */
+    top: 20px;
+    /* Desce um pouco */
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
@@ -1532,15 +1512,22 @@ body.dashboard-page {
 }
 
 .floating-navbar.scrolled .navbar-content {
-    background-color: #F8F6F1; /* Fica branca */
-    border-radius: 50px; /* Vira pílula */
+    background-color: #F8F6F1;
+    /* Fica branca */
+    border-radius: 50px;
+    /* Vira pílula */
     padding: 15px 30px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* Altera a cor do hamburguer e texto quando flutua e fica branca */
-.floating-navbar.scrolled .burger-line { stroke: #34210a; }
-.floating-navbar.scrolled .profile-name-nav { color: #34210a; }
+.floating-navbar.scrolled .burger-line {
+    stroke: #34210a;
+}
+
+.floating-navbar.scrolled .profile-name-nav {
+    color: #34210a;
+}
 
 
 /* --- Elementos Internos Constantes --- */
@@ -1560,7 +1547,9 @@ body.dashboard-page {
     transition: transform 0.2s ease;
 }
 
-.menu-toggle:hover svg { transform: scale(1.1); }
+.menu-toggle:hover svg {
+    transform: scale(1.1);
+}
 
 .navbar-logo {
     height: 45px;
@@ -1580,7 +1569,8 @@ body.dashboard-page {
 .profile-photo-nav {
     width: 40px;
     height: 40px;
-    background-color: #d9d9d9; /* Círculo cinza */
+    background-color: #d9d9d9;
+    /* Círculo cinza */
     border-radius: 50%;
 }
 
@@ -1591,7 +1581,7 @@ body.dashboard-page {
 
 /* Para o Dropdown não bugar na barra colada ao topo */
 .floating-navbar.menu-open .navbar-content {
-    border-bottom-left-radius: 0; 
+    border-bottom-left-radius: 0;
 }
 
 .dropdown-menu {
@@ -1659,7 +1649,8 @@ body.dashboard-page {
 }
 
 .profile-section {
-    position: static; /* Isso faz o dropdown ignorar a foto e procurar a borda da Navbar */
+    position: static;
+    /* Isso faz o dropdown ignorar a foto e procurar a borda da Navbar */
     cursor: pointer;
 }
 
@@ -1672,8 +1663,10 @@ body.dashboard-page {
 /* A caixa flutuante do perfil (Mesmo padrão visual, mas na direita) */
 .profile-dropdown-menu {
     position: absolute;
-    top: 100%;       /* Cola perfeitamente embaixo da barra */
-    right: 0;        /* Trava na extrema direita da barra inteira */
+    top: 100%;
+    /* Cola perfeitamente embaixo da barra */
+    right: 0;
+    /* Trava na extrema direita da barra inteira */
     width: 250px;
     background-color: #F9F6F1;
     border-radius: 0 0 25px 25px;
@@ -1699,7 +1692,8 @@ body.dashboard-page {
 .profile-dropdown-menu .menu-list a {
     display: block;
     padding: 18px 0;
-    color: #34210a; /* Cor de texto escura */
+    color: #34210a;
+    /* Cor de texto escura */
     text-decoration: none;
     font-weight: 600;
     font-size: 1.05rem;
@@ -1708,7 +1702,8 @@ body.dashboard-page {
 
 .profile-dropdown-menu .menu-list a:hover {
     opacity: 0.7;
-    padding-left: 8px; /* Efeito de empurrar pro lado */
+    padding-left: 8px;
+    /* Efeito de empurrar pro lado */
 }
 
 /* Linha divisória fina */
@@ -1722,9 +1717,11 @@ body.dashboard-page {
 
 /* Botão Sair dentro do menu claro */
 .profile-dropdown-menu .menu-sair {
-    color: #e05555; /* Mantém o vermelho do botão sair */
+    color: #e05555;
+    /* Mantém o vermelho do botão sair */
     font-weight: 600;
 }
+
 /* ============================================
    AUMIGOS - NAVBAR: TEMA DA CONSULTA
    ============================================ */
@@ -1784,17 +1781,19 @@ body.dashboard-page {
 .nav-consulta .menu-list li {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-.nav-consulta .profile-dropdown-menu  {
+
+.nav-consulta .profile-dropdown-menu {
     background-color: #0E6B65;
     /* Deixa o menu do perfil com o mesmo fundo da barra de consulta */
 }
+
 /* 1. Força o texto a ficar escuro e visível */
 .profile-dropdown-menu .menu-list a {
-    color: #34210a !important; 
+    color: #34210a !important;
 }
 
 .nav-consulta .profile-dropdown-menu .menu-list a {
-    color: #ffffff !important; 
+    color: #ffffff !important;
 }
 
 /* 2. Obriga a Navbar da consulta a ficar com o canto RETO quando o perfil abre */
@@ -1805,16 +1804,18 @@ body.dashboard-page {
 
 /* 3. Garante o alinhamento perfeito na extrema direita da barra verde */
 .floating-navbar .navbar-content {
-    position: relative !important; 
+    position: relative !important;
 }
 
 .profile-section {
-    position: static !important; /* Faz o menu ignorar a foto e colar na barra */
+    position: static !important;
+    /* Faz o menu ignorar a foto e colar na barra */
 }
 
 .profile-dropdown-menu {
     top: 100% !important;
-    right: 0 !important; /* Crava na extrema direita */
+    right: 0 !important;
+    /* Crava na extrema direita */
 }
 
 /* Botão Sair */
@@ -1886,8 +1887,8 @@ body.consulta-page {
 
 .consulta-title {
     font-size: 2.2rem;
-    font-weight: 800;
-    color: #000;
+    font-weight: 700;
+    color: #34210a;
     margin-bottom: 30px;
     margin-top: 0;
     /* Garante alinhamento no topo do card */
@@ -2003,7 +2004,7 @@ body.consulta-page {
     background-color: white;
     /* Linhas brancas sobressaem no fundo creme */
     font-size: 0.9rem;
-    color: #000;
+    color: #34210a;
 }
 
 .font-bold {
@@ -2388,7 +2389,7 @@ body.config-page {
 .config-input-group label {
     font-size: 13px;
     font-weight: 800;
-    color: #000000;
+    color: #34210a;
 }
 
 .config-input-group input {
@@ -2469,8 +2470,10 @@ body.config-page {
    ============================================ */
 
 .site-footer {
-    background-color: var(--color-secondary, #FCF9F2); /* Fundo creme da página */
-    padding-top: 60px; /* Espaço em cima da logo */
+    background-color: var(--color-secondary, #FCF9F2);
+    /* Fundo creme da página */
+    padding-top: 60px;
+    /* Espaço em cima da logo */
     position: relative;
     /* Atenção: NÃO use overflow: hidden aqui, senão corta a cabeça do cachorro! */
 }
@@ -2481,15 +2484,19 @@ body.config-page {
 }
 
 .footer-logo {
-    height: 120px; /* Ajuste o tamanho da logo laranja aqui */
+    height: 120px;
+    /* Ajuste o tamanho da logo laranja aqui */
     object-fit: contain;
 }
 
 .footer-main {
-    background-color: #0E6B65; /* O verde escuro do seu projeto */
-    border-radius: 60px 60px 0 0; /* Arredonda as duas pontas superiores */
+    background-color: #0E6B65;
+    /* O verde escuro do seu projeto */
+    border-radius: 60px 60px 0 0;
+    /* Arredonda as duas pontas superiores */
     padding: 70px 0 60px 0;
-    position: relative; /* Transforma a caixa em âncora para o cachorro */
+    position: relative;
+    /* Transforma a caixa em âncora para o cachorro */
     margin-top: 30px;
 }
 
@@ -2502,8 +2509,9 @@ body.config-page {
 
 .footer-links-wrapper {
     display: flex;
-    gap: 120px; /* Distância entre as 3 colunas */
-    padding-left: 40px; 
+    gap: 120px;
+    /* Distância entre as 3 colunas */
+    padding-left: 40px;
 }
 
 .footer-col h4 {
@@ -2524,7 +2532,8 @@ body.config-page {
 }
 
 .footer-col a {
-    color: rgba(255, 255, 255, 0.85); /* Texto branco ligeiramente transparente */
+    color: rgba(255, 255, 255, 0.85);
+    /* Texto branco ligeiramente transparente */
     text-decoration: none;
     font-size: 15px;
     font-weight: 500;
@@ -2532,8 +2541,10 @@ body.config-page {
 }
 
 .footer-col a:hover {
-    color: #ffffff; /* Fica totalmente branco ao passar o mouse */
-    padding-left: 5px; /* Leve empurrão para a direita (efeito de hover) */
+    color: #ffffff;
+    /* Fica totalmente branco ao passar o mouse */
+    padding-left: 5px;
+    /* Leve empurrão para a direita (efeito de hover) */
 }
 
 /* ============================================
@@ -2541,14 +2552,18 @@ body.config-page {
    ============================================ */
 .footer-dog {
     position: absolute;
-    bottom: -60px;       /* Cola a base da imagem no chão da caixa verde */
-    right: 5%;       /* Afasta um pouco da borda direita da tela */
+    bottom: -60px;
+    /* Cola a base da imagem no chão da caixa verde */
+    right: 5%;
+    /* Afasta um pouco da borda direita da tela */
     z-index: 10;
-    pointer-events: none; /* Garante que a imagem não atrapalhe os cliques nos links */
+    pointer-events: none;
+    /* Garante que a imagem não atrapalhe os cliques nos links */
 }
 
 .footer-dog img {
-    height: 450px; /* Ajuste a altura do cachorro aqui para ele vazar para fora da caixa na medida certa */
+    height: 450px;
+    /* Ajuste a altura do cachorro aqui para ele vazar para fora da caixa na medida certa */
     display: block;
 }
 
@@ -2557,29 +2572,34 @@ body.config-page {
    ============================================ */
 @media (max-width: 900px) {
     .footer-links-wrapper {
-        gap: 60px; /* Reduz espaço entre colunas no tablet */
+        gap: 60px;
+        /* Reduz espaço entre colunas no tablet */
     }
-    
+
     .footer-dog img {
-        height: 280px; /* Diminui o cachorro em telas menores */
+        height: 280px;
+        /* Diminui o cachorro em telas menores */
     }
 }
 
 @media (max-width: 768px) {
     .footer-links-wrapper {
-        flex-direction: column; /* Empilha as colunas no celular */
+        flex-direction: column;
+        /* Empilha as colunas no celular */
         gap: 40px;
         padding-left: 10px;
-        margin-bottom: 40px; /* Espaço para o cachorro não cobrir os links */
+        margin-bottom: 40px;
+        /* Espaço para o cachorro não cobrir os links */
     }
-    
+
     .footer-main {
         border-radius: 40px 40px 0 0;
         padding: 50px 0 40px 0;
     }
 
     .footer-dog {
-        right: -20px; /* Esconde um pedaço do cachorro pra fora da tela no celular */
+        right: -20px;
+        /* Esconde um pedaço do cachorro pra fora da tela no celular */
     }
 
     .footer-dog img {
