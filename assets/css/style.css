@@ -366,22 +366,19 @@ body {
 
 .equipe-card-foto {
     flex-shrink: 0;
-    width: 180px;
-    height: 170px;
-    border-radius: 16px;
+    width: 150px;  /* Tamanho menor para a foto não dominar o texto */
+    height: 150px; /* Quadrado perfeito (500x500 proporcional) */
+    border-radius: 20px; /* Bordas arredondadas */
     overflow: hidden;
     background: #d9d5cf;
-    border-color: #5a3e28;
-    border: 0.5px solid;
+    border: 1px solid #5a3e28;
 }
 
 .equipe-card-foto img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
-    max-width: 100%;
-    transform: scale(1.1);
+    object-position: center center; /* Centraliza a foto de vocês */
 }
 
 .foto-1 img {
