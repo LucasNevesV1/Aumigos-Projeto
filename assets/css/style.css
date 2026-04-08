@@ -332,7 +332,7 @@ body {
     padding: 8px 16px;
     border-radius: 8px;
     margin-bottom: 24px;
-    
+
 }
 
 .equipe-badge img {
@@ -1856,16 +1856,19 @@ body.consulta-page {
 
 /* Badges de Status (Pílulas Coloridas) */
 .status-badge {
-    appearance: none; /* Remove a setinha padrão do navegador */
+    appearance: none;
+    /* Remove a setinha padrão do navegador */
     -webkit-appearance: none;
     border: none;
     text-align: center;
     cursor: pointer;
-    background-image: url('../img/seta-para-baixo.png'); /* Se quiser manter o ícone de seta */
+    background-image: url('../img/seta-para-baixo.png');
+    /* Se quiser manter o ícone de seta */
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 12px;
-    padding-right: 30px; /* Espaço para a setinha */
+    padding-right: 30px;
+    /* Espaço para a setinha */
 }
 
 .status-disponivel {
@@ -1936,53 +1939,352 @@ body.consulta-page {
 
 /* Zera a aparência padrão do navegador para o select na col-status */
 .col-status select.status-badge {
-    appearance: none;         /* Remove a seta padrão do Windows/Chrome */
-    -webkit-appearance: none; /* Remove a seta padrão do Safari/Chrome Mac */
-    -moz-appearance: none;    /* Remove a seta padrão do Firefox */
-    
-    border: none;             /* Remove a borda padrão */
-    outline: none;            /* Remove o contorno ao clicar */
-    
-    font-family: inherit;     /* Herda a fonte da página */
-    font-size: 14px;          /* Ajuste o tamanho conforme necessário */
-    font-weight: bold;        /* Mantém o negrito */
-    
-    text-align: center;       /* Centraliza o texto */
-    cursor: pointer;          /* Mostra a mãozinha */
-    
+    appearance: none;
+    /* Remove a seta padrão do Windows/Chrome */
+    -webkit-appearance: none;
+    /* Remove a seta padrão do Safari/Chrome Mac */
+    -moz-appearance: none;
+    /* Remove a seta padrão do Firefox */
+
+    border: none;
+    /* Remove a borda padrão */
+    outline: none;
+    /* Remove o contorno ao clicar */
+
+    font-family: inherit;
+    /* Herda a fonte da página */
+    font-size: 14px;
+    /* Ajuste o tamanho conforme necessário */
+    font-weight: bold;
+    /* Mantém o negrito */
+
+    text-align: center;
+    /* Centraliza o texto */
+    cursor: pointer;
+    /* Mostra a mãozinha */
+
     /* Garante o formato de pílula arredondada */
-    padding: 8px 15px;        /* Espaçamento interno */
-    border-radius: 20px;      /* Cantos bem arredondados */
-    
-    display: inline-flex;     /* Mantém o comportamento de bloco em linha */
+    padding: 8px 15px;
+    /* Espaçamento interno */
+    border-radius: 20px;
+    /* Cantos bem arredondados */
+
+    display: inline-flex;
+    /* Mantém o comportamento de bloco em linha */
     align-items: center;
     justify-content: center;
-    
+
     /* Mantém o tamanho consistente */
-    min-width: 120px;         
+    min-width: 120px;
     width: auto;
 }
 
 /* Garante que as cores de fundo definidas pelas suas classes funcionem */
 .col-status select.status-disponivel {
-    background-color: #C8E6C9; /* Exemplo de verde */
+    background-color: #C8E6C9;
+    /* Exemplo de verde */
     color: #2E7D32;
 }
 
 .col-status select.status-tratamento {
-    background-color: #FFF9C4; /* Exemplo de amarelo */
+    background-color: #FFF9C4;
+    /* Exemplo de amarelo */
     color: #FBC02D;
 }
 
 .col-status select.status-processo {
-    background-color: #FFE0B2; /* Exemplo de laranja */
+    background-color: #FFE0B2;
+    /* Exemplo de laranja */
     color: #E65100;
 }
 
 .col-status select.status-adotado {
-    background-color: #E1BEE7; /* Exemplo de roxo */
+    background-color: #E1BEE7;
+    /* Exemplo de roxo */
     color: #7B1FA2;
 }
+
+/* =========================================
+           CSS ESPECÍFICO DA TELA DE CONFIGURAÇÃO
+           ========================================= */
+body.config-page {
+    background-color: var(--color-secondary);
+    /* Fundo creme do seu projeto */
+    margin: 0;
+    padding: 0;
+}
+
+/* Topbar Laranja com Logo */
+.config-header-bar {
+    background-color: #F89E19;
+    /* Laranja da paleta */
+    padding: 10px 40px;
+    /* Mais espaço nas laterais */
+    display: flex;
+    justify-content: space-between;
+    /* Afasta os itens para as pontas */
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    /* Necessário para centralizar a logo */
+    color: #ffffff;
+    /* Texto branco para dar contraste no laranja */
+}
+
+/* Centraliza a logo de forma absoluta no meio da barra */
+.navbar-logo-link {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.config-header-bar img {
+    height: 65px;
+}
+
+.navbar-logo-link img {
+    height: 45px;
+    display: block;
+}
+
+/* Container Principal */
+.config-main-container {
+    width: 90%;
+    max-width: 1300px;
+    margin: 40px auto;
+}
+
+/* Linha de Título */
+.config-title-section {
+    border-bottom: 2px solid #006666;
+    /* Linha verde escuro */
+    padding-bottom: 15px;
+    margin-bottom: 40px;
+}
+
+.config-title-section h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #34210a;
+    /* Cor de texto escura padrão */
+    margin: 0;
+}
+
+/* Estrutura de Colunas */
+.config-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+/* --- Elementos da Esquerda (Calendário) --- */
+.navbar-calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.navbar-calendar .day {
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.navbar-calendar .month {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* --- Elementos da Direita (Perfil) --- */
+.navbar-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar-profile .profile-name {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* Círculo da foto - com uma bordinha branca para destacar */
+.navbar-profile .profile-photo-space {
+    width: 45px;
+    height: 45px;
+    background-color: rgba(255, 255, 255, 0.3);
+    /* Fundo sutil */
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+}
+
+/* ===== SIDEBAR ESQUERDA ===== */
+.config-sidebar {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 30px 20px;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+
+.sidebar-item {
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Botão Ativo (Verde) */
+.sidebar-item.active {
+    background-color: #006666;
+    color: white;
+    border-radius: 10px;
+}
+
+/* Item normal com linha abaixo */
+.sidebar-item.normal {
+    color: #34210a;
+    border-bottom: 1px solid #EAEAEA;
+    padding-bottom: 20px;
+}
+
+.sidebar-item.normal:hover {
+    color: #00A89D;
+}
+
+/* Botão Logout (Vermelho) */
+.sidebar-item.danger {
+    color: #ff6b6b;
+    padding-top: 5px;
+}
+
+.sidebar-item.danger:hover {
+    color: #ff4a4a;
+}
+
+/* ===== ÁREA DE CONTEÚDO (DIREITA) ===== */
+.config-content-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 50px;
+    flex: 1;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    min-height: 500px;
+}
+
+/* Foto de Perfil (Círculo Cinza) */
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    background-color: #d9d9d9;
+    border-radius: 50%;
+    margin-bottom: 50px;
+}
+
+/* Grade do Formulário */
+.config-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Duas colunas */
+    gap: 30px 50px;
+    /* Espaço vertical e horizontal */
+    max-width: 800px;
+}
+
+/* Campos de Input */
+.config-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.config-input-group label {
+    font-size: 13px;
+    font-weight: 800;
+    color: #000000;
+}
+
+.config-input-group input {
+    border: 1px solid #00A89D;
+    /* Borda verde clara */
+    border-radius: 30px;
+    /* Bordas bem arredondadas como na imagem */
+    padding: 14px 20px;
+    font-size: 14px;
+    outline: none;
+    color: #333;
+    background-color: #fff;
+    transition: box-shadow 0.3s;
+}
+
+.config-input-group input:focus {
+    box-shadow: 0 0 0 3px rgba(0, 168, 157, 0.15);
+}
+
+/* =========================================
+   AUMIGOS - BOTÃO VOLTAR (CONFIG)
+   ========================================= */
+/* Estrutura de Colunas */
+.config-layout {
+    display: flex;
+    gap: 40px;
+    align-items: stretch;
+    /* Faz com que as duas colunas tenham a mesma altura */
+}
+
+/* Nova coluna da esquerda */
+.config-left-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Empurra o botão voltar para o final */
+.config-back-container {
+    margin-top: auto;
+    /* A mágica acontece aqui: empurra pro limite inferior */
+    display: flex;
+    justify-content: flex-start;
+}
+
+.config-back-container {
+    margin-top: 20px;
+    /* Espaço entre o layout principal e o botão */
+    display: flex;
+    justify-content: flex-start;
+    /* Garante que fique na esquerda */
+}
+
+.config-btn-voltar {
+    background-color: #00A89D;
+    /* Verde principal */
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 12px 35px;
+    border-radius: 12px;
+    /* Cantos arredondados parecidos com a imagem */
+    box-shadow: 0 4px 10px rgba(0, 168, 157, 0.2);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.config-btn-voltar:hover {
+    background-color: #008a80;
+    transform: translateY(-2px);
+}
+
+.config-btn-voltar:active {
+    transform: scale(0.98);
+}
+
 /* ======================================
    RESPONSIVIDADE
    ====================================== */
@@ -2166,5 +2468,32 @@ body.consulta-page {
 
     .search-box {
         width: 200px;
+    }
+
+}
+
+/* Responsividade Básica */
+@media (max-width: 850px) {
+    .config-layout {
+        flex-direction: column;
+    }
+
+    .config-sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 20px;
+    }
+
+    .sidebar-item.normal {
+        border-bottom: none;
+        border-right: 1px solid #EAEAEA;
+        padding-bottom: 12px;
+        padding-right: 20px;
+    }
+
+    .config-form-grid {
+        grid-template-columns: 1fr;
+        /* Uma coluna no mobile */
     }
 }
