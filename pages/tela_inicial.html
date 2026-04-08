@@ -13,42 +13,58 @@
         const navbar = document.getElementById('floatingNavbar');
         const menuToggle = document.getElementById('menuToggle');
 
-        // Alterna o estado do menu ao clicar no ícone
-        menuToggle.addEventListener('click', function (event) {
-            navbar.classList.toggle('menu-open');
-            event.stopPropagation(); // Evita que o clique feche o menu na mesma hora
-        });
-
-        // Fecha o menu se o usuário clicar em qualquer outro lugar da página
-        document.addEventListener('click', function (event) {
-            if (!navbar.contains(event.target) && navbar.classList.contains('menu-open')) {
-                navbar.classList.remove('menu-open');
+        // ===== NOVA LÓGICA DE ROLAGEM (SCROLL) =====
+        window.addEventListener('scroll', function () {
+            // Se rolar mais de 50px para baixo, adiciona a classe 'scrolled'
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                // Se voltar para o topo, remove a classe
+                navbar.classList.remove('scrolled');
             }
         });
+
+        // ===== LÓGICA DO MENU DROPDOWN (EXISTENTE) =====
+        if (menuToggle && navbar) {
+            // Alterna o estado do menu ao clicar no ícone
+            menuToggle.addEventListener('click', function (event) {
+                navbar.classList.toggle('menu-open');
+                event.stopPropagation(); // Evita que o clique feche o menu na mesma hora
+            });
+
+            // Fecha o menu se o usuário clicar em qualquer outro lugar da página
+            document.addEventListener('click', function (event) {
+                if (!navbar.contains(event.target) && navbar.classList.contains('menu-open')) {
+                    navbar.classList.remove('menu-open');
+                }
+            });
+        }
     });
 </script>
 
 <body class="dashboard-page">
 
-    <nav class="floating-navbar" id="floatingNavbar">
+<nav class="floating-navbar navbar-fixed-top" id="floatingNavbar">
         <div class="navbar-content">
             <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 6H21" stroke="#34210a" stroke-width="3" stroke-linecap="round" />
-                    <path d="M3 12H21" stroke="#34210a" stroke-width="3" stroke-linecap="round" />
-                    <path d="M3 18H21" stroke="#34210a" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 6H21" stroke="#3A1F02" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 12H21" stroke="#3A1F02" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 18H21" stroke="#3A1F02" stroke-width="3" stroke-linecap="round" />
                 </svg>
             </button>
 
-            <img src="../assets/img/Prancheta 5.png" alt="AuMigos Logo" class="navbar-logo">
+            <img src="../assets/img/Prancheta 5.png" alt="AuMigos Logo" class="navbar-logo" id="navLogo">
 
-            <div class="menu-spacer"></div>
+            <div class="navbar-profile-wrapper">
+                <span class="profile-name-nav">Full Name</span>
+                <div class="profile-photo-nav"></div>
+            </div>
         </div>
 
         <div class="dropdown-menu">
             <ul class="menu-list">
                 <li><a href="tela_inicial.html">Tela inicial</a></li>
-                <li><a href="registroanimal.html">Registro de Animais</a></li>
                 <li><a href="consultaanimal.html">Consulta de Animais</a></li>
             </ul>
             <a href="../index.html" class="menu-sair">
@@ -61,7 +77,6 @@
             </a>
         </div>
     </nav>
-
     <div class="dashboard-container">
         <header class="dash-header">
             <div class="dash-header__content">

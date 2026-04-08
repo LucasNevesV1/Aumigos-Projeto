@@ -1459,44 +1459,70 @@ body.dashboard-page {
 }
 
 /* ============================================
-   AUMIGOS - NAVBAR FLUTUANTE
+   AUMIGOS - NAVBAR DINÂMICA (FIXA E FLUTUANTE)
    ============================================ */
 
+/* Estado 1: Colada no Topo (Padrão/Inicial) */
 .floating-navbar {
     position: fixed;
-    top: 30px;
+    top: 0;
+    
+    /* 1. Centralização */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* 2. Redução da Largura */
+    width: 90%; /* <-- AJUSTE AQUI: Pode colocar 80%, 95%, etc. */
+    max-width: 1450px; 
+    
+    
+    /* 3. Bordas inferiores (Opcional) */
+    border-radius: 0 0 20px 20px; /* Como não encosta mais na lateral, arredondar embaixo fica mais bonito */
+    
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+}
+
+.floating-navbar .navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #F9F6F1;
+    border-radius: 0 0 20px 20px; /* Arredonda só em baixo */
+    transition: all 0.4s ease;
+}
+
+/* Cor do nome no estado do topo */
+.profile-name-nav {
+    color: #391F01;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+/* Estado 2: Pílula Flutuante (Quando rola a página) */
+.floating-navbar.scrolled {
+    top: 20px; /* Desce um pouco */
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
     max-width: 1450px;
-    background-color: #0E6B65;
-    /* Verde da barra */
-    border-radius: 50px;
-    /* Formato de pílula arredondada */
-    z-index: 9999;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-    transition: border-radius 0.3s ease;
 }
 
-/* Quando o menu está aberto, removemos o arredondamento do canto inferior esquerdo
-   para ele se fundir perfeitamente com a caixa do dropdown */
-.floating-navbar.menu-open {
-    border-bottom-left-radius: 0;
-}
-
-.navbar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.floating-navbar.scrolled .navbar-content {
+    background-color: #F8F6F1; /* Fica branca */
+    border-radius: 50px; /* Vira pílula */
     padding: 15px 30px;
-    position: relative;
-    z-index: 10;
-    background-color: #ffffff;
-    border-radius: inherit;
-    /* Herda a mudança de borda quando abre */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Botão Hamburguer */
+/* Altera a cor do hamburguer e texto quando flutua e fica branca */
+.floating-navbar.scrolled .burger-line { stroke: #34210a; }
+.floating-navbar.scrolled .profile-name-nav { color: #34210a; }
+
+
+/* --- Elementos Internos Constantes --- */
 .menu-toggle {
     background: none;
     border: none;
@@ -1513,38 +1539,49 @@ body.dashboard-page {
     transition: transform 0.2s ease;
 }
 
-.menu-toggle:hover svg {
-    transform: scale(1.1);
-    /* Dá um leve zoom ao passar o mouse */
-}
+.menu-toggle:hover svg { transform: scale(1.1); }
 
-/* Logo da Navbar */
 .navbar-logo {
-    height: 60px;
+    height: 45px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    transition: all 0.3s ease;
 }
 
-/* Espaçador para manter a flexbox balanceada e a logo no meio */
-.menu-spacer {
-    width: 32px;
+/* Espaço do Perfil */
+.navbar-profile-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-/* Caixa do Dropdown */
+.profile-photo-nav {
+    width: 40px;
+    height: 40px;
+    background-color: #d9d9d9; /* Círculo cinza */
+    border-radius: 50%;
+}
+
+/* --- Menu Dropdown --- */
+.floating-navbar.menu-open {
+    border-bottom-left-radius: 0;
+}
+
+/* Para o Dropdown não bugar na barra colada ao topo */
+.floating-navbar.menu-open .navbar-content {
+    border-bottom-left-radius: 0; 
+}
+
 .dropdown-menu {
     position: absolute;
     top: 100%;
-    /* Começa exatamente onde a barra termina */
     left: 0;
     width: 250px;
-    background-color: #ffffff;
+    background-color: #F9F6F1;
     border-radius: 0 0 25px 25px;
-    /* Arredonda apenas as pontas de baixo */
     box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.2);
     padding: 10px 25px 25px 25px;
-
-    /* Configurações de animação (Escondido por padrão) */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
@@ -1552,7 +1589,6 @@ body.dashboard-page {
     z-index: 5;
 }
 
-/* Mostra o menu quando a classe .menu-open está ativa */
 .floating-navbar.menu-open .dropdown-menu {
     opacity: 1;
     visibility: visible;
@@ -1567,7 +1603,7 @@ body.dashboard-page {
 }
 
 .menu-list li {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(134, 132, 132, 0.4);
     /* Linha divisória fina e transparente */
 }
 
@@ -1620,7 +1656,7 @@ body.dashboard-page {
 
 /* Altera a cor dos traços do ícone de Hamburguer (menu) */
 .nav-consulta .menu-toggle svg path {
-    stroke: #ffffff;
+    stroke: #3A1F02;
 }
 
 /* Altera o fundo da caixinha do menu que desce */
