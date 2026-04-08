@@ -722,7 +722,7 @@ body {
 
 /* Página de login */
 body.auth-page--login {
-    background-image: url('../img/Beagle-park.jpeg');
+    background-image: url('../img/Beagle-park.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -743,7 +743,7 @@ body.auth-page--login::before {
 
 /* Página de cadastro */
 body.auth-page--cadastro {
-    background-image: url('../img/Cat-gray.jpeg');
+    background-image: url('../img/Cat-gray.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
