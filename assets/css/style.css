@@ -434,6 +434,209 @@ body {
     }
 }
 
+/* ===== DEPOIMENTOS ===== */
+
+.depoimentos {
+    padding: 20px 0px;
+    background: var(--color-secondary);
+}
+
+.depoimentos-container {
+    max-width: 1300px;
+    margin: 0 10rem;
+}
+
+.depoimentos-header {
+    margin-bottom: 32px;
+}
+
+.depoimentos-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ede8e0;
+    color: #5a3e28;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.depoimentos-badge img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+.depoimentos-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #3b2412;
+    line-height: 1.15;
+    margin-bottom: 12px;
+}
+
+.depoimentos-title span {
+    color: #e07a2f;
+}
+
+.depoimentos-subtitle {
+    font-size: 16px;
+    color: #5a4030;
+    line-height: 1.6;
+}
+
+/* Wrapper com fundo teal arredondado */
+.depoimentos-card-wrapper {
+    background: #005a50;
+    border-radius: 30px;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Abas */
+.depoimentos-tabs {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    padding: 0 20px;
+}
+
+.dep-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    padding: 18px 24px;
+    border-radius: 16px 16px 0 0;
+    transition: background 0.2s, color 0.2s;
+}
+
+.dep-tab img {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.65;
+}
+
+.dep-tab--active {
+    background: #fe8d0b;
+    color: #fff;
+    border-radius: 16px 16px 0 0;
+}
+
+.dep-tab--active img {
+    opacity: 1;
+}
+
+/* Card laranja */
+.depoimentos-card {
+    background: #fe8d0b;
+    border-radius: 0 20px 20px 20px;
+    margin: 0 20px 20px 20px;
+    padding: 40px;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    min-height: 475px;
+}
+
+.dep-foto {
+    flex-shrink: 0;
+    width: 420px;
+    height: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.dep-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.dep-texto {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dep-texto blockquote {
+    font-size: 20px;
+    color: #fff;
+    line-height: 1.8;
+    text-align: justify;
+    margin: 0;
+    font-style: normal;
+}
+
+.dep-autor {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+}
+
+.dep-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.dep-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    background: transparent;
+    display: inline-block;
+}
+
+.dep-dot--active {
+    background: #fff;
+    border-color: #fff;
+}
+
+@media (max-width: 768px) {
+    .depoimentos-title {
+        font-size: 32px;
+    }
+
+    .depoimentos-card {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .dep-foto {
+        width: 100%;
+        height: 200px;
+    }
+
+    .depoimentos-tabs {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .dep-tab--active {
+        border-radius: 12px;
+    }
+}
+
 /* ===== PÁGINAS COM BACKGROUND ===== */
 
 /* Página de login */
