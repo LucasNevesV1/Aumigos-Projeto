@@ -439,9 +439,11 @@ body {
 }
 
 .depoimentos-container {
-    max-width: 1300px;
-    margin: 0 10rem;
+   max-width: 1200px; /* Reduzi um pouco para ficar elegante, mas pode usar 1300px se preferir */
+    margin: 0 auto;    /* 'auto' centraliza perfeitamente a div na tela sem esmagar as laterais */
+    width: 90%;        /* Garante que sempre terá uma pequena margem (5% de cada lado) em telas menores */
 }
+
 
 .depoimentos-header {
     margin-bottom: 32px;
