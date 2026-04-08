@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuMigos - Configurações da Conta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body class="config-page">
+
+    <header class="config-header-bar">
+        <div class="navbar-calendar">
+            <span class="day">08</span>
+            <span class="month">Abr</span>
+        </div>
+
+        <a href="tela_inicial.html" class="navbar-logo-link">
+            <img src="../assets/img/Prancheta 4.png" alt="AuMigos Logo Branca">
+        </a>
+
+        <div class="navbar-profile">
+            <span class="profile-name">ONG Salva Patas</span>
+            <div class="profile-photo-space"></div>
+        </div>
+    </header>
+
+    <div class="config-main-container">
+
+        <div class="config-title-section">
+            <h1>Configurações da Conta</h1>
+        </div>
+
+        <div class="config-layout">
+
+            <div class="config-left-column">
+                <aside class="config-sidebar">
+                    <a href="#" class="sidebar-item active">Perfil ONG</a>
+                    <a href="#" class="sidebar-item normal">Segurança</a>
+                    <a href="../index.html" class="sidebar-item danger">Log out</a>
+                </aside>
+
+                <div class="config-back-container">
+                    <a href="tela_inicial.html" class="config-btn-voltar">Voltar</a>
+                </div>
+            </div>
+
+            <main class="config-content-card">
+                <div class="config-form-grid">
+
+                    <div class="config-input-group">
+                        <label>Nome Completo</label>
+                        <input type="text" placeholder="Nome" name="nome">
+                    </div>
+
+                    <div class="config-input-group">
+                        <label>E-mail</label>
+                        <input type="email" placeholder="E-mail" name="email">
+                    </div>
+
+                    <div class="config-input-group">
+                        <label>Senha</label>
+                        <input type="password" placeholder="Nova Senha" name="senha">
+                    </div>
+
+                    <div class="config-input-group">
+                        <label>Documento (CPF/CNPJ)</label>
+                        <input type="text" placeholder="Documento" name="documento">
+                    </div>
+
+                    <div class="config-input-group">
+                        <label>Telefone</label>
+                        <input type="tel" placeholder="Telefone" name="telefone">
+                    </div>
+
+                    <div class="config-input-group">
+                        <label>Data de Nascimento</label>
+                        <input type="date" name="dataNascimento">
+                    </div>
+
+                    <div class="config-input-group">
+                        <label>Profissão</label>
+                        <input type="text" placeholder="Profissão" name="profissao">
+                    </div>
+
+                    <div class="config-input-group">
+                        <label>Gênero</label>
+                        <select name="genero"
+                            style="border: 1px solid #00A89D; border-radius: 30px; padding: 14px 20px; font-size: 14px; outline: none; color: #333; background-color: #fff; appearance: none; cursor: pointer;">
+                            <option value="">Selecione</option>
+                            <option value="feminino">Feminino</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="outro">Outro</option>
+                            <option value="prefiro_nao_dizer">Prefiro não dizer</option>
+                        </select>
+                    </div>
+
+                    <div class="config-input-group">
+                        <label>Data de Cadastro</label>
+                        <input type="text" placeholder="08/04/2026" disabled
+                            style="background-color: #f5f5f5; cursor: not-allowed;" name="dataCadastro">
+                    </div>
+
+                    <div class="config-input-group">
+                        <label>Status (Ativo)</label>
+                        <select name="ativo"
+                            style="border: 1px solid #00A89D; border-radius: 30px; padding: 14px 20px; font-size: 14px; outline: none; color: #333; background-color: #fff; appearance: none; cursor: pointer;">
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div style="margin-top: 40px; text-align: right;">
+                    <button type="submit"
+                        style="background-color: #00A89D; color: white; border: none; padding: 12px 30px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: opacity 0.2s;">
+                        Salvar Alterações
+                    </button>
+                </div>
+        </div>
+        </main>
+
+    </div>
+
+    </div>
+</body>
+
+</html>

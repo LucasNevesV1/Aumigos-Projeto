@@ -120,50 +120,74 @@
     </div>
 
     <script>
-        // Elementos do DOM
         const step1 = document.getElementById('step1');
         const step2 = document.getElementById('step2');
         const modalFooter = document.getElementById('modalFooter');
+        const registroForm = document.getElementById('registroAnimalForm');
 
-        // Lógica do Toggle de Gênero
-        const genderButtons = document.querySelectorAll('.gender-toggle button');
-        genderButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                genderButtons.forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-            });
-        });
-
-        // Função para renderizar os botões do rodapé dependendo da etapa
         function showStep(stepNumber) {
             if (stepNumber === 1) {
                 step1.classList.add('active');
                 step2.classList.remove('active');
-
-                modalFooter.className = 'modal-footer';
-                modalFooter.innerHTML = `
-                    <button type="button" class="btn btn-primary" onclick="showStep(2)">Proximo</button>
-                `;
+                modalFooter.innerHTML = `<button type="button" class="btn btn-primary" onclick="showStep(2)">Próximo</button>`;
             } else if (stepNumber === 2) {
                 step1.classList.remove('active');
                 step2.classList.add('active');
-
-                modalFooter.className = 'modal-footer footer-between';
+                // IMPORTANTE: O botão finalizar deve estar vinculado ao formulário
                 modalFooter.innerHTML = `
-                    <button type="button" class="btn btn-secondary" onclick="showStep(1)">Voltar</button>
-                    <button type="submit" class="btn btn-primary" form="registroAnimalForm">Finalizar</button>
-                `;
+                <button type="button" class="btn btn-secondary" onclick="showStep(1)">Voltar</button>
+                <button type="submit" form="registroAnimalForm" class="btn btn-primary">Finalizar</button>
+            `;
             }
         }
 
-        // Inicializa o formulário na etapa 1
-        showStep(1);
-
-        // Previne o envio padrão do formulário para demonstração
-        document.getElementById('registroAnimalForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            alert('Animal registrado com sucesso (simulação)!');
+        // Lógica do Toggle de Gênero
+        document.addEventListener('click', function (e) {
+            if (e.target.parentElement && e.target.parentElement.classList.contains('gender-toggle')) {
+                const buttons = e.target.parentElement.querySelectorAll('button');
+                buttons.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+            }
         });
+
+        registroForm.addEventListener('submit', function (e) {
+            e.preventDefault(); // Impede o recarregamento da página
+
+            try {
+                // Captura os valores de forma mais segura
+                const nomeInput = step1.querySelector('input[type="text"]');
+                const especieSelect = step1.querySelector('select');
+                const racaInput = step1.querySelectorAll('input[type="text"]')[1];
+                const generoAtivo = step1.querySelector('.gender-toggle button.active');
+                const dataEntrada = step2.querySelector('input[type="date"]');
+
+                const novoAnimal = {
+                    id: Math.floor(100000 + Math.random() * 900000),
+                    nome: nomeInput ? nomeInput.value : "Sem nome",
+                    especie: especieSelect ? especieSelect.value : "Não informada",
+                    raca: racaInput ? racaInput.value : "SRD",
+                    genero: generoAtivo ? generoAtivo.innerText : "Fêmea",
+                    entrada: dataEntrada ? dataEntrada.value : "---",
+                    status: "disponivel"
+                };
+
+                // Salva no localStorage
+                const listaAtual = JSON.parse(localStorage.getItem('aumigos_dados') || '[]');
+                listaAtual.push(novoAnimal);
+                localStorage.setItem('aumigos_dados', JSON.stringify(listaAtual));
+
+                // CONFIRMAÇÃO
+                alert('🐾 Sucesso! Animal registrado no sistema.');
+
+                // REDIRECIONAMENTO
+                window.location.href = 'consultaanimal.html';
+            } catch (error) {
+                console.error("Erro ao salvar:", error);
+                alert("Ocorreu um erro ao salvar o animal.");
+            }
+        });
+
+        showStep(1);
     </script>
 </body>
 

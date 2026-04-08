@@ -28,7 +28,7 @@
     --btn-primary: #00A89D;
     --btn-close: #FC6662;
     --input-border: #F6D6B3;
-    --text-main: #000000;
+    --text-main: #34210a;
     --text-label: #333333;
 }
 
@@ -316,7 +316,6 @@ body {
 .equipe-header {
     text-align: center;
     margin: 0 auto 56px;
-
 }
 
 .equipe-badge {
@@ -332,7 +331,7 @@ body {
     padding: 8px 16px;
     border-radius: 8px;
     margin-bottom: 24px;
-    
+
 }
 
 .equipe-badge img {
@@ -352,44 +351,34 @@ body {
 .equipe-grid {
     list-style: none;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px 60px;
+    grid-template-columns: 1fr 1fr; /* Retorna para 2 colunas perfeitamente alinhadas */
+    gap: 40px 60px; /* Espaço entre os cards */
     padding: 0;
     margin: 0;
 }
 
 .equipe-card {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-start; /* Alinha a foto e o texto pelo topo */
     gap: 20px;
 }
 
+/* Fotos Ajustadas para o formato PNG 500x500 */
 .equipe-card-foto {
     flex-shrink: 0;
-    width: 180px;
-    height: 170px;
-    border-radius: 16px;
+    width: 150px;
+    height: 150px;
+    border-radius: 20px; /* Mantém os cantinhos redondos */
     overflow: hidden;
     background: #d9d5cf;
-    border-color: #5a3e28;
-    border: 0.5px solid;
+    border: 2px solid #5a3e28;
 }
 
 .equipe-card-foto img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
-    max-width: 100%;
-    transform: scale(1.1);
-}
-
-.foto-1 img {
-    object-position: center right;
-}
-
-.foto-2 img {
-    object-position: center right;
+    object-position: center; /* Centraliza o rosto de vocês */
 }
 
 .equipe-card-info {
@@ -409,27 +398,31 @@ body {
 
 .equipe-cargo {
     font-size: 12px;
-    font-weight: 300;
     color: #5a3e28;
     line-height: 1.4;
-    font-weight: 20;
+    font-weight: 600; 
 }
 
 .equipe-card-info p {
     font-size: 16px;
     color: #5a4030;
     line-height: 1.7;
-    text-align: justify;
+    text-align: justify; /* Retorna o texto para justificado (bloquinho certinho) */
     margin-top: 4px;
 }
 
+/* Responsividade (Celular) */
 @media (max-width: 768px) {
+    .equipe {
+        padding: 40px 20px; /* Reduz padding lateral no celular */
+    }
+
     .equipe-title {
         font-size: 36px;
     }
 
     .equipe-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Vira 1 coluna só no celular */
         gap: 32px;
     }
 }
@@ -442,9 +435,14 @@ body {
 }
 
 .depoimentos-container {
-    max-width: 1300px;
-    margin: 0 10rem;
+    max-width: 1200px;
+    /* Reduzi um pouco para ficar elegante, mas pode usar 1300px se preferir */
+    margin: 0 auto;
+    /* 'auto' centraliza perfeitamente a div na tela sem esmagar as laterais */
+    width: 90%;
+    /* Garante que sempre terá uma pequena margem (5% de cada lado) em telas menores */
 }
+
 
 .depoimentos-header {
     margin-bottom: 32px;
@@ -1540,44 +1538,80 @@ body.dashboard-page {
 }
 
 /* ============================================
-   AUMIGOS - NAVBAR FLUTUANTE
+   AUMIGOS - NAVBAR DINÂMICA (FIXA E FLUTUANTE)
    ============================================ */
 
+/* Estado 1: Colada no Topo (Padrão/Inicial) */
 .floating-navbar {
     position: fixed;
-    top: 30px;
+    top: 0;
+
+    /* 1. Centralização */
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* 2. Redução da Largura */
+    width: 90%;
+    /* <-- AJUSTE AQUI: Pode colocar 80%, 95%, etc. */
+    max-width: 1450px;
+
+    /* 3. Bordas inferiores (Opcional) */
+    border-radius: 0 0 20px 20px;
+    /* Como não encosta mais na lateral, arredondar embaixo fica mais bonito */
+
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+}
+
+.floating-navbar .navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #F9F6F1;
+    border-radius: 0 0 20px 20px;
+    /* Arredonda só em baixo */
+    transition: all 0.4s ease;
+}
+
+/* Cor do nome no estado do topo */
+.profile-name-nav {
+    color: #391F01;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+/* Estado 2: Pílula Flutuante (Quando rola a página) */
+.floating-navbar.scrolled {
+    top: 20px;
+    /* Desce um pouco */
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
     max-width: 1450px;
-    background-color: #0E6B65;
-    /* Verde da barra */
+}
+
+.floating-navbar.scrolled .navbar-content {
+    background-color: #F8F6F1;
+    /* Fica branca */
     border-radius: 50px;
-    /* Formato de pílula arredondada */
-    z-index: 9999;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-    transition: border-radius 0.3s ease;
-}
-
-/* Quando o menu está aberto, removemos o arredondamento do canto inferior esquerdo
-   para ele se fundir perfeitamente com a caixa do dropdown */
-.floating-navbar.menu-open {
-    border-bottom-left-radius: 0;
-}
-
-.navbar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    /* Vira pílula */
     padding: 15px 30px;
-    position: relative;
-    z-index: 10;
-    background-color: #ffffff;
-    border-radius: inherit;
-    /* Herda a mudança de borda quando abre */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Botão Hamburguer */
+/* Altera a cor do hamburguer e texto quando flutua e fica branca */
+.floating-navbar.scrolled .burger-line {
+    stroke: #34210a;
+}
+
+.floating-navbar.scrolled .profile-name-nav {
+    color: #34210a;
+}
+
+
+/* --- Elementos Internos Constantes --- */
 .menu-toggle {
     background: none;
     border: none;
@@ -1596,36 +1630,50 @@ body.dashboard-page {
 
 .menu-toggle:hover svg {
     transform: scale(1.1);
-    /* Dá um leve zoom ao passar o mouse */
 }
 
-/* Logo da Navbar */
 .navbar-logo {
-    height: 60px;
+    height: 45px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    transition: all 0.3s ease;
 }
 
-/* Espaçador para manter a flexbox balanceada e a logo no meio */
-.menu-spacer {
-    width: 32px;
+/* Espaço do Perfil */
+.navbar-profile-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-/* Caixa do Dropdown */
+.profile-photo-nav {
+    width: 40px;
+    height: 40px;
+    background-color: #d9d9d9;
+    /* Círculo cinza */
+    border-radius: 50%;
+}
+
+/* --- Menu Dropdown --- */
+.floating-navbar.menu-open {
+    border-bottom-left-radius: 0;
+}
+
+/* Para o Dropdown não bugar na barra colada ao topo */
+.floating-navbar.menu-open .navbar-content {
+    border-bottom-left-radius: 0;
+}
+
 .dropdown-menu {
     position: absolute;
     top: 100%;
-    /* Começa exatamente onde a barra termina */
     left: 0;
     width: 250px;
-    background-color: #ffffff;
+    background-color: #F9F6F1;
     border-radius: 0 0 25px 25px;
-    /* Arredonda apenas as pontas de baixo */
     box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.2);
     padding: 10px 25px 25px 25px;
-
-    /* Configurações de animação (Escondido por padrão) */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
@@ -1633,7 +1681,6 @@ body.dashboard-page {
     z-index: 5;
 }
 
-/* Mostra o menu quando a classe .menu-open está ativa */
 .floating-navbar.menu-open .dropdown-menu {
     opacity: 1;
     visibility: visible;
@@ -1648,7 +1695,7 @@ body.dashboard-page {
 }
 
 .menu-list li {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(134, 132, 132, 0.4);
     /* Linha divisória fina e transparente */
 }
 
@@ -1674,6 +1721,89 @@ body.dashboard-page {
 }
 
 /* ============================================
+   AUMIGOS - MENU DROPDOWN DE PERFIL
+   ============================================ */
+
+.navbar-profile-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.profile-section {
+    position: static;
+    /* Isso faz o dropdown ignorar a foto e procurar a borda da Navbar */
+    cursor: pointer;
+}
+
+/* Quando o menu de perfil abre, removemos o arredondamento do canto inferior DIREITO */
+.floating-navbar.profile-open,
+.floating-navbar.profile-open .navbar-content {
+    border-bottom-right-radius: 0 !important;
+}
+
+/* A caixa flutuante do perfil (Mesmo padrão visual, mas na direita) */
+.profile-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    /* Cola perfeitamente embaixo da barra */
+    right: 0;
+    /* Trava na extrema direita da barra inteira */
+    width: 250px;
+    background-color: #F9F6F1;
+    border-radius: 0 0 25px 25px;
+    box-shadow: -5px 15px 25px rgba(0, 0, 0, 0.2);
+    padding: 10px 25px 25px 25px;
+
+    /* Configurações de animação */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 5;
+}
+
+/* Mostra o menu quando aberto */
+.profile-dropdown-menu.profile-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Formatação dos links do perfil para o fundo claro */
+.profile-dropdown-menu .menu-list a {
+    display: block;
+    padding: 18px 0;
+    color: #34210a;
+    /* Cor de texto escura */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: opacity 0.2s ease, padding-left 0.2s ease;
+}
+
+.profile-dropdown-menu .menu-list a:hover {
+    opacity: 0.7;
+    padding-left: 8px;
+    /* Efeito de empurrar pro lado */
+}
+
+/* Linha divisória fina */
+.profile-dropdown-menu .menu-list li {
+    border-bottom: 1px solid rgba(134, 132, 132, 0.4);
+}
+
+.profile-dropdown-menu .menu-list li:last-child {
+    border-bottom: none;
+}
+
+/* Botão Sair dentro do menu claro */
+.profile-dropdown-menu .menu-sair {
+    color: #e05555;
+    /* Mantém o vermelho do botão sair */
+    font-weight: 600;
+}
+
+/* ============================================
    AUMIGOS - NAVBAR: TEMA DA CONSULTA
    ============================================ */
 
@@ -1692,6 +1822,20 @@ body.dashboard-page {
     /* Agora ela usa os EXATOS 90% do bloco bege */
     max-width: 1450px !important;
     z-index: 10;
+    border-radius: 10px;
+}
+
+.floating-navbar.nav-consulta {
+    border-radius: 50px !important;
+}
+
+.floating-navbar.nav-consulta .navbar-content {
+    border-radius: 50px !important;
+}
+
+.floating-navbar.nav-consulta.menu-open,
+.floating-navbar.nav-consulta.menu-open .navbar-content {
+    border-bottom-left-radius: 0 !important;
 }
 
 /* Altera o fundo da parte principal da barra */
@@ -1717,6 +1861,42 @@ body.dashboard-page {
 /* Altera a cor da linha fininha que divide os links no menu */
 .nav-consulta .menu-list li {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-consulta .profile-dropdown-menu {
+    background-color: #0E6B65;
+    /* Deixa o menu do perfil com o mesmo fundo da barra de consulta */
+}
+
+/* 1. Força o texto a ficar escuro e visível */
+.profile-dropdown-menu .menu-list a {
+    color: #34210a !important;
+}
+
+.nav-consulta .profile-dropdown-menu .menu-list a {
+    color: #ffffff !important;
+}
+
+/* 2. Obriga a Navbar da consulta a ficar com o canto RETO quando o perfil abre */
+.floating-navbar.nav-consulta.profile-open,
+.floating-navbar.nav-consulta.profile-open .navbar-content {
+    border-bottom-right-radius: 0 !important;
+}
+
+/* 3. Garante o alinhamento perfeito na extrema direita da barra verde */
+.floating-navbar .navbar-content {
+    position: relative !important;
+}
+
+.profile-section {
+    position: static !important;
+    /* Faz o menu ignorar a foto e colar na barra */
+}
+
+.profile-dropdown-menu {
+    top: 100% !important;
+    right: 0 !important;
+    /* Crava na extrema direita */
 }
 
 /* Botão Sair */
@@ -1788,8 +1968,8 @@ body.consulta-page {
 
 .consulta-title {
     font-size: 2.2rem;
-    font-weight: 800;
-    color: #000;
+    font-weight: 700;
+    color: #34210a;
     margin-bottom: 30px;
     margin-top: 0;
     /* Garante alinhamento no topo do card */
@@ -1905,7 +2085,7 @@ body.consulta-page {
     background-color: white;
     /* Linhas brancas sobressaem no fundo creme */
     font-size: 0.9rem;
-    color: #000;
+    color: #34210a;
 }
 
 .font-bold {
@@ -1937,17 +2117,19 @@ body.consulta-page {
 
 /* Badges de Status (Pílulas Coloridas) */
 .status-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    border-radius: 20px;
-    color: white;
-    font-weight: 700;
-    font-size: 0.85rem;
-    width: 140px;
-    /* Padroniza o tamanho das pílulas */
+    appearance: none;
+    /* Remove a setinha padrão do navegador */
+    -webkit-appearance: none;
+    border: none;
+    text-align: center;
     cursor: pointer;
+    background-image: url('../img/seta-para-baixo.png');
+    /* Se quiser manter o ícone de seta */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    padding-right: 30px;
+    /* Espaço para a setinha */
 }
 
 .status-disponivel {
@@ -2014,6 +2196,496 @@ body.consulta-page {
     color: #888;
     font-weight: 700;
     padding: 0 5px;
+}
+
+/* Zera a aparência padrão do navegador para o select na col-status */
+.col-status select.status-badge {
+    appearance: none;
+    /* Remove a seta padrão do Windows/Chrome */
+    -webkit-appearance: none;
+    /* Remove a seta padrão do Safari/Chrome Mac */
+    -moz-appearance: none;
+    /* Remove a seta padrão do Firefox */
+
+    border: none;
+    /* Remove a borda padrão */
+    outline: none;
+    /* Remove o contorno ao clicar */
+
+    font-family: inherit;
+    /* Herda a fonte da página */
+    font-size: 14px;
+    /* Ajuste o tamanho conforme necessário */
+    font-weight: bold;
+    /* Mantém o negrito */
+
+    text-align: center;
+    /* Centraliza o texto */
+    cursor: pointer;
+    /* Mostra a mãozinha */
+
+    /* Garante o formato de pílula arredondada */
+    padding: 8px 15px;
+    /* Espaçamento interno */
+    border-radius: 20px;
+    /* Cantos bem arredondados */
+
+    display: inline-flex;
+    /* Mantém o comportamento de bloco em linha */
+    align-items: center;
+    justify-content: center;
+
+    /* Mantém o tamanho consistente */
+    min-width: 120px;
+    width: auto;
+}
+
+/* Garante que as cores de fundo definidas pelas suas classes funcionem */
+.col-status select.status-disponivel {
+    background-color: #C8E6C9;
+    /* Exemplo de verde */
+    color: #2E7D32;
+}
+
+.col-status select.status-tratamento {
+    background-color: #FFF9C4;
+    /* Exemplo de amarelo */
+    color: #FBC02D;
+}
+
+.col-status select.status-processo {
+    background-color: #FFE0B2;
+    /* Exemplo de laranja */
+    color: #E65100;
+}
+
+.col-status select.status-adotado {
+    background-color: #E1BEE7;
+    /* Exemplo de roxo */
+    color: #7B1FA2;
+}
+
+/* =========================================
+           CSS ESPECÍFICO DA TELA DE CONFIGURAÇÃO
+           ========================================= */
+body.config-page {
+    background-color: var(--color-secondary);
+    /* Fundo creme do seu projeto */
+    margin: 0;
+    padding: 0;
+}
+
+/* Topbar Laranja com Logo */
+.config-header-bar {
+    background-color: #F89E19;
+    /* Laranja da paleta */
+    padding: 10px 40px;
+    /* Mais espaço nas laterais */
+    display: flex;
+    justify-content: space-between;
+    /* Afasta os itens para as pontas */
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    /* Necessário para centralizar a logo */
+    color: #ffffff;
+    /* Texto branco para dar contraste no laranja */
+}
+
+/* Centraliza a logo de forma absoluta no meio da barra */
+.navbar-logo-link {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.config-header-bar img {
+    height: 65px;
+}
+
+.navbar-logo-link img {
+    height: 45px;
+    display: block;
+}
+
+/* Container Principal */
+.config-main-container {
+    width: 90%;
+    max-width: 1300px;
+    margin: 40px auto;
+}
+
+/* Linha de Título */
+.config-title-section {
+    border-bottom: 2px solid #006666;
+    /* Linha verde escuro */
+    padding-bottom: 15px;
+    margin-bottom: 40px;
+}
+
+.config-title-section h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #34210a;
+    /* Cor de texto escura padrão */
+    margin: 0;
+}
+
+/* Estrutura de Colunas */
+.config-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+/* --- Elementos da Esquerda (Calendário) --- */
+.navbar-calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.navbar-calendar .day {
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.navbar-calendar .month {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* --- Elementos da Direita (Perfil) --- */
+.navbar-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar-profile .profile-name {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* Círculo da foto - com uma bordinha branca para destacar */
+.navbar-profile .profile-photo-space {
+    width: 45px;
+    height: 45px;
+    background-color: rgba(255, 255, 255, 0.3);
+    /* Fundo sutil */
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+}
+
+/* ===== SIDEBAR ESQUERDA ===== */
+.config-sidebar {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 30px 20px;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+
+.sidebar-item {
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Botão Ativo (Verde) */
+.sidebar-item.active {
+    background-color: #006666;
+    color: white;
+    border-radius: 10px;
+}
+
+/* Item normal com linha abaixo */
+.sidebar-item.normal {
+    color: #34210a;
+    border-bottom: 1px solid #EAEAEA;
+    padding-bottom: 20px;
+}
+
+.sidebar-item.normal:hover {
+    color: #00A89D;
+}
+
+/* Botão Logout (Vermelho) */
+.sidebar-item.danger {
+    color: #ff6b6b;
+    padding-top: 5px;
+}
+
+.sidebar-item.danger:hover {
+    color: #ff4a4a;
+}
+
+/* ===== ÁREA DE CONTEÚDO (DIREITA) ===== */
+.config-content-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 50px;
+    flex: 1;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    min-height: 500px;
+}
+
+/* Foto de Perfil (Círculo Cinza) */
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    background-color: #d9d9d9;
+    border-radius: 50%;
+    margin-bottom: 50px;
+}
+
+/* Grade do Formulário */
+.config-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Duas colunas */
+    gap: 30px 50px;
+    /* Espaço vertical e horizontal */
+    max-width: 800px;
+}
+
+/* Campos de Input */
+.config-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.config-input-group label {
+    font-size: 13px;
+    font-weight: 800;
+    color: #34210a;
+}
+
+.config-input-group input {
+    border: 1px solid #00A89D;
+    /* Borda verde clara */
+    border-radius: 30px;
+    /* Bordas bem arredondadas como na imagem */
+    padding: 14px 20px;
+    font-size: 14px;
+    outline: none;
+    color: #333;
+    background-color: #fff;
+    transition: box-shadow 0.3s;
+}
+
+.config-input-group input:focus {
+    box-shadow: 0 0 0 3px rgba(0, 168, 157, 0.15);
+}
+
+/* =========================================
+   AUMIGOS - BOTÃO VOLTAR (CONFIG)
+   ========================================= */
+/* Estrutura de Colunas */
+.config-layout {
+    display: flex;
+    gap: 40px;
+    align-items: stretch;
+    /* Faz com que as duas colunas tenham a mesma altura */
+}
+
+/* Nova coluna da esquerda */
+.config-left-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Empurra o botão voltar para o final */
+.config-back-container {
+    margin-top: auto;
+    /* A mágica acontece aqui: empurra pro limite inferior */
+    display: flex;
+    justify-content: flex-start;
+}
+
+.config-back-container {
+    margin-top: 20px;
+    /* Espaço entre o layout principal e o botão */
+    display: flex;
+    justify-content: flex-start;
+    /* Garante que fique na esquerda */
+}
+
+.config-btn-voltar {
+    background-color: #00A89D;
+    /* Verde principal */
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 12px 35px;
+    border-radius: 12px;
+    /* Cantos arredondados parecidos com a imagem */
+    box-shadow: 0 4px 10px rgba(0, 168, 157, 0.2);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.config-btn-voltar:hover {
+    background-color: #008a80;
+    transform: translateY(-2px);
+}
+
+.config-btn-voltar:active {
+    transform: scale(0.98);
+}
+
+/* ============================================
+   AUMIGOS - FOOTER
+   ============================================ */
+
+.site-footer {
+    background-color: var(--color-secondary, #FCF9F2);
+    /* Fundo creme da página */
+    padding-top: 60px;
+    /* Espaço em cima da logo */
+    position: relative;
+    /* Atenção: NÃO use overflow: hidden aqui, senão corta a cabeça do cachorro! */
+}
+
+.footer-logo-container {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.footer-logo {
+    height: 120px;
+    /* Ajuste o tamanho da logo laranja aqui */
+    object-fit: contain;
+}
+
+.footer-main {
+    background-color: #0E6B65;
+    /* O verde escuro do seu projeto */
+    border-radius: 60px 60px 0 0;
+    /* Arredonda as duas pontas superiores */
+    padding: 70px 0 60px 0;
+    position: relative;
+    /* Transforma a caixa em âncora para o cachorro */
+    margin-top: 30px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.footer-links-wrapper {
+    display: flex;
+    gap: 120px;
+    /* Distância entre as 3 colunas */
+    padding-left: 40px;
+}
+
+.footer-col h4 {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footer-col a {
+    color: rgba(255, 255, 255, 0.85);
+    /* Texto branco ligeiramente transparente */
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.footer-col a:hover {
+    color: #ffffff;
+    /* Fica totalmente branco ao passar o mouse */
+    padding-left: 5px;
+    /* Leve empurrão para a direita (efeito de hover) */
+}
+
+/* ============================================
+   TRUQUE DO CACHORRO FLUTUANTE
+   ============================================ */
+.footer-dog {
+    position: absolute;
+    bottom: -60px;
+    /* Cola a base da imagem no chão da caixa verde */
+    right: 5%;
+    /* Afasta um pouco da borda direita da tela */
+    z-index: 10;
+    pointer-events: none;
+    /* Garante que a imagem não atrapalhe os cliques nos links */
+}
+
+.footer-dog img {
+    height: 450px;
+    /* Ajuste a altura do cachorro aqui para ele vazar para fora da caixa na medida certa */
+    display: block;
+}
+
+/* ============================================
+   RESPONSIVIDADE DO FOOTER (CELULAR E TABLET)
+   ============================================ */
+@media (max-width: 900px) {
+    .footer-links-wrapper {
+        gap: 60px;
+        /* Reduz espaço entre colunas no tablet */
+    }
+
+    .footer-dog img {
+        height: 280px;
+        /* Diminui o cachorro em telas menores */
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-links-wrapper {
+        flex-direction: column;
+        /* Empilha as colunas no celular */
+        gap: 40px;
+        padding-left: 10px;
+        margin-bottom: 40px;
+        /* Espaço para o cachorro não cobrir os links */
+    }
+
+    .footer-main {
+        border-radius: 40px 40px 0 0;
+        padding: 50px 0 40px 0;
+    }
+
+    .footer-dog {
+        right: -20px;
+        /* Esconde um pedaço do cachorro pra fora da tela no celular */
+    }
+
+    .footer-dog img {
+        height: 220px;
+    }
 }
 
 /* ======================================
@@ -2199,5 +2871,32 @@ body.consulta-page {
 
     .search-box {
         width: 200px;
+    }
+
+}
+
+/* Responsividade Básica */
+@media (max-width: 850px) {
+    .config-layout {
+        flex-direction: column;
+    }
+
+    .config-sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 20px;
+    }
+
+    .sidebar-item.normal {
+        border-bottom: none;
+        border-right: 1px solid #EAEAEA;
+        padding-bottom: 12px;
+        padding-right: 20px;
+    }
+
+    .config-form-grid {
+        grid-template-columns: 1fr;
+        /* Uma coluna no mobile */
     }
 }
