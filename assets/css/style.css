@@ -316,7 +316,6 @@ body {
 .equipe-header {
     text-align: center;
     margin: 0 auto 56px;
-
 }
 
 .equipe-badge {
@@ -351,42 +350,66 @@ body {
 
 .equipe-grid {
     list-style: none;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px 60px;
+    display: flex; /* Mudamos de grid para flex */
+    flex-direction: column; /* Um embaixo do outro */
+    gap: 60px; /* Espaço maior entre as linhas */
     padding: 0;
-    margin: 0;
+    margin: 0 auto;
+    max-width: 1000px; /* Limita a largura para não ficar muito esticado */
 }
 
+/* 2. Padrão: Imagem na Esquerda, Texto Alinhado à Esquerda (Ímpares: 1, 3, 5) */
 .equipe-card {
     display: flex;
-    align-items: flex-start;
-    gap: 20px;
+    align-items: center; /* Centraliza a foto e o texto verticalmente */
+    gap: 30px;
+    width: 100%;
 }
 
+/* 3. A Mágica do Zigue-Zague: Inverte os membros Pares (2 e 4) */
+.equipe-card:nth-child(even) {
+    flex-direction: row-reverse; /* Inverte a ordem (Foto vai pra direita) */
+    text-align: right; /* Alinha o texto para a direita */
+}
+
+/* Garante que o conteúdo do texto acompanhe o alinhamento na direita nos pares */
+.equipe-card:nth-child(even) .equipe-card-info {
+    align-items: flex-end; /* Empurra os itens do flexbox (H3, Badge, P) para a direita */
+}
+
+/* Ajusta o texto justificado que você tinha antes para combinar com o novo layout */
+.equipe-card-info p {
+    font-size: 16px;
+    color: #5a4030;
+    line-height: 1.7;
+    text-align: left; /* Padrão (Ímpares) */
+    margin-top: 4px;
+}
+
+/* Texto à direita nos pares */
+.equipe-card:nth-child(even) .equipe-card-info p {
+    text-align: right; 
+}
+
+
+/* ====================================
+   FOTOS DA EQUIPE (500x500 PNGs)
+   ==================================== */
 .equipe-card-foto {
     flex-shrink: 0;
-    width: 150px;  /* Tamanho menor para a foto não dominar o texto */
-    height: 150px; /* Quadrado perfeito (500x500 proporcional) */
-    border-radius: 20px; /* Bordas arredondadas */
+    width: 160px; /* Tamanho da foto */
+    height: 160px;
+    border-radius: 20px; /* Cantos arredondados (ou 50% para círculo) */
     overflow: hidden;
     background: #d9d5cf;
-    border: 1px solid #5a3e28;
+    border: 2px solid #5a3e28;
 }
 
 .equipe-card-foto img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center center; /* Centraliza a foto de vocês */
-}
-
-.foto-1 img {
-    object-position: center right;
-}
-
-.foto-2 img {
-    object-position: center right;
+    object-position: center; /* Centraliza suas fotos redondas */
 }
 
 .equipe-card-info {
@@ -394,43 +417,43 @@ body {
     flex-direction: column;
     gap: 6px;
     padding-top: 8px;
+    flex: 1; /* Faz o texto ocupar o espaço restante */
 }
 
-.equipe-card-info h3 {
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: #3b2412;
-}
+/* ... (Mantenha h3 e cargo como estão) ... */
 
-.equipe-cargo {
-    font-size: 12px;
-    font-weight: 300;
-    color: #5a3e28;
-    line-height: 1.4;
-    font-weight: 20;
-}
 
-.equipe-card-info p {
-    font-size: 16px;
-    color: #5a4030;
-    line-height: 1.7;
-    text-align: justify;
-    margin-top: 4px;
-}
-
+/* ====================================
+   RESPONSIVIDADE (Celular)
+   ==================================== */
 @media (max-width: 768px) {
+    .equipe {
+        padding: 40px 20px; /* Reduz o padding gigante nas laterais */
+    }
+
     .equipe-title {
         font-size: 36px;
     }
 
-    .equipe-grid {
-        grid-template-columns: 1fr;
-        gap: 32px;
+    /* No celular, quebra o zigue-zague e coloca tudo um embaixo do outro (Foto, depois Texto) */
+    .equipe-card, 
+    .equipe-card:nth-child(even) {
+        flex-direction: column;
+        align-items: center; /* Tudo centralizado */
+        text-align: center;
+        gap: 20px;
+    }
+
+    .equipe-card-info,
+    .equipe-card:nth-child(even) .equipe-card-info {
+        align-items: center;
+    }
+
+    .equipe-card-info p,
+    .equipe-card:nth-child(even) .equipe-card-info p {
+        text-align: center;
     }
 }
-
 /* ===== DEPOIMENTOS ===== */
 
 .depoimentos {
