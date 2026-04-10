@@ -6,189 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuMigos - Consulta de Animais</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/script.js" defer></script>
 </head>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        
-        // ===== ELEMENTOS DA NAVBAR =====
-        const navbar = document.getElementById('floatingNavbar');
-        const menuToggle = document.getElementById('menuToggle'); 
-        const mainDropdown = document.getElementById('mainDropdown'); 
-        
-        // ===== ELEMENTOS DO PERFIL =====
-        const profileToggle = document.getElementById('profileToggle'); 
-        const profileDropdown = document.getElementById('profileDropdown'); 
-
-        // ==========================================
-        // LÓGICA DOS MENUS DROPDOWN (INTELIGENTE)
-        // ==========================================
-        
-        // --- AÇÃO: Clicou no Menu Principal (Esquerda) ---
-        if (menuToggle && navbar) {
-            menuToggle.addEventListener('click', function (event) {
-                navbar.classList.toggle('menu-open');
-                
-                // Se abrir este, fecha o perfil (direita)
-                if (profileDropdown) {
-                    profileDropdown.classList.remove('profile-open');
-                    navbar.classList.remove('profile-open'); 
-                }
-                event.stopPropagation();
-            });
-        }
-
-        // --- AÇÃO: Clicou no Menu de Perfil (Direita) ---
-        if (profileToggle && profileDropdown) {
-            profileToggle.addEventListener('click', function (event) {
-                profileDropdown.classList.toggle('profile-open');
-                
-                if (navbar) {
-                    navbar.classList.toggle('profile-open'); // Tira arredondamento
-                    navbar.classList.remove('menu-open'); // Fecha o esquerdo
-                }
-                event.stopPropagation();
-            });
-        }
-
-        // --- AÇÃO: Clicou fora de qualquer menu ---
-        document.addEventListener('click', function (event) {
-            
-            // Fecha o Principal
-            if (navbar && !menuToggle.contains(event.target) && navbar.classList.contains('menu-open')) {
-                navbar.classList.remove('menu-open');
-            }
-            
-            // Fecha o Perfil
-            if (profileToggle && !profileToggle.contains(event.target) && profileDropdown.classList.contains('profile-open')) {
-                profileDropdown.classList.remove('profile-open');
-                if (navbar) navbar.classList.remove('profile-open');
-            }
-        });
-
-
-        // ==========================================
-        // LÓGICA DE RENDERIZAÇÃO DOS ANIMAIS 
-        // ==========================================
-       const listaContainer = document.querySelector('.consulta-list');
-        const dados = JSON.parse(localStorage.getItem('aumigos_dados') || '[]');
-        
-        // Configurações da Paginação
-        const itensPorPagina = 8; // Quantos animais aparecem por tela
-        let paginaAtual = 1;
-
-        // Função principal para desenhar a lista na tela
-        function renderizarLista(pagina) {
-            // Primeiro, apaga tudo que não for o cabeçalho (para não duplicar)
-            const rowsAntigas = listaContainer.querySelectorAll('.list-row');
-            rowsAntigas.forEach(row => row.remove());
-
-            // Calcula quais itens mostrar
-            const inicio = (pagina - 1) * itensPorPagina;
-            const fim = inicio + itensPorPagina;
-            const itensDaPagina = dados.slice(inicio, fim);
-
-            // Cria cada linha da tabela
-            itensDaPagina.forEach(animal => {
-                const row = document.createElement('div');
-                row.className = 'list-row grid-layout';
-                row.innerHTML = `
-                    <div class="col-checkbox"><input type="checkbox" class="custom-checkbox animal-check"></div>
-                    <div class="col-id font-bold">${animal.id}</div>
-                    <div class="col-nome">
-                        <div class="animal-photo"></div>
-                        <span class="font-bold">${animal.nome}</span>
-                    </div>
-                    <div class="col-perfil font-bold">${animal.especie}<br>${animal.raca}</div>
-                    <div class="col-caracteristicas font-bold">${animal.genero}</div>
-                    <div class="col-entrada font-bold">${animal.entrada}</div>
-                    <div class="col-status">
-                        <select class="status-badge status-${animal.status}" data-id="${animal.id}" onchange="atualizarCorStatus(this)">
-                            <option value="disponivel" ${animal.status === 'disponivel' ? 'selected' : ''}>Disponível</option>
-                            <option value="tratamento" ${animal.status === 'tratamento' ? 'selected' : ''}>Em tratamento</option>
-                            <option value="processo" ${animal.status === 'processo' ? 'selected' : ''}>Processo</option>
-                            <option value="adotado" ${animal.status === 'adotado' ? 'selected' : ''}>Adotado</option>
-                        </select>
-                    </div>
-                `;
-                listaContainer.appendChild(row);
-            });
-            
-            atualizarBotoesPaginacao();
-        }
-
-        // Função para atualizar os botões de página (1, 2, 3...)
-        function atualizarBotoesPaginacao() {
-            const totalPaginas = Math.ceil(dados.length / itensPorPagina);
-            const containerPaginacao = document.querySelector('.pagination');
-            
-            if (!containerPaginacao) return; // Se não houver paginação no HTML, ignora
-            
-            containerPaginacao.innerHTML = ''; // Limpa botões antigos
-
-            // Se não tem dados, não mostra paginação
-            if(totalPaginas === 0) return;
-
-            // Botão Anterior
-            const btnPrev = document.createElement('button');
-            btnPrev.className = 'page-btn';
-            btnPrev.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>`;
-            btnPrev.disabled = paginaAtual === 1;
-            btnPrev.onclick = () => { paginaAtual--; renderizarLista(paginaAtual); };
-            containerPaginacao.appendChild(btnPrev);
-
-            // Números das páginas
-            for (let i = 1; i <= totalPaginas; i++) {
-                const btnNum = document.createElement('button');
-                btnNum.className = `page-btn ${i === paginaAtual ? 'active' : ''}`;
-                btnNum.textContent = i;
-                btnNum.onclick = () => { paginaAtual = i; renderizarLista(paginaAtual); };
-                containerPaginacao.appendChild(btnNum);
-            }
-
-            // Botão Próximo
-            const btnNext = document.createElement('button');
-            btnNext.className = 'page-btn';
-            btnNext.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>`;
-            btnNext.disabled = paginaAtual === totalPaginas;
-            btnNext.onclick = () => { paginaAtual++; renderizarLista(paginaAtual); };
-            containerPaginacao.appendChild(btnNext);
-        }
-
-        // Chama a renderização pela primeira vez ao carregar a página
-        renderizarLista(paginaAtual);
-
-        // ===== LÓGICA DA CHECKBOX SELECIONAR TODOS =====
-        const checkMaster = document.querySelector('.list-header .custom-checkbox');
-        if (checkMaster) {
-            checkMaster.addEventListener('change', function () {
-                const todosChecks = document.querySelectorAll('.animal-check');
-                todosChecks.forEach(cb => {
-                    cb.checked = checkMaster.checked;
-                });
-            });
-        }
-    });
-
-    // Função global do Status (fora do DOMContentLoaded)
-    function atualizarCorStatus(selectElement) {
-        const animalId = selectElement.getAttribute('data-id');
-        const novoStatus = selectElement.value;
-
-        selectElement.classList.remove('status-disponivel', 'status-tratamento', 'status-processo', 'status-adotado');
-        selectElement.classList.add('status-' + novoStatus);
-
-        let listaAnimais = JSON.parse(localStorage.getItem('aumigos_dados') || '[]');
-        listaAnimais = listaAnimais.map(animal => {
-            if (animal.id == animalId) {
-                return { ...animal, status: novoStatus };
-            }
-            return animal;
-        });
-
-        localStorage.setItem('aumigos_dados', JSON.stringify(listaAnimais));
-    }
-</script>
 
 <body class="consulta-page">
 
@@ -230,9 +49,9 @@
 
         <div class="dropdown-menu" id="mainDropdown">
             <ul class="menu-list">
-                <li><a href="tela_inicial.html">Tela inicial</a></li>
-                <li><a href="registroanimal.html">Registro de Animais</a></li>
-                <li><a href="consultaanimal.html">Consulta de Animais</a></li>
+                <li><a href="tela-inicial-ongs.html">Tela inicial</a></li>
+                <li><a href="registro-animal.html">Registro de Animais</a></li>
+                <li><a href="consulta-animal.html">Consulta de Animais</a></li>
             </ul>
         </div>
     </nav>
@@ -241,8 +60,11 @@
         <h1 class="consulta-title">Consulta de Animais</h1>
 
         <div class="consulta-toolbar">
-            <a href="registroanimal.html" class="btn-adicionar"
-                style="text-decoration: none; display: inline-block; text-align: center;">Adicionar</a>
+            <div class="toolbar-btns">
+                <a href="registro-animal.html" class="btn-adicionar">Adicionar</a>
+                <button class="btn-editar" id="btnEditar" disabled>Editar</button>
+                <button class="btn-excluir" id="btnExcluir" disabled>Excluir</button>
+            </div>
 
             <div class="toolbar-actions">
                 <button class="btn-icon">

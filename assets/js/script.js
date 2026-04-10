@@ -216,20 +216,190 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ===== LÓGICA DE PERSISTÊNCIA (LOCALSTORAGE) =====
+    // ===== CONSULTA ANIMAL - NAVBAR =====
+    const navbar = document.getElementById('floatingNavbar');
+    const menuToggle = document.getElementById('menuToggle');
+    const profileToggle = document.getElementById('profileToggle');
+    const profileDropdown = document.getElementById('profileDropdown');
 
-    // Função para salvar um animal
-    function salvarAnimal(animal) {
-        const animais = JSON.parse(localStorage.getItem('aumigos_animais') || '[]');
-        animais.push(animal);
-        localStorage.setItem('aumigos_animais', JSON.stringify(animais));
+    if (menuToggle && navbar) {
+        menuToggle.addEventListener('click', function (event) {
+            navbar.classList.toggle('menu-open');
+            if (profileDropdown) {
+                profileDropdown.classList.remove('profile-open');
+                navbar.classList.remove('profile-open');
+            }
+            event.stopPropagation();
+        });
     }
 
-    // Função para formatar a data para o padrão brasileiro
-    function formatarData(data) {
-        if (!data) return "N/A";
-        const [ano, mes, dia] = data.split('-');
-        return `${dia}/${mes}/${ano}`;
+    if (profileToggle && profileDropdown) {
+        profileToggle.addEventListener('click', function (event) {
+            profileDropdown.classList.toggle('profile-open');
+            if (navbar) {
+                navbar.classList.toggle('profile-open');
+                navbar.classList.remove('menu-open');
+            }
+            event.stopPropagation();
+        });
+    }
+
+    document.addEventListener('click', function (event) {
+        if (navbar && menuToggle && !menuToggle.contains(event.target) && navbar.classList.contains('menu-open')) {
+            navbar.classList.remove('menu-open');
+        }
+        if (profileToggle && !profileToggle.contains(event.target) && profileDropdown && profileDropdown.classList.contains('profile-open')) {
+            profileDropdown.classList.remove('profile-open');
+            if (navbar) navbar.classList.remove('profile-open');
+        }
+    });
+
+    // ===== CONSULTA ANIMAL - RENDERIZAÇÃO DA LISTA =====
+    const listaContainer = document.querySelector('.consulta-list');
+    if (listaContainer) {
+        const itensPorPagina = 8;
+        let paginaAtual = 1;
+        let dados = [];
+
+        function renderizarLista(pagina) {
+            listaContainer.querySelectorAll('.list-row').forEach(row => row.remove());
+
+            const inicio = (pagina - 1) * itensPorPagina;
+            const itensDaPagina = dados.slice(inicio, inicio + itensPorPagina);
+
+            itensDaPagina.forEach(animal => {
+                const id = animal.id_animal;
+                const entrada = animal.data_entrada || '---';
+                const status = animal.status || 'disponivel';
+                const row = document.createElement('div');
+                row.className = 'list-row grid-layout';
+                row.innerHTML = `
+                    <div class="col-checkbox"><input type="checkbox" class="custom-checkbox animal-check" data-id="${id}"></div>
+                    <div class="col-id font-bold">${id}</div>
+                    <div class="col-nome">
+                        <div class="animal-photo"></div>
+                        <span class="font-bold">${animal.nome}</span>
+                    </div>
+                    <div class="col-perfil font-bold">${animal.especie}<br>${animal.raca}</div>
+                    <div class="col-caracteristicas font-bold">${animal.genero}</div>
+                    <div class="col-entrada font-bold">${entrada}</div>
+                    <div class="col-status">
+                        <select class="status-badge status-${status}" data-id="${id}" onchange="atualizarCorStatus(this)">
+                            <option value="disponivel" ${status === 'disponivel' ? 'selected' : ''}>Disponível</option>
+                            <option value="tratamento" ${status === 'tratamento' ? 'selected' : ''}>Em tratamento</option>
+                            <option value="processo" ${status === 'processo' ? 'selected' : ''}>Processo</option>
+                            <option value="adotado" ${status === 'adotado' ? 'selected' : ''}>Adotado</option>
+                        </select>
+                    </div>
+                `;
+                listaContainer.appendChild(row);
+            });
+
+            atualizarBotoesPaginacao();
+        }
+
+        function atualizarBotoesPaginacao() {
+            const totalPaginas = Math.ceil(dados.length / itensPorPagina);
+            const containerPaginacao = document.querySelector('.pagination');
+            if (!containerPaginacao) return;
+
+            containerPaginacao.innerHTML = '';
+            if (totalPaginas === 0) return;
+
+            const btnPrev = document.createElement('button');
+            btnPrev.className = 'page-btn';
+            btnPrev.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>`;
+            btnPrev.disabled = paginaAtual === 1;
+            btnPrev.onclick = () => { paginaAtual--; renderizarLista(paginaAtual); };
+            containerPaginacao.appendChild(btnPrev);
+
+            for (let i = 1; i <= totalPaginas; i++) {
+                const btnNum = document.createElement('button');
+                btnNum.className = `page-btn ${i === paginaAtual ? 'active' : ''}`;
+                btnNum.textContent = i;
+                btnNum.onclick = () => { paginaAtual = i; renderizarLista(paginaAtual); };
+                containerPaginacao.appendChild(btnNum);
+            }
+
+            const btnNext = document.createElement('button');
+            btnNext.className = 'page-btn';
+            btnNext.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>`;
+            btnNext.disabled = paginaAtual === totalPaginas;
+            btnNext.onclick = () => { paginaAtual++; renderizarLista(paginaAtual); };
+            containerPaginacao.appendChild(btnNext);
+        }
+
+        // Carrega animais do banco
+        fetch('../actions/animal.php?action=listar')
+            .then(r => r.json())
+            .then(lista => { dados = lista; renderizarLista(paginaAtual); })
+            .catch(() => console.error('Erro ao carregar animais'));
+
+        const btnEditar = document.getElementById('btnEditar');
+        const btnExcluir = document.getElementById('btnExcluir');
+
+        function atualizarBotoesAcao() {
+            const total = document.querySelectorAll('.animal-check:checked').length;
+            if (btnEditar) btnEditar.disabled = total !== 1;
+            if (btnExcluir) btnExcluir.disabled = total === 0;
+        }
+
+        listaContainer.addEventListener('change', function (e) {
+            if (e.target.classList.contains('animal-check')) atualizarBotoesAcao();
+        });
+
+        const checkMaster = document.querySelector('.list-header .custom-checkbox');
+        if (checkMaster) {
+            checkMaster.addEventListener('change', function () {
+                document.querySelectorAll('.animal-check').forEach(cb => cb.checked = checkMaster.checked);
+                atualizarBotoesAcao();
+            });
+        }
+
+        if (btnExcluir) {
+            btnExcluir.addEventListener('click', function () {
+                const selecionados = [...document.querySelectorAll('.animal-check:checked')];
+                const ids = selecionados.map(cb => Number(cb.dataset.id));
+                if (!confirm(`Excluir ${ids.length} animal(is)?`)) return;
+
+                fetch('../actions/animal.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'excluir', ids })
+                })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.erro) { alert('Erro ao excluir: ' + res.erro); return; }
+                    dados = dados.filter(a => !ids.includes(a.id_animal));
+                    paginaAtual = 1;
+                    renderizarLista(paginaAtual);
+                    atualizarBotoesAcao();
+                })
+                .catch(() => alert('Erro ao conectar com o servidor.'));
+            });
+        }
+
+        if (btnEditar) {
+            btnEditar.addEventListener('click', function () {
+                const id = document.querySelector('.animal-check:checked').dataset.id;
+                window.location.href = `registro-animal.html?id=${id}`;
+            });
+        }
     }
 
 });
+
+// ===== CONSULTA ANIMAL - ATUALIZAR STATUS (global) =====
+function atualizarCorStatus(selectElement) {
+    const animalId = selectElement.getAttribute('data-id');
+    const novoStatus = selectElement.value;
+
+    selectElement.classList.remove('status-disponivel', 'status-tratamento', 'status-processo', 'status-adotado');
+    selectElement.classList.add('status-' + novoStatus);
+
+    fetch('../actions/animal.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'status', id: animalId, status: novoStatus })
+    });
+}

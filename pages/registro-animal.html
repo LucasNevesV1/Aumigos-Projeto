@@ -11,7 +11,7 @@
 <body class="registro-page">
 
     <div class="modal-container">
-        <button class="btn-close" title="Fechar" onclick="window.location.href='consultaanimal.html'">&times;</button>
+        <button class="btn-close" title="Fechar" onclick="window.location.href='consulta-animal.html'">&times;</button>
 
         <div class="form-content">
             <h2>Registro de Animal</h2>
@@ -23,7 +23,7 @@
                     <div class="form-grid">
                         <div class="input-group">
                             <label>Nome</label>
-                            <input type="text" placeholder="">
+                            <input type="text" id="campo-nome" placeholder="">
                         </div>
 
                         <div class="input-group" style="justify-content: flex-end; padding-bottom: 5px;">
@@ -35,7 +35,7 @@
 
                         <div class="input-group">
                             <label>Espécie</label>
-                            <select>
+                            <select id="campo-especie">
                                 <option value=""></option>
                                 <option value="cachorro">Cachorro</option>
                                 <option value="gato">Gato</option>
@@ -44,30 +44,30 @@
 
                         <div class="input-group">
                             <label>Data de Nascimento</label>
-                            <input type="date">
+                            <input type="date" id="campo-nascimento">
                         </div>
 
                         <div class="input-group">
                             <label>Raça</label>
-                            <input type="text">
+                            <input type="text" id="campo-raca">
                         </div>
 
                         <div class="input-group">
                             <label>Cor</label>
-                            <input type="text">
+                            <input type="text" id="campo-cor">
                         </div>
 
                         <div class="input-group">
                             <label>Gênero</label>
                             <div class="gender-toggle">
-                                <button type="button" class="active">Fêmea</button>
-                                <button type="button">Macho</button>
+                                <button type="button" id="btn-femea" class="active">Fêmea</button>
+                                <button type="button" id="btn-macho">Macho</button>
                             </div>
                         </div>
 
                         <div class="input-group">
                             <label>Porte/Tamanho</label>
-                            <select>
+                            <select id="campo-porte">
                                 <option value=""></option>
                                 <option value="pequeno">Pequeno</option>
                                 <option value="medio">Médio</option>
@@ -83,12 +83,12 @@
                     <div class="form-grid">
                         <div class="input-group full-width" style="max-width: 48%;">
                             <label>Data de Entrada</label>
-                            <input type="date">
+                            <input type="date" id="campo-entrada">
                         </div>
 
                         <div class="input-group">
                             <label>Motivo da Entrada</label>
-                            <select>
+                            <select id="campo-motivo">
                                 <option value=""></option>
                                 <option value="resgate">Resgate</option>
                                 <option value="abandono">Abandono</option>
@@ -98,7 +98,7 @@
 
                         <div class="input-group">
                             <label>Status de Saúde</label>
-                            <select>
+                            <select id="campo-saude">
                                 <option value=""></option>
                                 <option value="saudavel">Saudável</option>
                                 <option value="em_tratamento">Em Tratamento</option>
@@ -108,7 +108,7 @@
 
                         <div class="input-group full-width">
                             <label>Descrição/Observações:</label>
-                            <textarea></textarea>
+                            <textarea id="campo-descricao"></textarea>
                         </div>
                     </div>
                 </div>
@@ -125,6 +125,34 @@
         const modalFooter = document.getElementById('modalFooter');
         const registroForm = document.getElementById('registroAnimalForm');
 
+        // Verifica se é modo edição
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get('id');
+        let animalEditando = null;
+
+        if (editId) {
+            document.querySelector('h2').textContent = 'Editar Animal';
+            fetch(`../actions/animal.php?action=listar`)
+                .then(r => r.json())
+                .then(lista => {
+                    animalEditando = lista.find(a => String(a.id_animal) === editId);
+                    if (!animalEditando) return;
+
+                    document.getElementById('campo-nome').value = animalEditando.nome || '';
+                    document.getElementById('campo-especie').value = animalEditando.especie || '';
+                    document.getElementById('campo-raca').value = animalEditando.raca || '';
+                    document.getElementById('campo-nascimento').value = animalEditando.dataNascimento || '';
+                    document.getElementById('campo-cor').value = animalEditando.cor || '';
+                    document.getElementById('campo-porte').value = animalEditando.tamanho || '';
+                    document.getElementById('campo-descricao').value = animalEditando.descricao || '';
+
+                    if (animalEditando.genero === 'Macho') {
+                        document.getElementById('btn-femea').classList.remove('active');
+                        document.getElementById('btn-macho').classList.add('active');
+                    }
+                });
+        }
+
         function showStep(stepNumber) {
             if (stepNumber === 1) {
                 step1.classList.add('active');
@@ -133,15 +161,13 @@
             } else if (stepNumber === 2) {
                 step1.classList.remove('active');
                 step2.classList.add('active');
-                // IMPORTANTE: O botão finalizar deve estar vinculado ao formulário
                 modalFooter.innerHTML = `
-                <button type="button" class="btn btn-secondary" onclick="showStep(1)">Voltar</button>
-                <button type="submit" form="registroAnimalForm" class="btn btn-primary">Finalizar</button>
-            `;
+                    <button type="button" class="btn btn-secondary" onclick="showStep(1)">Voltar</button>
+                    <button type="submit" form="registroAnimalForm" class="btn btn-primary">${editId ? 'Salvar' : 'Finalizar'}</button>
+                `;
             }
         }
 
-        // Lógica do Toggle de Gênero
         document.addEventListener('click', function (e) {
             if (e.target.parentElement && e.target.parentElement.classList.contains('gender-toggle')) {
                 const buttons = e.target.parentElement.querySelectorAll('button');
@@ -150,37 +176,36 @@
             }
         });
 
-        registroForm.addEventListener('submit', function (e) {
-            e.preventDefault(); // Impede o recarregamento da página
+        registroForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
 
             try {
-                // Captura os valores de forma mais segura
-                const nomeInput = step1.querySelector('input[type="text"]');
-                const especieSelect = step1.querySelector('select');
-                const racaInput = step1.querySelectorAll('input[type="text"]')[1];
                 const generoAtivo = step1.querySelector('.gender-toggle button.active');
-                const dataEntrada = step2.querySelector('input[type="date"]');
 
-                const novoAnimal = {
-                    id: Math.floor(100000 + Math.random() * 900000),
-                    nome: nomeInput ? nomeInput.value : "Sem nome",
-                    especie: especieSelect ? especieSelect.value : "Não informada",
-                    raca: racaInput ? racaInput.value : "SRD",
-                    genero: generoAtivo ? generoAtivo.innerText : "Fêmea",
-                    entrada: dataEntrada ? dataEntrada.value : "---",
-                    status: "disponivel"
+                const dadosAnimal = {
+                    action: editId ? 'editar' : 'criar',
+                    id: editId ? Number(editId) : undefined,
+                    nome: document.getElementById('campo-nome').value || 'Sem nome',
+                    especie: document.getElementById('campo-especie').value || '',
+                    raca: document.getElementById('campo-raca').value || '',
+                    genero: generoAtivo ? generoAtivo.innerText : 'Fêmea',
+                    data_nascimento: document.getElementById('campo-nascimento').value || '',
+                    cor: document.getElementById('campo-cor').value || '',
+                    porte: document.getElementById('campo-porte').value || '',
+                    descricao: document.getElementById('campo-descricao').value || ''
                 };
 
-                // Salva no localStorage
-                const listaAtual = JSON.parse(localStorage.getItem('aumigos_dados') || '[]');
-                listaAtual.push(novoAnimal);
-                localStorage.setItem('aumigos_dados', JSON.stringify(listaAtual));
+                const resposta = await fetch('../actions/animal.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosAnimal)
+                });
+                const resultado = await resposta.json();
 
-                // CONFIRMAÇÃO
-                alert('🐾 Sucesso! Animal registrado no sistema.');
+                if (resultado.erro) throw new Error(resultado.erro);
 
-                // REDIRECIONAMENTO
-                window.location.href = 'consultaanimal.html';
+                alert(editId ? 'Animal atualizado com sucesso!' : '🐾 Sucesso! Animal registrado no sistema.');
+                window.location.href = 'consulta-animal.html';
             } catch (error) {
                 console.error("Erro ao salvar:", error);
                 alert("Ocorreu um erro ao salvar o animal.");
