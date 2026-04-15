@@ -382,7 +382,17 @@ body {
 }
 
 .foto-1 img {
-    object-position: center right;
+    object-position: center top;
+}
+
+.foto-2 img {
+    object-position: center 25%;
+    transform: scale(1.15);
+    transform-origin: center top;
+}
+
+.foto-liv img {
+    object-position: center 20%;
 }
 
 .equipe-card-info {
@@ -396,7 +406,6 @@ body {
     font-size: 16px;
     font-weight: 800;
     letter-spacing: 0.5px;
-    text-transform: uppercase;
     color: #3b2412;
 }
 
