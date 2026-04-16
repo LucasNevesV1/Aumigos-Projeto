@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -9,77 +9,128 @@
 </head>
 
 <body class="auth-page auth-page--cadastro">
-    <!-- Botão de Voltar -->
+
+    <!-- Botão Voltar -->
     <a href="login-usuario.html" class="back-button" title="Voltar para login">
         <img src="../assets/img/arrowback.png" alt="Voltar" class="back-button__icon">
     </a>
 
     <div class="auth-container">
         <div class="auth-card auth-card--cadastro">
-                <div class="auth-header">
-                    <img src="../assets/img/Prancheta 4.png" alt="AuMigos Logo" class="auth-logo">
+
+            <div class="auth-header">
+                <img src="../assets/img/Prancheta 4.png" alt="AuMigos Logo" class="auth-logo">
+            </div>
+
+            <form method="POST" action="../actions/cadastro.php" class="auth-form" autocomplete="on">
+
+                <select name="perfil" id="cadastro-perfil-select" required
+                    class="auth-input auth-input--filled auth-select">
+                    <option value="" disabled selected>Selecione seu Perfil</option>
+                    <option value="ong">ONG</option>
+                    <option value="apoiador">Apoiador</option>
+                </select>
+
+                <input
+                    type="text"
+                    name="nome"
+                    id="cadastro-nome-input"
+                    placeholder="Nome Completo"
+                    required
+                    autocomplete="name"
+                    class="auth-input auth-input--filled">
+
+                <input
+                    type="text"
+                    name="cpf_cnpj"
+                    id="cadastro-cpf-cnpj-input"
+                    placeholder="CPF / CNPJ"
+                    required
+                    autocomplete="off"
+                    class="auth-input auth-input--filled">
+
+                <input
+                    type="email"
+                    name="email"
+                    id="cadastro-email-input"
+                    placeholder="E-mail"
+                    required
+                    autocomplete="email"
+                    class="auth-input auth-input--filled">
+
+                <input
+                    type="tel"
+                    name="telefone"
+                    id="cadastro-telefone-input"
+                    placeholder="Telefone / Celular"
+                    required
+                    autocomplete="tel"
+                    maxlength="15"
+                    class="auth-input auth-input--filled">
+
+                <div class="auth-password-wrapper">
+                    <input
+                        type="password"
+                        name="senha"
+                        id="cadastro-password-input"
+                        placeholder="Senha"
+                        required
+                        autocomplete="new-password"
+                        class="auth-input auth-input--filled">
+                    <button type="button" class="auth-password-toggle" id="cadastro-password-toggle">
+                        <img src="../assets/img/eyeclose.png" alt="Mostrar senha" id="cadastro-eye-icon" class="auth-password-toggle__icon">
+                    </button>
                 </div>
 
-                <form method="POST" action="../actions/cadastro.php" class="auth-form">
-                    <select name="perfil" id="cadastro-perfil-select" required class="auth-input auth-input--filled auth-select">
-                        <option value="" disabled selected>Selecione seu Perfil</option>
-                        <option value="ong">ONG</option>
-                        <option value="apoiador">Apoiador</option>
-                        <option value="adotante">Adotante</option>
-                    </select>
-
-                    <input type="text" name="nome" id="cadastro-nome-input" placeholder="Nome Completo" required class="auth-input auth-input--filled">
-                    
-                    <input type="text" name="cpf_cnpj" id="cadastro-cpf-cnpj-input" placeholder="CPF/CNPJ" required class="auth-input auth-input--filled">
-                    
-                    <input type="email" name="email" placeholder="Email" required class="auth-input auth-input--filled">
-                    
-                    <input type="tel" name="telefone" id="cadastro-telefone-input" placeholder="Telefone/Celular" required class="auth-input auth-input--filled" maxlength="15">
-                    
-                    <div class="auth-password-wrapper">
-                        <input type="password" name="senha" id="cadastro-password-input" placeholder="Senha" required class="auth-input auth-input--filled">
-                        <button type="button" class="auth-password-toggle" id="cadastro-password-toggle">
-                            <img src="../assets/img/eyeclose.png" alt="Mostrar senha" id="cadastro-eye-icon" class="auth-password-toggle__icon">
-                        </button>
-                    </div>
-
-                    <div class="auth-password-wrapper">
-                        <input type="password" name="confirmar-senha" id="cadastro-confirm-password-input" placeholder="Confirmar Senha" required class="auth-input auth-input--filled">
-                        <button type="button" class="auth-password-toggle" id="cadastro-confirm-toggle">
-                            <img src="../assets/img/eyeclose.png" alt="Mostrar senha" id="cadastro-confirm-eye-icon" class="auth-password-toggle__icon">
-                        </button>
-                    </div>
-                    <div id="password-match-message" class="password-match-message"></div>
-
-                    <button type="submit" class="auth-button auth-button--outline" id="cadastro-submit-btn">
-                        Criar conta!
+                <div class="auth-password-wrapper">
+                    <input
+                        type="password"
+                        name="confirmar-senha"
+                        id="cadastro-confirm-password-input"
+                        placeholder="Confirmar Senha"
+                        required
+                        autocomplete="new-password"
+                        class="auth-input auth-input--filled">
+                    <button type="button" class="auth-password-toggle" id="cadastro-confirm-toggle">
+                        <img src="../assets/img/eyeclose.png" alt="Mostrar senha" id="cadastro-confirm-eye-icon" class="auth-password-toggle__icon">
                     </button>
-                </form>
+                </div>
 
-                <p class="auth-link-text">
-                    <a href="login-usuario.html">Já tenho uma conta</a>
-                </p>
+                <div id="password-match-message" class="password-match-message"></div>
+
+                <button type="submit" class="auth-button auth-button--outline" id="cadastro-submit-btn">
+                    Criar conta!
+                </button>
+
+            </form>
+
+            <p class="auth-link-text">
+                <a href="login-usuario.html">Já tenho uma conta</a>
+            </p>
+
         </div>
     </div>
 
     <script src="../assets/js/script.js"></script>
     <script>
-        const erros = {
-            campos_vazios:      'Preencha todos os campos.',
-            senhas_diferentes:  'As senhas não coincidem.',
-            perfil_invalido:    'Selecione um perfil válido.',
-            ja_cadastrado:      'E-mail ou CPF/CNPJ já cadastrado.',
-        };
-
         const params = new URLSearchParams(window.location.search);
         const erro = params.get('erro');
+        const erros = {
+            campos_vazios:     'Preencha todos os campos.',
+            senhas_diferentes: 'As senhas não coincidem.',
+            perfil_invalido:   'Selecione um perfil válido.',
+            ja_cadastrado:     'E-mail ou CPF/CNPJ já cadastrado.',
+        };
 
         if (erro && erros[erro]) {
-            const msg = document.getElementById('password-match-message');
+            const form = document.querySelector('.auth-form');
+            const msg = document.createElement('p');
+            msg.className = 'auth-feedback auth-feedback--erro';
             msg.textContent = erros[erro];
-            msg.className = 'password-match-message error';
+            form.insertAdjacentElement('beforebegin', msg);
         }
     </script>
+
 </body>
 
 </html>

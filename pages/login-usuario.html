@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -9,23 +9,39 @@
 </head>
 
 <body class="auth-page auth-page--login">
-    <!-- Botão de Voltar -->
+
+    <!-- Botão Voltar -->
     <a href="../index.html" class="back-button" title="Voltar para página inicial">
         <img src="../assets/img/arrowback.png" alt="Voltar" class="back-button__icon">
     </a>
 
     <div class="auth-container">
         <div class="auth-card">
+
             <div class="auth-header">
                 <img src="../assets/img/Prancheta 3.png" alt="AuMigos Logo" class="auth-logo">
                 <h1 class="auth-title">Bem-vindo!</h1>
             </div>
 
-            <form method="POST" action="../actions/login.php" class="auth-form">
-                <input type="email" name="email" placeholder="Email" required autocomplete="email" class="auth-input auth-input--bordered">
+            <form id="login-form" method="POST" action="../actions/login.php" class="auth-form">
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="E-mail"
+                    required
+                    autocomplete="email"
+                    class="auth-input auth-input--bordered">
 
                 <div class="auth-password-wrapper">
-                    <input type="password" name="senha" id="login-password-input" placeholder="Senha" required autocomplete="current-password" class="auth-input auth-input--bordered">
+                    <input
+                        type="password"
+                        name="senha"
+                        id="login-password-input"
+                        placeholder="Senha"
+                        required
+                        autocomplete="current-password"
+                        class="auth-input auth-input--bordered">
                     <button type="button" class="auth-password-toggle" id="login-password-toggle">
                         <img src="../assets/img/eyeclose.png" alt="Mostrar senha" id="login-eye-icon" class="auth-password-toggle__icon">
                     </button>
@@ -34,40 +50,22 @@
                 <button type="submit" class="auth-button auth-button--primary">
                     Vamos lá!
                 </button>
-                
+
                 <div class="auth-forgot-link">
                     <a href="esqueci-senha.html">Esqueci minha senha</a>
                 </div>
+
             </form>
 
             <p class="auth-link-text">
                 <a href="cadastro-usuario.html">Não tenho uma conta</a>
             </p>
+
         </div>
     </div>
 
     <script src="../assets/js/script.js"></script>
-    <script>
-        const params = new URLSearchParams(window.location.search);
 
-        const form = document.querySelector('.auth-form');
-
-        if (params.get('cadastro') === 'sucesso') {
-            const msg = document.createElement('p');
-            msg.className = 'auth-feedback auth-feedback--sucesso';
-            msg.textContent = params.get('msg') === 'senha_redefinida'
-                ? 'Senha redefinida com sucesso! Faça seu login.'
-                : 'Cadastro realizado com sucesso! Faça seu login.';
-            form.insertAdjacentElement('beforebegin', msg);
-        }
-
-        if (params.get('erro') === 'credenciais_invalidas') {
-            const msg = document.createElement('p');
-            msg.className = 'auth-feedback auth-feedback--erro';
-            msg.textContent = 'E-mail ou senha incorretos.';
-            form.insertAdjacentElement('beforebegin', msg);
-        }
-    </script>
 </body>
 
 </html>

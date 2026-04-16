@@ -216,6 +216,101 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // ===== LOGIN - FEEDBACK =====
+    const loginForm = document.getElementById('login-form');
+
+    if (loginForm) {
+        const loginParams = new URLSearchParams(window.location.search);
+
+        if (loginParams.get('cadastro') === 'sucesso') {
+            const msg = document.createElement('p');
+            msg.className = 'auth-feedback auth-feedback--sucesso';
+            msg.textContent = loginParams.get('msg') === 'senha_redefinida'
+                ? 'Senha redefinida com sucesso! Faça seu login.'
+                : 'Cadastro realizado com sucesso! Faça seu login.';
+            loginForm.insertAdjacentElement('beforebegin', msg);
+        }
+
+        if (loginParams.get('erro') === 'credenciais_invalidas') {
+            const msg = document.createElement('p');
+            msg.className = 'auth-feedback auth-feedback--erro';
+            msg.textContent = 'E-mail ou senha incorretos.';
+            loginForm.insertAdjacentElement('beforebegin', msg);
+        }
+    }
+
+    // ===== ESQUECI SENHA - FEEDBACK =====
+    const esqueciSenhaForm = document.getElementById('esqueci-senha-form');
+
+    if (esqueciSenhaForm) {
+        const esqueciParams = new URLSearchParams(window.location.search);
+
+        if (esqueciParams.get('status') === 'enviado') {
+            const msg = document.createElement('p');
+            msg.className = 'auth-feedback auth-feedback--sucesso';
+            msg.textContent = 'Se esse e-mail estiver cadastrado, você receberá o link em instantes.';
+            esqueciSenhaForm.insertAdjacentElement('beforebegin', msg);
+        }
+
+        if (esqueciParams.get('erro') === 'email_vazio') {
+            const msg = document.createElement('p');
+            msg.className = 'auth-feedback auth-feedback--erro';
+            msg.textContent = 'Informe um e-mail válido.';
+            esqueciSenhaForm.insertAdjacentElement('beforebegin', msg);
+        }
+    }
+
+    // ===== REDEFINIR SENHA - TOKEN E FEEDBACK =====
+    const redefinirForm = document.getElementById('redefinir-form');
+
+    if (redefinirForm) {
+        const redefinirParams = new URLSearchParams(window.location.search);
+        const token = redefinirParams.get('token');
+
+        if (!token) {
+            const msg = document.createElement('p');
+            msg.className = 'auth-feedback auth-feedback--erro';
+            msg.textContent = 'Link inválido ou expirado. Solicite um novo.';
+            redefinirForm.insertAdjacentElement('beforebegin', msg);
+            redefinirForm.style.display = 'none';
+        } else {
+            document.getElementById('token-input').value = token;
+        }
+
+        const erros = {
+            token_invalido:    'Link inválido ou expirado. Solicite um novo.',
+            campos_vazios:     'Preencha todos os campos.',
+            senhas_diferentes: 'As senhas não coincidem.',
+        };
+
+        const erro = redefinirParams.get('erro');
+        if (erro && erros[erro]) {
+            const msg = document.createElement('p');
+            msg.className = 'auth-feedback auth-feedback--erro';
+            msg.textContent = erros[erro];
+            redefinirForm.insertAdjacentElement('beforebegin', msg);
+        }
+    }
+
+    // ===== HEADER MOBILE - HAMBURGER =====
+    const headerToggle = document.getElementById('header-mobile-toggle');
+    const headerNav = document.getElementById('header-nav');
+
+    if (headerToggle && headerNav) {
+        headerToggle.addEventListener('click', function () {
+            const isOpen = headerNav.classList.toggle('nav-open');
+            headerToggle.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Fecha o menu ao clicar em qualquer link da nav
+        headerNav.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                headerNav.classList.remove('nav-open');
+                headerToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+
     // ===== DEPOIMENTOS - TROCA DE ABAS =====
     const depTabs = document.querySelectorAll('.dep-tab');
     const depPanels = document.querySelectorAll('.dep-panel');
