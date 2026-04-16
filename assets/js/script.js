@@ -1,69 +1,37 @@
-// ===== TOGGLE DE MOSTRAR/OCULTAR SENHA =====
-// Padronização: kebab-case para IDs
-
 document.addEventListener('DOMContentLoaded', function () {
-    // ===== TOGGLE SENHA - LOGIN =====
-    const loginPasswordToggle = document.getElementById('login-password-toggle');
-    const loginPasswordInput = document.getElementById('login-password-input');
-    const loginEyeIcon = document.getElementById('login-eye-icon');
 
-    if (loginPasswordToggle && loginPasswordInput && loginEyeIcon) {
-        loginPasswordToggle.addEventListener('click', function () {
-            // Alterna entre 'password' e 'text'
-            const type = loginPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            loginPasswordInput.setAttribute('type', type);
+    // ===== HELPER: TOGGLE SENHA =====
+    function setupPasswordToggle(toggleId, inputId, eyeId) {
+        const toggle = document.getElementById(toggleId);
+        const input = document.getElementById(inputId);
+        const eye = document.getElementById(eyeId);
+        if (!toggle || !input || !eye) return;
 
-            // Troca o ícone
-            if (type === 'text') {
-                // Mostrando senha - usa eyeopen
-                loginEyeIcon.src = '../assets/img/eyeopen.png';
-                loginEyeIcon.alt = 'Ocultar senha';
-            } else {
-                // Ocultando senha - usa eyeclose
-                loginEyeIcon.src = '../assets/img/eyeclose.png';
-                loginEyeIcon.alt = 'Mostrar senha';
-            }
+        toggle.addEventListener('click', function () {
+            const show = input.getAttribute('type') === 'password';
+            input.setAttribute('type', show ? 'text' : 'password');
+            eye.src = show ? '../assets/img/eyeopen.png' : '../assets/img/eyeclose.png';
+            eye.alt = show ? 'Ocultar senha' : 'Mostrar senha';
         });
     }
 
-    // ===== TOGGLE SENHA - CADASTRO =====
-    const cadastroPasswordToggle = document.getElementById('cadastro-password-toggle');
-    const cadastroPasswordInput = document.getElementById('cadastro-password-input');
-    const cadastroEyeIcon = document.getElementById('cadastro-eye-icon');
+    setupPasswordToggle('login-password-toggle',    'login-password-input',          'login-eye-icon');
+    setupPasswordToggle('cadastro-password-toggle', 'cadastro-password-input',       'cadastro-eye-icon');
+    setupPasswordToggle('cadastro-confirm-toggle',  'cadastro-confirm-password-input','cadastro-confirm-eye-icon');
+    setupPasswordToggle('nova-senha-toggle',        'nova-senha-input',              'nova-senha-eye');
+    setupPasswordToggle('confirmar-nova-toggle',    'confirmar-nova-senha-input',    'confirmar-nova-eye');
 
-    if (cadastroPasswordToggle && cadastroPasswordInput && cadastroEyeIcon) {
-        cadastroPasswordToggle.addEventListener('click', function () {
-            // Alterna entre 'password' e 'text'
-            const type = cadastroPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            cadastroPasswordInput.setAttribute('type', type);
-
-            // Troca o ícone
-            if (type === 'text') {
-                // Mostrando senha - usa eyeopen
-                cadastroEyeIcon.src = '../assets/img/eyeopen.png';
-                cadastroEyeIcon.alt = 'Ocultar senha';
-            } else {
-                // Ocultando senha - usa eyeclose
-                cadastroEyeIcon.src = '../assets/img/eyeclose.png';
-                cadastroEyeIcon.alt = 'Mostrar senha';
-            }
-        });
-    }
-
-    // ===== MÁSCARA DE TELEFONE - CADASTRO =====
+    // ===== CADASTRO - MÁSCARA DE TELEFONE =====
     const telefoneInput = document.getElementById('cadastro-telefone-input');
 
     if (telefoneInput) {
         telefoneInput.addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+            let value = e.target.value.replace(/\D/g, '');
 
-            // Aplica a máscara
             if (value.length <= 10) {
-                // Formato: (XX) XXXX-XXXX
                 value = value.replace(/(\d{2})(\d)/, '($1) $2');
                 value = value.replace(/(\d{4})(\d)/, '$1-$2');
             } else {
-                // Formato: (XX) XXXXX-XXXX
                 value = value.replace(/(\d{2})(\d)/, '($1) $2');
                 value = value.replace(/(\d{5})(\d)/, '$1-$2');
             }
@@ -72,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ===== FILTRO DE PERFIL E MÁSCARAS CPF/CNPJ =====
+    // ===== CADASTRO - PERFIL E MÁSCARAS CPF/CNPJ =====
     const perfilSelect = document.getElementById('cadastro-perfil-select');
     const nomeInput = document.getElementById('cadastro-nome-input');
     const cpfCnpjInput = document.getElementById('cadastro-cpf-cnpj-input');
@@ -96,106 +64,49 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (perfilSelect && nomeInput && cpfCnpjInput) {
         perfilSelect.addEventListener('change', function () {
-            const perfil = this.value;
-
-            // Limpa o campo CPF/CNPJ ao trocar perfil
             cpfCnpjInput.value = '';
 
-            if (perfil === 'ong') {
-                // ONG: Nome da Instituição + CNPJ
+            if (this.value === 'ong') {
                 nomeInput.placeholder = 'Nome da Instituição';
                 cpfCnpjInput.placeholder = 'CNPJ';
-                cpfCnpjInput.maxLength = 18; // XX.XXX.XXX/XXXX-XX
+                cpfCnpjInput.maxLength = 18;
             } else {
-                // Apoiador/Adotante: Nome Completo + CPF
                 nomeInput.placeholder = 'Nome Completo';
                 cpfCnpjInput.placeholder = 'CPF';
-                cpfCnpjInput.maxLength = 14; // XXX.XXX.XXX-XX
+                cpfCnpjInput.maxLength = 14;
             }
         });
 
-        // Aplica máscara no campo CPF/CNPJ conforme digita
         cpfCnpjInput.addEventListener('input', function (e) {
-            const perfil = perfilSelect.value;
-            let value = e.target.value;
-
-            if (perfil === 'ong') {
-                e.target.value = aplicarMascaraCNPJ(value);
-            } else if (perfil === 'apoiador' || perfil === 'adotante') {
-                e.target.value = aplicarMascaraCPF(value);
-            }
-        });
-    }
-
-    // ===== TOGGLE SENHA - CONFIRMAR SENHA (CADASTRO) =====
-    const confirmPasswordToggle = document.getElementById('cadastro-confirm-toggle');
-    const confirmPasswordInput = document.getElementById('cadastro-confirm-password-input');
-    const confirmEyeIcon = document.getElementById('cadastro-confirm-eye-icon');
-
-    if (confirmPasswordToggle && confirmPasswordInput && confirmEyeIcon) {
-        confirmPasswordToggle.addEventListener('click', function () {
-            const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            confirmPasswordInput.setAttribute('type', type);
-
-            if (type === 'text') {
-                confirmEyeIcon.src = '../assets/img/eyeopen.png';
-                confirmEyeIcon.alt = 'Ocultar senha';
+            if (perfilSelect.value === 'ong') {
+                e.target.value = aplicarMascaraCNPJ(e.target.value);
             } else {
-                confirmEyeIcon.src = '../assets/img/eyeclose.png';
-                confirmEyeIcon.alt = 'Mostrar senha';
+                e.target.value = aplicarMascaraCPF(e.target.value);
             }
         });
     }
 
-    // ===== TOGGLE SENHA - REDEFINIR SENHA =====
-    const novaSenhaToggle = document.getElementById('nova-senha-toggle');
-    const novaSenhaInput = document.getElementById('nova-senha-input');
-    const novaSenhaEye = document.getElementById('nova-senha-eye');
-
-    if (novaSenhaToggle && novaSenhaInput && novaSenhaEye) {
-        novaSenhaToggle.addEventListener('click', function() {
-            const type = novaSenhaInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            novaSenhaInput.setAttribute('type', type);
-            novaSenhaEye.src = type === 'text' ? '../assets/img/eyeopen.png' : '../assets/img/eyeclose.png';
-            novaSenhaEye.alt = type === 'text' ? 'Ocultar senha' : 'Mostrar senha';
-        });
-    }
-
-    const confirmarNovaToggle = document.getElementById('confirmar-nova-toggle');
-    const confirmarNovaInput = document.getElementById('confirmar-nova-senha-input');
-    const confirmarNovaEye = document.getElementById('confirmar-nova-eye');
-
-    if (confirmarNovaToggle && confirmarNovaInput && confirmarNovaEye) {
-        confirmarNovaToggle.addEventListener('click', function() {
-            const type = confirmarNovaInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            confirmarNovaInput.setAttribute('type', type);
-            confirmarNovaEye.src = type === 'text' ? '../assets/img/eyeopen.png' : '../assets/img/eyeclose.png';
-            confirmarNovaEye.alt = type === 'text' ? 'Ocultar senha' : 'Mostrar senha';
-        });
-    }
-
-    // ===== VALIDAÇÃO DE CONFIRMAÇÃO DE SENHA =====
+    // ===== CADASTRO - VALIDAÇÃO DE SENHAS =====
     const passwordInput = document.getElementById('cadastro-password-input');
+    const confirmPasswordInput = document.getElementById('cadastro-confirm-password-input');
     const passwordMessage = document.getElementById('password-match-message');
 
     function validatePasswords() {
-        if (passwordInput && confirmPasswordInput && passwordMessage) {
-            const password = passwordInput.value;
-            const confirmPassword = confirmPasswordInput.value;
+        if (!passwordInput || !confirmPasswordInput || !passwordMessage) return;
+        const confirmPassword = confirmPasswordInput.value;
 
-            if (confirmPassword === '') {
-                passwordMessage.textContent = '';
-                passwordMessage.className = 'password-match-message';
-                return;
-            }
+        if (confirmPassword === '') {
+            passwordMessage.textContent = '';
+            passwordMessage.className = 'password-match-message';
+            return;
+        }
 
-            if (password === confirmPassword) {
-                passwordMessage.textContent = '✓ As senhas coincidem';
-                passwordMessage.className = 'password-match-message success';
-            } else {
-                passwordMessage.textContent = '✗ As senhas não coincidem';
-                passwordMessage.className = 'password-match-message error';
-            }
+        if (passwordInput.value === confirmPassword) {
+            passwordMessage.textContent = '✓ As senhas coincidem';
+            passwordMessage.className = 'password-match-message success';
+        } else {
+            passwordMessage.textContent = '✗ As senhas não coincidem';
+            passwordMessage.className = 'password-match-message error';
         }
     }
 
@@ -204,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function () {
         confirmPasswordInput.addEventListener('input', validatePasswords);
     }
 
-    // Validação no submit do formulário
     const cadastroForm = document.querySelector('.auth-page--cadastro .auth-form');
     if (cadastroForm && passwordInput && confirmPasswordInput) {
         cadastroForm.addEventListener('submit', function (e) {
@@ -292,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // ===== HEADER MOBILE - HAMBURGER =====
+    // ===== INDEX - HEADER MOBILE =====
     const headerToggle = document.getElementById('header-mobile-toggle');
     const headerNav = document.getElementById('header-nav');
 
@@ -302,7 +212,6 @@ document.addEventListener('DOMContentLoaded', function () {
             headerToggle.setAttribute('aria-expanded', isOpen);
         });
 
-        // Fecha o menu ao clicar em qualquer link da nav
         headerNav.querySelectorAll('a').forEach(function (link) {
             link.addEventListener('click', function () {
                 headerNav.classList.remove('nav-open');
@@ -311,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ===== DEPOIMENTOS - TROCA DE ABAS =====
+    // ===== INDEX - DEPOIMENTOS =====
     const depTabs = document.querySelectorAll('.dep-tab');
     const depPanels = document.querySelectorAll('.dep-panel');
     const depTabsWrapper = document.querySelector('.depoimentos-tabs');
@@ -331,7 +240,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Define o estado inicial
     if (depTabsWrapper) depTabsWrapper.setAttribute('data-active', 'ongs');
 
     // ===== CONSULTA ANIMAL - NAVBAR =====
@@ -372,8 +280,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // ===== CONSULTA ANIMAL - RENDERIZAÇÃO DA LISTA =====
+    // ===== CONSULTA ANIMAL - LISTA E PAGINAÇÃO =====
     const listaContainer = document.querySelector('.consulta-list');
+
     if (listaContainer) {
         const itensPorPagina = 8;
         let paginaAtual = 1;
@@ -383,9 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
             listaContainer.querySelectorAll('.list-row').forEach(row => row.remove());
 
             const inicio = (pagina - 1) * itensPorPagina;
-            const itensDaPagina = dados.slice(inicio, inicio + itensPorPagina);
-
-            itensDaPagina.forEach(animal => {
+            dados.slice(inicio, inicio + itensPorPagina).forEach(animal => {
                 const id = animal.id_animal;
                 const entrada = animal.data_entrada || '---';
                 const status = animal.status || 'disponivel';
@@ -447,7 +354,6 @@ document.addEventListener('DOMContentLoaded', function () {
             containerPaginacao.appendChild(btnNext);
         }
 
-        // Carrega animais do banco
         fetch('../actions/animal.php?action=listar')
             .then(r => r.json())
             .then(lista => { dados = lista; renderizarLista(paginaAtual); })
