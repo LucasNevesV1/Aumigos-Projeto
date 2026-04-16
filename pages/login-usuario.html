@@ -22,10 +22,10 @@
             </div>
 
             <form method="POST" action="../actions/login.php" class="auth-form">
-                <input type="text" name="email" placeholder="Email" required class="auth-input auth-input--bordered">
-                
+                <input type="email" name="email" placeholder="Email" required autocomplete="email" class="auth-input auth-input--bordered">
+
                 <div class="auth-password-wrapper">
-                    <input type="password" name="senha" id="login-password-input" placeholder="Senha" required class="auth-input auth-input--bordered">
+                    <input type="password" name="senha" id="login-password-input" placeholder="Senha" required autocomplete="current-password" class="auth-input auth-input--bordered">
                     <button type="button" class="auth-password-toggle" id="login-password-toggle">
                         <img src="../assets/img/eyeclose.png" alt="Mostrar senha" id="login-eye-icon" class="auth-password-toggle__icon">
                     </button>
@@ -50,22 +50,21 @@
     <script>
         const params = new URLSearchParams(window.location.search);
 
+        const form = document.querySelector('.auth-form');
+
         if (params.get('cadastro') === 'sucesso') {
             const msg = document.createElement('p');
-            const texto = params.get('msg') === 'senha_redefinida'
+            msg.className = 'auth-feedback auth-feedback--sucesso';
+            msg.textContent = params.get('msg') === 'senha_redefinida'
                 ? 'Senha redefinida com sucesso! Faça seu login.'
                 : 'Cadastro realizado com sucesso! Faça seu login.';
-            msg.textContent = texto;
-            msg.style.cssText = 'color:#006666;font-size:13px;text-align:center;margin-bottom:12px;';
-            const form = document.querySelector('.auth-form');
             form.insertAdjacentElement('beforebegin', msg);
         }
 
         if (params.get('erro') === 'credenciais_invalidas') {
             const msg = document.createElement('p');
+            msg.className = 'auth-feedback auth-feedback--erro';
             msg.textContent = 'E-mail ou senha incorretos.';
-            msg.style.cssText = 'color:#e07a2f;font-size:13px;text-align:center;margin-bottom:12px;';
-            const form = document.querySelector('.auth-form');
             form.insertAdjacentElement('beforebegin', msg);
         }
     </script>

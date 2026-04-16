@@ -216,6 +216,29 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // ===== DEPOIMENTOS - TROCA DE ABAS =====
+    const depTabs = document.querySelectorAll('.dep-tab');
+    const depPanels = document.querySelectorAll('.dep-panel');
+    const depTabsWrapper = document.querySelector('.depoimentos-tabs');
+
+    depTabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            const alvo = tab.getAttribute('data-tab');
+
+            depTabs.forEach(t => t.classList.remove('dep-tab--active'));
+            tab.classList.add('dep-tab--active');
+
+            if (depTabsWrapper) depTabsWrapper.setAttribute('data-active', alvo);
+
+            depPanels.forEach(function (panel) {
+                panel.classList.toggle('dep-panel--active', panel.getAttribute('data-panel') === alvo);
+            });
+        });
+    });
+
+    // Define o estado inicial
+    if (depTabsWrapper) depTabsWrapper.setAttribute('data-active', 'ongs');
+
     // ===== CONSULTA ANIMAL - NAVBAR =====
     const navbar = document.getElementById('floatingNavbar');
     const menuToggle = document.getElementById('menuToggle');

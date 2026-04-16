@@ -36,7 +36,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="hero">
         <div class="container hero-container">
 
             <!-- Coluna esquerda -->
@@ -121,7 +121,7 @@
 
                 <li class="equipe-card">
                     <div class="equipe-card-foto">
-                        <img src="assets/img/foto-studio-lucas.png" alt="Foto de Fulaninho de Tal">
+                        <img src="assets/img/foto-studio-lucas.png" alt="Foto de Lucas das Neves">
                     </div>
                     <div class="equipe-card-info">
                         <h3>Lucas das Neves</h3>
@@ -132,7 +132,7 @@
 
                 <li class="equipe-card">
                     <div class="equipe-card-foto foto-1">
-                        <img src="assets/img/foto-studio-mateus.png" alt="Foto de Fulaninho de Tal">
+                        <img src="assets/img/foto-studio-mateus.png" alt="Foto de Mateus Bonfim">
                     </div>
                     <div class="equipe-card-info">
                         <h3>Mateus Bonfim</h3>
@@ -144,7 +144,7 @@
 
                 <li class="equipe-card">
                     <div class="equipe-card-foto foto-liv">
-                        <img src="assets/img/foto-studio-liv.png" alt="Foto de Fulaninho de Tal">
+                        <img src="assets/img/foto-studio-liv.png" alt="Foto de Livia Conti">
                     </div>
                     <div class="equipe-card-info">
                         <h3>Livia Conti</h3>
@@ -156,7 +156,7 @@
 
                 <li class="equipe-card">
                     <div class="equipe-card-foto foto-2">
-                        <img src="assets/img/foto-studio-guilherme.png" alt="Foto de Fulaninho de Tal">
+                        <img src="assets/img/foto-studio-guilherme.png" alt="Foto de Guilherme Trombini">
                     </div>
                     <div class="equipe-card-info">
                         <h3>Guilherme Trombini</h3>
@@ -169,7 +169,7 @@
 
                 <li class="equipe-card">
                     <div class="equipe-card-foto">
-                        <img src="assets/img/foto-studio-emilly.png" alt="Foto de Fulaninho de Tal">
+                        <img src="assets/img/foto-studio-emilly.png" alt="Foto de Emilly Lima">
                     </div>
                     <div class="equipe-card-info">
                         <h3>Emilly Lima</h3>
@@ -180,12 +180,13 @@
 
                 <li class="equipe-card">
                     <div class="equipe-card-foto foto-2">
-                        <img src="assets/img/foto-studio-frederico.png" alt="Foto de Fulaninho de Tal">
+                        <img src="assets/img/foto-studio-frederico.png" alt="Foto de Sr. Frederico">
                     </div>
                     <div class="equipe-card-info">
                         <h3>Sr. Frederico</h3>
                         <span class="equipe-cargo">Consultor Canino (CCO)</span>
-                        <p>Aprova cada decisão com um olhar afiado e muito julgamento silencioso em seus cobertores, lembrando o time, todos os dias, do porquê de tudo isso existir.</p>
+                        <p>Aprova cada decisão com um olhar afiado e muito julgamento silencioso em seus cobertores,
+                            lembrando o time, todos os dias, do porquê de tudo isso existir.</p>
                     </div>
                 </li>
 
@@ -210,36 +211,77 @@
                 <!-- Abas -->
                 <div class="depoimentos-tabs">
                     <button class="dep-tab dep-tab--active" data-tab="ongs">
-                        <img src="assets/img/paw.png" alt=""> A VOZ DAS ONG'S
+                        <img src="assets/img/paw.png" alt="" aria-hidden="true"> A VOZ DAS ONG'S
                     </button>
                     <button class="dep-tab" data-tab="apoiadores">
-                        <img src="assets/img/handshake.png" alt=""> A VOZ DOS APOIADORES
+                        <img src="assets/img/handshake.png" alt="" aria-hidden="true"> A VOZ DOS APOIADORES
                     </button>
                     <button class="dep-tab" data-tab="adotantes">
-                        <img src="assets/img/heart.png" alt=""> A VOZ DOS ADOTANTES
+                        <img src="assets/img/heart.png" alt="" aria-hidden="true"> A VOZ DOS ADOTANTES
                     </button>
                 </div>
 
-                <!-- Card principal -->
-                <div class="depoimentos-card">
-                    <div class="dep-foto">
-                        <img src="assets/img/cachorros-colo.png" alt="Foto do depoimento">
-                    </div>
-                    <div class="dep-texto">
-                        <blockquote>
-                            "Antes do Aumigos, nossa gestão era baseada em cadernos e memória. Já chegamos a perder
-                            prazos de vacinas importantes. Hoje, o sistema nos avisa de tudo! É como se tivéssemos
-                            ganhado mais duas mãos para cuidar dos nossos resgatados."
-                        </blockquote>
-                        <p class="dep-autor">— Mariana Costa, Fundadora da ONG Patas de Luz.</p>
-                        <div class="dep-dots">
-                            <span class="dep-dot"></span>
-                            <span class="dep-dot dep-dot--active"></span>
-                            <span class="dep-dot"></span>
-                            <span class="dep-dot"></span>
-                            <span class="dep-dot"></span>
+                <!-- Wrapper empilhado para animação -->
+                <div class="dep-panels-wrapper">
+
+                    <!-- Painel: ONG'S -->
+                    <div class="depoimentos-card dep-panel dep-panel--active" data-panel="ongs">
+                        <div class="dep-foto">
+                            <img src="assets/img/cachorros-colo.png" alt="Foto do depoimento">
+                        </div>
+                        <div class="dep-texto">
+                            <blockquote>
+                                "Antes do Aumigos, nossa gestão era baseada em cadernos e memória. Já chegamos a perder
+                                prazos de vacinas importantes. Hoje, o sistema nos avisa de tudo! É como se tivéssemos
+                                ganhado mais duas mãos para cuidar dos nossos resgatados."
+                            </blockquote>
+                            <p class="dep-autor">— Mariana Costa, Fundadora da ONG Patas de Luz.</p>
+                            <div class="dep-dots">
+                                <span class="dep-dot dep-dot--active"></span>
+                                <span class="dep-dot"></span>
+                                <span class="dep-dot"></span>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Painel: APOIADORES -->
+                    <div class="depoimentos-card dep-panel" data-panel="apoiadores">
+                        <div class="dep-foto foto-liv">
+                            <img src="assets/img/voluntario.jpg" alt="Foto do depoimento">
+                        </div>
+                        <div class="dep-texto">
+                            <blockquote>
+                                "Apoiar uma ONG nunca foi tão fácil. O Aumigos me conectou com causas reais e me mostrou
+                                exatamente como minha contribuição estava sendo usada. Me sinto parte da mudança."
+                            </blockquote>
+                            <p class="dep-autor">— Rafael Mendes, Apoiador voluntário.</p>
+                            <div class="dep-dots">
+                                <span class="dep-dot"></span>
+                                <span class="dep-dot dep-dot--active"></span>
+                                <span class="dep-dot"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Painel: ADOTANTES -->
+                    <div class="depoimentos-card dep-panel" data-panel="adotantes">
+                        <div class="dep-foto">
+                            <img src="assets/img/adotante.jpg" alt="Foto do depoimento">
+                        </div>
+                        <div class="dep-texto">
+                            <blockquote>
+                                "Encontrei minha pet pelo Aumigos em menos de uma semana. O processo foi transparente,
+                                rápido e cheio de cuidado. Hoje ela está aqui do meu lado enquanto escrevo isso!"
+                            </blockquote>
+                            <p class="dep-autor">— Camila Rocha, Adotante.</p>
+                            <div class="dep-dots">
+                                <span class="dep-dot"></span>
+                                <span class="dep-dot"></span>
+                                <span class="dep-dot dep-dot--active"></span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -259,7 +301,7 @@
                 <div class="footer-col">
                     <h4>Início</h4>
                     <ul>
-                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#">Home</a></li>
                         <li><a href="#sobre">Sobre Nós</a></li>
                         <li><a href="#equipe">Nossa Equipe</a></li>
                         <li><a href="#depoimentos">Depoimentos</a></li>
@@ -277,7 +319,7 @@
                 <div class="footer-col">
                     <h4>Suporte</h4>
                     <ul>
-                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#faq">FAQ</a></li>
                         <li><a href="#">Telefone do Suporte</a></li>
                     </ul>
                 </div>
@@ -289,6 +331,7 @@
 
     </footer>
 
+    <script src="assets/js/script.js"></script>
 </body>
 
 </html>

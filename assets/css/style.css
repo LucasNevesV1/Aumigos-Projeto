@@ -32,6 +32,10 @@
     --text-label: #333333;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: var(--color-secondary);
 }
@@ -70,11 +74,16 @@ body {
     font-size: 14px;
     font-weight: 500;
     color: var(--color-text-dark);
-    transition: color 0.2s;
+    transition: color 0.2s, opacity 0.15s, transform 0.15s;
 }
 
 .header-nav a:hover {
     color: var(--color-primary);
+}
+
+.header-nav a:active {
+    opacity: 0.6;
+    transform: scale(0.95);
 }
 
 .btn-login {
@@ -87,11 +96,16 @@ body {
     font-size: 14px;
     font-weight: 600;
     color: var(--color-white);
-    transition: background 0.2s;
+    transition: background 0.2s, opacity 0.15s, transform 0.15s;
 }
 
 .btn-login:hover {
     background: #004d4d;
+}
+
+.btn-login:active {
+    opacity: 0.75;
+    transform: scale(0.96);
 }
 
 /* ===== HERO SECTION ===== */
@@ -513,7 +527,7 @@ body {
     display: flex;
     align-items: flex-end;
     gap: 0;
-    padding: 0 20px;
+    padding: 20px 20px 0 20px;
 }
 
 .dep-tab {
@@ -554,7 +568,7 @@ body {
 /* Card laranja */
 .depoimentos-card {
     background: #fe8d0b;
-    border-radius: 0 20px 20px 20px;
+    border-radius: 20px;
     margin: 0 20px 20px 20px;
     padding: 40px;
     display: flex;
@@ -563,10 +577,37 @@ body {
     min-height: 475px;
 }
 
+/* Canto superior esquerdo plano quando a 1ª aba está ativa */
+.depoimentos-tabs[data-active="ongs"] ~ .dep-panels-wrapper .dep-panel--active {
+    border-top-left-radius: 0;
+}
+
+/* Wrapper empilha todos os painéis na mesma área */
+.dep-panels-wrapper {
+    display: grid;
+}
+
+.dep-panels-wrapper > .dep-panel {
+    grid-area: 1 / 1;
+}
+
+/* Painéis inativos: invisíveis e levemente abaixo */
+.dep-panel {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+/* Painel ativo: visível */
+.dep-panel--active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 .dep-foto {
     flex-shrink: 0;
-    width: 420px;
-    height: 280px;
+    width: 520px;
+    height: 360px;
     border-radius: 20px;
     overflow: hidden;
 }
@@ -1049,6 +1090,21 @@ body.auth-page--cadastro::before {
 
 .auth-link-text a:hover {
     color: var(--color-primary);
+}
+
+/* Mensagens de feedback (sucesso/erro) */
+.auth-feedback {
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.auth-feedback--sucesso {
+    color: #006666;
+}
+
+.auth-feedback--erro {
+    color: #e07a2f;
 }
 
 /* Link no card de cadastro (cor clara) */
@@ -1638,11 +1694,16 @@ body.dashboard-page {
 .menu-toggle svg {
     width: 32px;
     height: 32px;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.15s;
 }
 
 .menu-toggle:hover svg {
     transform: scale(1.1);
+}
+
+.menu-toggle:active svg {
+    transform: scale(0.9);
+    opacity: 0.6;
 }
 
 .navbar-logo {
@@ -1724,13 +1785,18 @@ body.dashboard-page {
     text-decoration: none;
     font-weight: 600;
     font-size: 1.05rem;
-    transition: opacity 0.2s ease, padding-left 0.2s ease;
+    transition: opacity 0.2s ease, padding-left 0.2s ease, transform 0.15s ease;
 }
 
 .menu-list a:hover {
     opacity: 0.7;
     padding-left: 8px;
     /* Leve empurrãozinho pro lado ao passar o mouse */
+}
+
+.menu-list a:active {
+    opacity: 0.5;
+    transform: scale(0.97);
 }
 
 /* ============================================
@@ -1791,13 +1857,18 @@ body.dashboard-page {
     text-decoration: none;
     font-weight: 600;
     font-size: 1.05rem;
-    transition: opacity 0.2s ease, padding-left 0.2s ease;
+    transition: opacity 0.2s ease, padding-left 0.2s ease, transform 0.15s ease;
 }
 
 .profile-dropdown-menu .menu-list a:hover {
     opacity: 0.7;
     padding-left: 8px;
     /* Efeito de empurrar pro lado */
+}
+
+.profile-dropdown-menu .menu-list a:active {
+    opacity: 0.5;
+    transform: scale(0.97);
 }
 
 /* Linha divisória fina */
