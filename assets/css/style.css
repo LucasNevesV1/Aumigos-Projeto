@@ -1606,8 +1606,7 @@ body.dashboard-page {
 
 /* Container central (limita a largura para parecer um app/painel) */
 .dashboard-container {
-    width: 95%;
-    max-width: 1500px;
+    width: 99%;
     min-height: 100vh;
     position: relative;
     display: flex;
@@ -1616,11 +1615,13 @@ body.dashboard-page {
 
 /* --- Cabeçalho --- */
 .dash-header {
-    padding: 250px 50px 30px 50px;
+    padding: 250px 50px 60px 50px;
+    min-height: 440px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
+    overflow: hidden;
 }
 
 .dash-header__content {
@@ -1661,11 +1662,9 @@ body.dashboard-page {
 
 .dash-header__dog {
     position: absolute;
-    right: 60px;
-    bottom: 30px;
-    /* Cola a imagem do cachorro na borda de baixo do header */
-    height: 320px;
-    /* Ajuste conforme o tamanho real da sua imagem */
+    right: 50px;
+    bottom: -10px;
+    height: 420px;
     z-index: 1;
 }
 
@@ -1673,7 +1672,7 @@ body.dashboard-page {
 .dash-main {
     background-color: var(--color-secondary);
     /* Cor creme do seu projeto */
-    border-radius: 40px 40px 0 0;
+    border-radius: 75px 75px 45px 45px;
     padding: 50px 60px 0 60px;
     position: relative;
     display: flex;
@@ -1716,65 +1715,102 @@ body.dashboard-page {
     color: var(--color-text-light);
 }
 
-/* --- Painel de Urgências --- */
-.urgency-section {
+/* --- Resumo Financeiro --- */
+.financial-section {
     padding: 30px 0;
 }
 
-.section-title {
-    color: #E2943A;
-    /* Laranja do título */
+.financial-title {
+    color: var(--color-primary);
     font-size: 1.8rem;
-    margin-bottom: 30px;
     font-weight: 700;
+    margin-bottom: 20px;
 }
 
-.urgency-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
-}
-
-.urgency-card {
-    border: 2px solid #E2943A;
-    /* Borda Laranja */
-    border-radius: 15px;
-    padding: 25px;
+.financial-layout {
     display: flex;
-    align-items: flex-start;
     gap: 20px;
-    background-color: transparent;
+    align-items: stretch;
 }
 
-.urgency-icon {
-    font-size: 2rem;
-    background-color: #E2943A;
-    color: white;
-    width: 65px;
-    height: 65px;
+.financial-cards {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
+    flex-direction: column;
+    gap: 12px;
     flex-shrink: 0;
+    width: 230px;
 }
 
-.urgency-text h4 {
-    font-size: 1.3rem;
+.financial-card {
+    background-color: #0a4a45;
+    border-radius: 12px;
+    padding: 24px 30px;
+}
+
+.financial-card--saidas {
+    background-color: #1a7a72;
+}
+
+.financial-card__value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.financial-card__label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.65);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.financial-chart {
+    flex: 1;
+    background-color: #fdf6ec;
+    border-radius: 16px;
+    padding: 20px 24px;
+    border: 1.5px solid #f0e4c8;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+
+.financial-chart__title {
+    font-size: 0.82rem;
     color: var(--color-text-dark);
-    margin-bottom: 5px;
-}
-
-.urgency-text p {
-    font-size: 1.1rem;
-    color: var(--color-text-light);
-    line-height: 1.3;
-}
-
-.urgency-text a {
-    color: #E2943A;
-    text-decoration: none;
     font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+.financial-chart__placeholder {
+    flex: 1;
+    background: linear-gradient(
+        to bottom,
+        transparent 30%,
+        rgba(248, 158, 25, 0.3) 30%,
+        rgba(248, 158, 25, 0.5) 60%,
+        #E2943A 100%
+    );
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.financial-chart__placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom right,
+        transparent 40%,
+        rgba(0, 102, 102, 0.25) 40%,
+        rgba(0, 102, 102, 0.45) 100%
+    );
+    border-radius: 8px;
 }
 
 /* --- Pets Espiando (Footer do Main) --- */
@@ -1783,17 +1819,13 @@ body.dashboard-page {
     margin-left: -60px;
     margin-right: -60px;
     margin-top: auto;
-    /* A mágica acontece aqui: empurra a div para o extremo sul do card */
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
+    margin-bottom: -30px;
     line-height: 0;
 }
 
 .peeking-pets img {
     width: 100%;
     max-width: 1500px;
-    /* Mantém a imagem num tamanho bom sem estourar */
     display: block;
     margin: 0;
     padding: 0;
@@ -1803,7 +1835,7 @@ body.dashboard-page {
 .dash-footer {
     background-color: var(--color-primary);
     /* Volta pro verde */
-    padding: 70px;
+    padding: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1822,21 +1854,10 @@ body.dashboard-page {
 .floating-navbar {
     position: fixed;
     top: 0;
-
-    /* 1. Centralização */
-    left: 50%;
-    transform: translateX(-50%);
-
-    /* 2. Redução da Largura */
-    width: 90%;
-    /* <-- AJUSTE AQUI: Pode colocar 80%, 95%, etc. */
-    max-width: 1450px;
-
-    /* 3. Bordas inferiores (Opcional) */
-    border-radius: 0 0 20px 20px;
-    /* Como não encosta mais na lateral, arredondar embaixo fica mais bonito */
-
+    left: 0;
+    width: 100%;
     z-index: 9999;
+    border-radius: 0 0 20px 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.4s ease;
 }
@@ -1848,7 +1869,6 @@ body.dashboard-page {
     padding: 15px 40px;
     background-color: #F9F6F1;
     border-radius: 0 0 20px 20px;
-    /* Arredonda só em baixo */
     transition: all 0.4s ease;
 }
 
@@ -1862,11 +1882,11 @@ body.dashboard-page {
 /* Estado 2: Pílula Flutuante (Quando rola a página) */
 .floating-navbar.scrolled {
     top: 20px;
-    /* Desce um pouco */
     left: 50%;
     transform: translateX(-50%);
-    width: 90%;
-    max-width: 1450px;
+    width: 95%;
+    max-width: 1600px;
+    box-shadow: none;
 }
 
 .floating-navbar.scrolled .navbar-content {
@@ -1915,7 +1935,7 @@ body.dashboard-page {
 }
 
 .navbar-logo {
-    height: 45px;
+    height: 65px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -2110,7 +2130,7 @@ body.dashboard-page {
     transform: none !important;
     /* Desliga as regras antigas */
     margin-top: 30px;
-    width: 50% !important;
+    width: 90% !important;
     /* Agora ela usa os EXATOS 90% do bloco bege */
     max-width: 1450px !important;
     z-index: 10;
@@ -2227,32 +2247,21 @@ body.dashboard-page {
 
 /* Fundo Verde Diagonal (Igual ao Registro) aplicado à página de consulta */
 body.consulta-page {
-    background: linear-gradient(to bottom right, #498884 0%, #0C5F5B 50%);
+    background-color: #FCF9F2;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    /* Transforma o corpo em uma pilha vertical */
     align-items: center;
-    /* Garante que tudo use o mesmo centro matemático */
     padding: 0;
     margin: 0;
 }
 
-/* O container vira o Card Creme flutuante */
 .consulta-container {
-    width: 90%;
+    width: 100%;
     max-width: 1450px;
-    background-color: #FCF9F2;
-    border-radius: 0;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
-
-    /* A MÁGICA: Puxa o bloco bege para CIMA, encostando no topo! */
-    margin-top: -120px;
-    padding: 150px 50px 40px 50px;
-    /* Espaço para o título "Consulta" não ficar escondido atrás da barra */
+    padding: 50px 50px 40px 50px;
 
     flex-grow: 1;
-    /* Estica até o rodapé */
     display: flex;
     flex-direction: column;
     position: relative;
@@ -2434,9 +2443,18 @@ body.consulta-page {
     width: 45px;
     height: 45px;
     border: 1px solid #F89E19;
-    /* Borda laranja da foto image_fa321a.png */
     border-radius: 10px;
     background-color: white;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.animal-photo img {
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
 }
 
 /* Badges de Status (Pílulas Coloridas) */
@@ -2462,6 +2480,10 @@ body.consulta-page {
 
 .status-tratamento {
     background-color: #F4C150;
+}
+
+.status-em_analise {
+    background-color: #FA8A4D;
 }
 
 .status-processo {
@@ -2577,9 +2599,13 @@ body.consulta-page {
     color: #FBC02D;
 }
 
+.col-status select.status-em_analise {
+    background-color: #FFE0B2;
+    color: #E65100;
+}
+
 .col-status select.status-processo {
     background-color: #FFE0B2;
-    /* Exemplo de laranja */
     color: #E65100;
 }
 

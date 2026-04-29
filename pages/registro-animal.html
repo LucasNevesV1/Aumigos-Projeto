@@ -143,6 +143,9 @@
                     document.getElementById('campo-raca').value = animalEditando.raca || '';
                     document.getElementById('campo-nascimento').value = animalEditando.dataNascimento || '';
                     document.getElementById('campo-cor').value = animalEditando.cor || '';
+                    document.getElementById('campo-entrada').value = animalEditando.dataEntrada || '';
+                    document.getElementById('campo-motivo').value = animalEditando.motivoEntrada || '';
+                    document.getElementById('campo-saude').value = animalEditando.statusSaude || '';
                     document.getElementById('campo-porte').value = animalEditando.tamanho || '';
                     document.getElementById('campo-descricao').value = animalEditando.descricao || '';
 
@@ -189,10 +192,13 @@
                     especie: document.getElementById('campo-especie').value || '',
                     raca: document.getElementById('campo-raca').value || '',
                     genero: generoAtivo ? generoAtivo.innerText : 'Fêmea',
-                    data_nascimento: document.getElementById('campo-nascimento').value || '',
+                    dataNascimento: document.getElementById('campo-nascimento').value || '',
                     cor: document.getElementById('campo-cor').value || '',
-                    porte: document.getElementById('campo-porte').value || '',
-                    descricao: document.getElementById('campo-descricao').value || ''
+                    tamanho: document.getElementById('campo-porte').value || '',
+                    descricao: document.getElementById('campo-descricao').value || '',
+                    dataEntrada: document.getElementById('campo-entrada').value || '',
+                    motivoEntrada: document.getElementById('campo-motivo').value || '',
+                    statusSaude: document.getElementById('campo-saude').value || ''
                 };
 
                 const resposta = await fetch('../actions/animal.php', {

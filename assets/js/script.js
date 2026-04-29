@@ -242,11 +242,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (depTabsWrapper) depTabsWrapper.setAttribute('data-active', 'ongs');
 
-    // ===== CONSULTA ANIMAL - NAVBAR =====
+    // ===== NAVBAR FLUTUANTE (TELA INICIAL ONGS E CONSULTA ANIMAL) =====
     const navbar = document.getElementById('floatingNavbar');
     const menuToggle = document.getElementById('menuToggle');
     const profileToggle = document.getElementById('profileToggle');
     const profileDropdown = document.getElementById('profileDropdown');
+
+    if (navbar) {
+        window.addEventListener('scroll', function () {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+    }
 
     if (menuToggle && navbar) {
         menuToggle.addEventListener('click', function (event) {
@@ -292,17 +298,20 @@ document.addEventListener('DOMContentLoaded', function () {
             listaContainer.querySelectorAll('.list-row').forEach(row => row.remove());
 
             const inicio = (pagina - 1) * itensPorPagina;
-            dados.slice(inicio, inicio + itensPorPagina).forEach(animal => {
+            dados.slice(inicio, inicio + itensPorPagina).forEach((animal, index) => {
                 const id = animal.id_animal;
-                const entrada = animal.data_entrada || '---';
+                const numero = inicio + index + 1;
+                const entrada = animal.dataEntrada
+                    ? animal.dataEntrada.split('-').reverse().join('-')
+                    : '---';
                 const status = animal.status || 'disponivel';
                 const row = document.createElement('div');
                 row.className = 'list-row grid-layout';
                 row.innerHTML = `
                     <div class="col-checkbox"><input type="checkbox" class="custom-checkbox animal-check" data-id="${id}"></div>
-                    <div class="col-id font-bold">${id}</div>
+                    <div class="col-id font-bold">${numero}</div>
                     <div class="col-nome">
-                        <div class="animal-photo"></div>
+                        <div class="animal-photo"><img src="../assets/img/animais-de-estimacao.png" alt="Foto do animal"></div>
                         <span class="font-bold">${animal.nome}</span>
                     </div>
                     <div class="col-perfil font-bold">${animal.especie}<br>${animal.raca}</div>
