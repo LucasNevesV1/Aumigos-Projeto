@@ -17,13 +17,16 @@
             <h2>Registro de Animal</h2>
 
             <form id="registroAnimalForm">
+
+                <!-- STEP 1: Dados Básicos -->
                 <div id="step1" class="step active">
                     <div class="subtitle">Dados Básicos</div>
 
                     <div class="form-grid">
+
                         <div class="input-group">
                             <label>Nome</label>
-                            <input type="text" id="campo-nome" placeholder="">
+                            <input type="text" id="campo-nome" placeholder="Nome do animal">
                         </div>
 
                         <div class="input-group" style="justify-content: flex-end; padding-bottom: 5px;">
@@ -37,8 +40,8 @@
                             <label>Espécie</label>
                             <select id="campo-especie">
                                 <option value=""></option>
-                                <option value="cachorro">Cachorro</option>
-                                <option value="gato">Gato</option>
+                                <option value="Cachorro">Cachorro</option>
+                                <option value="Gato">Gato</option>
                             </select>
                         </div>
 
@@ -49,12 +52,12 @@
 
                         <div class="input-group">
                             <label>Raça</label>
-                            <input type="text" id="campo-raca">
+                            <input type="text" id="campo-raca" placeholder="Ex: Vira-lata, Labrador">
                         </div>
 
                         <div class="input-group">
                             <label>Cor</label>
-                            <input type="text" id="campo-cor">
+                            <input type="text" id="campo-cor" placeholder="Ex: Caramelo, Preto e branco">
                         </div>
 
                         <div class="input-group">
@@ -66,21 +69,37 @@
                         </div>
 
                         <div class="input-group">
-                            <label>Porte/Tamanho</label>
+                            <label>Porte</label>
                             <select id="campo-porte">
                                 <option value=""></option>
-                                <option value="pequeno">Pequeno</option>
-                                <option value="medio">Médio</option>
-                                <option value="grande">Grande</option>
+                                <option value="Pequeno">Pequeno</option>
+                                <option value="Médio">Médio</option>
+                                <option value="Grande">Grande</option>
                             </select>
                         </div>
+
+                        <div class="input-group">
+                            <label>Idade Aproximada (anos)</label>
+                            <input type="number" id="campo-idade" min="0" max="30" placeholder="Ex: 2">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Residente no Abrigo</label>
+                            <div class="gender-toggle">
+                                <button type="button" id="btn-abrigo-sim" class="active">Sim</button>
+                                <button type="button" id="btn-abrigo-nao">Não</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
+                <!-- STEP 2: Dados de Entrada -->
                 <div id="step2" class="step">
                     <div class="subtitle">Dados de Entrada</div>
 
                     <div class="form-grid">
+
                         <div class="input-group full-width" style="max-width: 48%;">
                             <label>Data de Entrada</label>
                             <input type="date" id="campo-entrada">
@@ -90,9 +109,10 @@
                             <label>Motivo da Entrada</label>
                             <select id="campo-motivo">
                                 <option value=""></option>
-                                <option value="resgate">Resgate</option>
-                                <option value="abandono">Abandono</option>
-                                <option value="devolucao">Devolução</option>
+                                <option value="Resgate">Resgate</option>
+                                <option value="Abandono">Abandono</option>
+                                <option value="Devolução">Devolução</option>
+                                <option value="Entrega voluntária">Entrega voluntária</option>
                             </select>
                         </div>
 
@@ -100,23 +120,25 @@
                             <label>Status de Saúde</label>
                             <select id="campo-saude">
                                 <option value=""></option>
-                                <option value="saudavel">Saudável</option>
-                                <option value="em_tratamento">Em Tratamento</option>
-                                <option value="critico">Crítico</option>
+                                <option value="Saudável">Saudável</option>
+                                <option value="Ferido">Ferido</option>
+                                <option value="Doente">Doente</option>
+                                <option value="Debilitado">Debilitado</option>
                             </select>
                         </div>
 
                         <div class="input-group full-width">
-                            <label>Descrição/Observações:</label>
-                            <textarea id="campo-descricao"></textarea>
+                            <label>Descrição / Observações</label>
+                            <textarea id="campo-descricao" placeholder="Descreva o estado do animal, histórico, comportamento..."></textarea>
                         </div>
+
                     </div>
                 </div>
+
             </form>
         </div>
 
-        <div class="modal-footer" id="modalFooter">
-        </div>
+        <div class="modal-footer" id="modalFooter"></div>
     </div>
 
     <script>
@@ -125,43 +147,78 @@
         const modalFooter = document.getElementById('modalFooter');
         const registroForm = document.getElementById('registroAnimalForm');
 
-        // Verifica se é modo edição
         const urlParams = new URLSearchParams(window.location.search);
         const editId = urlParams.get('id');
-        let animalEditando = null;
 
+        // Toggle genérico para grupos de botões
+        document.addEventListener('click', function (e) {
+            const parent = e.target.parentElement;
+            if (parent && parent.classList.contains('gender-toggle')) {
+                parent.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+        });
+
+        function getToggleValue(simId, naoId) {
+            return document.getElementById(simId).classList.contains('active');
+        }
+
+        function setToggle(simId, naoId, value) {
+            const isTrue = value == 1 || value === true || value === 'Sim';
+            document.getElementById(simId).classList.toggle('active', isTrue);
+            document.getElementById(naoId).classList.toggle('active', !isTrue);
+        }
+
+        function setSelect(id, value) {
+            const el = document.getElementById(id);
+            if (!el || !value) return;
+            // Busca case-insensitive
+            const lower = String(value).toLowerCase();
+            for (const opt of el.options) {
+                if (opt.value.toLowerCase() === lower) { el.value = opt.value; return; }
+            }
+            el.value = value; // fallback direto
+        }
+
+        // Carrega dados ao editar
         if (editId) {
             document.querySelector('h2').textContent = 'Editar Animal';
             fetch(`../actions/animal.php?action=listar`)
                 .then(r => r.json())
                 .then(lista => {
-                    animalEditando = lista.find(a => String(a.id_animal) === editId);
-                    if (!animalEditando) return;
+                    const a = lista.find(x => String(x.id_animal) === editId);
+                    if (!a) return;
 
-                    document.getElementById('campo-nome').value = animalEditando.nome || '';
-                    document.getElementById('campo-especie').value = animalEditando.especie || '';
-                    document.getElementById('campo-raca').value = animalEditando.raca || '';
-                    document.getElementById('campo-nascimento').value = animalEditando.dataNascimento || '';
-                    document.getElementById('campo-cor').value = animalEditando.cor || '';
-                    document.getElementById('campo-entrada').value = animalEditando.dataEntrada || '';
-                    document.getElementById('campo-motivo').value = animalEditando.motivoEntrada || '';
-                    document.getElementById('campo-saude').value = animalEditando.statusSaude || '';
-                    document.getElementById('campo-porte').value = animalEditando.tamanho || '';
-                    document.getElementById('campo-descricao').value = animalEditando.descricao || '';
+                    document.getElementById('campo-nome').value      = a.nome           || '';
+                    document.getElementById('campo-raca').value      = a.raca           || '';
+                    document.getElementById('campo-nascimento').value = a.dataNascimento || '';
+                    document.getElementById('campo-cor').value       = a.cor            || '';
+                    document.getElementById('campo-entrada').value   = a.dataEntrada    || '';
+                    document.getElementById('campo-descricao').value = a.descricaoEntrada || a.descricao || '';
+                    document.getElementById('campo-idade').value     = a.idadeAproximada != null ? a.idadeAproximada : '';
 
-                    if (animalEditando.genero === 'Macho') {
+                    setSelect('campo-especie', a.especie);
+                    setSelect('campo-porte',   a.tamanho);
+                    setSelect('campo-motivo',  a.motivoEntrada);
+                    setSelect('campo-saude',   a.statusSaude);
+
+                    // Gênero
+                    if (a.genero === 'Macho') {
                         document.getElementById('btn-femea').classList.remove('active');
                         document.getElementById('btn-macho').classList.add('active');
                     }
+
+                    // Residente no abrigo
+                    setToggle('btn-abrigo-sim', 'btn-abrigo-nao', a.residenteAbrigo);
                 });
         }
 
-        function showStep(stepNumber) {
-            if (stepNumber === 1) {
+        function showStep(n) {
+            if (n === 1) {
                 step1.classList.add('active');
                 step2.classList.remove('active');
                 modalFooter.innerHTML = `<button type="button" class="btn btn-primary" onclick="showStep(2)">Próximo</button>`;
-            } else if (stepNumber === 2) {
+            } else {
                 step1.classList.remove('active');
                 step2.classList.add('active');
                 modalFooter.innerHTML = `
@@ -171,50 +228,43 @@
             }
         }
 
-        document.addEventListener('click', function (e) {
-            if (e.target.parentElement && e.target.parentElement.classList.contains('gender-toggle')) {
-                const buttons = e.target.parentElement.querySelectorAll('button');
-                buttons.forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-            }
-        });
-
         registroForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-
             try {
-                const generoAtivo = step1.querySelector('.gender-toggle button.active');
+                const generoAtivo  = step1.querySelector('.gender-toggle:first-of-type button.active');
+                const abrigoAtivo  = document.getElementById('btn-abrigo-sim').classList.contains('active');
 
-                const dadosAnimal = {
-                    action: editId ? 'editar' : 'criar',
-                    id: editId ? Number(editId) : undefined,
-                    nome: document.getElementById('campo-nome').value || 'Sem nome',
-                    especie: document.getElementById('campo-especie').value || '',
-                    raca: document.getElementById('campo-raca').value || '',
-                    genero: generoAtivo ? generoAtivo.innerText : 'Fêmea',
-                    dataNascimento: document.getElementById('campo-nascimento').value || '',
-                    cor: document.getElementById('campo-cor').value || '',
-                    tamanho: document.getElementById('campo-porte').value || '',
-                    descricao: document.getElementById('campo-descricao').value || '',
-                    dataEntrada: document.getElementById('campo-entrada').value || '',
-                    motivoEntrada: document.getElementById('campo-motivo').value || '',
-                    statusSaude: document.getElementById('campo-saude').value || ''
+                const dados = {
+                    action:           editId ? 'editar' : 'criar',
+                    id:               editId ? Number(editId) : undefined,
+                    nome:             document.getElementById('campo-nome').value      || 'Sem nome',
+                    especie:          document.getElementById('campo-especie').value   || '',
+                    raca:             document.getElementById('campo-raca').value      || '',
+                    genero:           generoAtivo ? generoAtivo.innerText : 'Fêmea',
+                    dataNascimento:   document.getElementById('campo-nascimento').value || '',
+                    cor:              document.getElementById('campo-cor').value       || '',
+                    tamanho:          document.getElementById('campo-porte').value     || '',
+                    idadeAproximada:  document.getElementById('campo-idade').value !== '' ? Number(document.getElementById('campo-idade').value) : null,
+                    residenteAbrigo:  abrigoAtivo ? 1 : 0,
+                    descricao:        document.getElementById('campo-descricao').value || '',
+                    dataEntrada:      document.getElementById('campo-entrada').value   || '',
+                    motivoEntrada:    document.getElementById('campo-motivo').value    || '',
+                    statusSaude:      document.getElementById('campo-saude').value     || '',
                 };
 
-                const resposta = await fetch('../actions/animal.php', {
-                    method: 'POST',
+                const res  = await fetch('../actions/animal.php', {
+                    method:  'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dadosAnimal)
+                    body:    JSON.stringify(dados)
                 });
-                const resultado = await resposta.json();
+                const json = await res.json();
+                if (json.erro) throw new Error(json.erro);
 
-                if (resultado.erro) throw new Error(resultado.erro);
-
-                alert(editId ? 'Animal atualizado com sucesso!' : '🐾 Sucesso! Animal registrado no sistema.');
+                alert(editId ? 'Animal atualizado com sucesso!' : 'Animal registrado com sucesso!');
                 window.location.href = 'consulta-animal.html';
-            } catch (error) {
-                console.error("Erro ao salvar:", error);
-                alert("Ocorreu um erro ao salvar o animal.");
+            } catch (err) {
+                alert('Ocorreu um erro ao salvar o animal.');
+                console.error(err);
             }
         });
 

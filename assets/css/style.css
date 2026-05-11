@@ -1989,6 +1989,23 @@ body.dashboard-page {
     transform: translateY(0);
 }
 
+/* Nome da ONG no topo do menu */
+.menu-ong-nome {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #391F01;
+    padding: 10px 0 12px;
+    margin: 0;
+    border-bottom: 1px solid rgba(134, 132, 132, 0.4);
+    letter-spacing: 0.2px;
+    min-height: 1em;
+}
+
+.nav-consulta .menu-ong-nome {
+    color: #ffffff;
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
 /* Lista de Links */
 .menu-list {
     list-style: none;
@@ -2132,17 +2149,25 @@ body.dashboard-page {
     margin-top: 30px;
     width: 90% !important;
     /* Agora ela usa os EXATOS 90% do bloco bege */
-    max-width: 1450px !important;
+    max-width: 1650px !important;
     z-index: 10;
     border-radius: 10px;
 }
 
 .floating-navbar.nav-consulta {
     border-radius: 50px !important;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 60px);
+    max-width: 1650px;
+    box-shadow: none;
 }
 
 .floating-navbar.nav-consulta .navbar-content {
     border-radius: 50px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    padding: 15px 30px;
 }
 
 .floating-navbar.nav-consulta.menu-open,
@@ -2187,6 +2212,22 @@ body.dashboard-page {
 
 .nav-consulta .profile-dropdown-menu .menu-list a {
     color: #ffffff !important;
+}
+
+/* Nome da ONG na navbar verde (consulta) fica branco */
+.nav-consulta .profile-name-nav {
+    color: #ffffff;
+}
+
+/* Mantém visual verde mesmo no estado scrolled */
+.floating-navbar.scrolled.nav-consulta .navbar-content {
+    background-color: #0E6B65;
+}
+.floating-navbar.scrolled.nav-consulta .burger-line {
+    stroke: #ffffff;
+}
+.floating-navbar.scrolled.nav-consulta .profile-name-nav {
+    color: #ffffff;
 }
 
 /* 2. Obriga a Navbar da consulta a ficar com o canto RETO quando o perfil abre */
@@ -2258,8 +2299,8 @@ body.consulta-page {
 
 .consulta-container {
     width: 100%;
-    max-width: 1450px;
-    padding: 50px 50px 40px 50px;
+    max-width: 1700px;
+    padding: 60px 30px 40px 30px;
 
     flex-grow: 1;
     display: flex;
@@ -2286,7 +2327,7 @@ body.consulta-page {
 
 .toolbar-btns {
     display: flex;
-    gap: 10px;
+    gap: 14px;
     align-items: center;
 }
 
@@ -2294,8 +2335,8 @@ body.consulta-page {
 .btn-editar,
 .btn-excluir {
     border: none;
-    border-radius: 8px;
-    padding: 12px 24px;
+    border-radius: 10px;
+    padding: 13px 36px;
     font-weight: 700;
     font-size: 1rem;
     cursor: pointer;
@@ -2303,6 +2344,7 @@ body.consulta-page {
     text-decoration: none;
     display: inline-block;
     text-align: center;
+    min-width: 120px;
 }
 
 .btn-adicionar {
@@ -2358,7 +2400,7 @@ body.consulta-page {
     padding: 0 15px;
     background-color: white;
     /* Fundo branco interno */
-    width: 350px;
+    width: 454px;
 }
 
 .search-box input {
@@ -2878,6 +2920,7 @@ body.config-page {
     /* Verde principal */
     color: #ffffff;
     text-decoration: none;
+    width: 240px;
     font-size: 16px;
     font-weight: 700;
     padding: 12px 35px;
@@ -2885,6 +2928,7 @@ body.config-page {
     /* Cantos arredondados parecidos com a imagem */
     box-shadow: 0 4px 10px rgba(0, 168, 157, 0.2);
     transition: background-color 0.2s, transform 0.1s;
+    text-align: center;
 }
 
 .config-btn-voltar:hover {
@@ -2894,6 +2938,345 @@ body.config-page {
 
 .config-btn-voltar:active {
     transform: scale(0.98);
+}
+
+/* ===== CONSULTA ANIMAL - MODAL DE SOLICITAÇÃO ===== */
+
+.col-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.btn-solicitacao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #FFF3E0;
+    border: 1px solid #F89E19;
+    border-radius: 50%;
+    color: #E65100;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+.btn-solicitacao:hover { background: #FFE0B2; }
+
+.sol-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(34, 21, 10, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+.sol-overlay.open { display: flex; }
+
+.sol-modal {
+    background: #fff;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    animation: slideUp 0.25s ease;
+}
+@keyframes slideUp {
+    from { transform: translateY(24px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.sol-header {
+    background: #006666;
+    padding: 24px 28px;
+    color: #fff;
+    position: relative;
+}
+.sol-header h2 { font-size: 1.1rem; font-weight: 800; margin: 0; }
+.sol-header p  { font-size: 0.82rem; color: rgba(255,255,255,0.75); margin: 4px 0 0; }
+
+.sol-close {
+    position: absolute;
+    top: 16px; right: 20px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+}
+.sol-close:hover { background: rgba(255,255,255,0.35); }
+
+.sol-body {
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sol-field { display: flex; flex-direction: column; gap: 3px; }
+.sol-field label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #888;
+}
+.sol-field span {
+    font-size: 0.95rem;
+    color: #34210a;
+    font-weight: 600;
+}
+.sol-field a {
+    color: #00A89D;
+    text-decoration: none;
+    font-weight: 600;
+}
+.sol-field a:hover { text-decoration: underline; }
+
+.sol-mensagem {
+    background: #FCF9F2;
+    border: 1px solid #F0DFCC;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    color: #34210a;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.sol-divider {
+    height: 1px;
+    background: #F0DFCC;
+    margin: 4px 0;
+}
+
+.sol-footer {
+    background: #FCB063;
+    padding: 16px 28px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-reprovar {
+    padding: 10px 24px;
+    background: #fff;
+    color: #c0392b;
+    border: 2px solid #c0392b;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-reprovar:hover { background: #c0392b; color: #fff; }
+
+.btn-aprovar {
+    padding: 10px 24px;
+    background: #006666;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-aprovar:hover { background: #004d4d; }
+
+.btn-aprovar:disabled,
+.btn-reprovar:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ===== CONSULTA ANIMAL - HEADER, CARDS E FILTRO ===== */
+
+.consulta-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 10px;
+}
+.consulta-header-row .consulta-title {
+    margin-bottom: 0;
+}
+
+.consulta-stats {
+    display: flex;
+    gap: 12px;
+}
+.stat-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 17px 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-left: 4px solid #ccc;
+}
+.stat-card.stat-disponivel { border-left-color: #00A89D; }
+.stat-card.stat-tratamento { border-left-color: #F89E19; }
+.stat-card.stat-adotado    { border-left-color: #b39ddb; }
+.stat-num {
+    font-size: 22px;
+    font-weight: 800;
+    color: #34210a;
+    line-height: 1;
+}
+.stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.filter-wrapper {
+    position: relative;
+}
+.filter-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    padding: 8px;
+    z-index: 100;
+    min-width: 160px;
+    flex-direction: column;
+    gap: 2px;
+}
+.filter-dropdown.open { display: flex; }
+.filter-opt {
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #34210a;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.filter-opt:hover  { background: #f5f5f5; }
+.filter-opt.active { background: #e8f7f6; color: #00A89D; }
+.btn-icon--active  { background: #e8f7f6 !important; color: #00A89D !important; border-color: #00A89D !important; }
+
+.list-empty {
+    text-align: center;
+    padding: 48px 0;
+    color: #aaa;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ===== CONFIG - MELHORIAS DE FORMULÁRIO ===== */
+
+.config-select {
+    border: 1px solid #00A89D;
+    border-radius: 30px;
+    padding: 14px 20px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    color: #333;
+    background-color: #fff;
+    appearance: none;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+    width: 100%;
+}
+
+.config-select:focus {
+    box-shadow: 0 0 0 3px rgba(0, 168, 157, 0.15);
+}
+
+.config-input-disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: #888;
+}
+
+.config-full-width {
+    grid-column: 1 / -1;
+}
+
+.config-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #eaeaea;
+}
+
+.config-btn-salvar {
+    background-color: #00A89D;
+    color: #fff;
+    border: none;
+    padding: 13px 36px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+
+.config-btn-salvar:hover {
+    background-color: #008a80;
+}
+
+.config-btn-salvar:active {
+    transform: scale(0.97);
+}
+
+.config-btn-salvar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.config-feedback {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0;
+    transition: opacity 0.3s;
+}
+
+.config-feedback.sucesso { color: #00875a; }
+.config-feedback.erro    { color: #c0392b; }
+
+.config-section-label {
+    font-size: 13px;
+    font-weight: 800;
+    color: #00A89D;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 0 0 18px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e8f7f6;
+}
+
+.config-campo-apoiador,
+.config-campo-nao-ong {
+    display: none;
 }
 
 /* ======================================

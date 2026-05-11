@@ -35,6 +35,11 @@ $_SESSION['nome']         = $usuario['nome'];
 $_SESSION['id_tipo']      = $usuario['id_tipoUsuario'];
 $_SESSION['perfil']       = $usuario['descricaoUsuario'];
 
-// Redireciona para o dashboard
-header('Location: ../pages/tela-inicial-ongs.html');
+// Redireciona conforme o tipo de conta
+$destino = match((int) $usuario['id_tipoUsuario']) {
+    2       => '../pages/tela-inicial-ongs.html',  // ONG
+    3       => '../pages/interesse-adocao.html',   // Apoiador
+    default => '../pages/interesse-adocao.html',
+};
+header('Location: ' . $destino);
 exit;

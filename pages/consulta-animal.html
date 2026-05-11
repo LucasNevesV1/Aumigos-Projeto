@@ -22,6 +22,8 @@
             </button>
 
             <img src="../assets/img/Prancheta 4.png" alt="AuMigos Logo" class="navbar-logo" id="navLogo">
+
+            <span class="profile-name-nav" id="navbarOngNome"></span>
         </div>
 
         <div class="dropdown-menu" id="mainDropdown">
@@ -45,7 +47,27 @@
     </nav>
 
     <div class="consulta-container">
-        <h1 class="consulta-title">Consulta de Animais</h1>
+        <div class="consulta-header-row">
+            <h1 class="consulta-title">Consulta de Animais</h1>
+            <div class="consulta-stats">
+                <div class="stat-card">
+                    <span class="stat-num" id="statTotal">0</span>
+                    <span class="stat-label">Total</span>
+                </div>
+                <div class="stat-card stat-disponivel">
+                    <span class="stat-num" id="statDisponivel">0</span>
+                    <span class="stat-label">Disponíveis</span>
+                </div>
+                <div class="stat-card stat-tratamento">
+                    <span class="stat-num" id="statTratamento">0</span>
+                    <span class="stat-label">Tratamento</span>
+                </div>
+                <div class="stat-card stat-adotado">
+                    <span class="stat-num" id="statAdotado">0</span>
+                    <span class="stat-label">Adotados</span>
+                </div>
+            </div>
+        </div>
 
         <div class="consulta-toolbar">
             <div class="toolbar-btns">
@@ -55,11 +77,20 @@
             </div>
 
             <div class="toolbar-actions">
-                <button class="btn-icon">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                    </svg>
-                </button>
+                <div class="filter-wrapper">
+                    <button class="btn-icon" id="btnFiltro" title="Filtrar por status">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                        </svg>
+                    </button>
+                    <div class="filter-dropdown" id="filterDropdown">
+                        <button class="filter-opt active" data-status="">Todos</button>
+                        <button class="filter-opt" data-status="disponivel">Disponível</button>
+                        <button class="filter-opt" data-status="tratamento">Em tratamento</button>
+                        <button class="filter-opt" data-status="processo">Em processo</button>
+                        <button class="filter-opt" data-status="adotado">Adotado</button>
+                    </div>
+                </div>
 
                 <div class="search-box">
                     <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor"
@@ -67,8 +98,8 @@
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    <input type="text" placeholder="">
-                    <button class="clear-icon">X</button>
+                    <input type="text" id="searchInput" placeholder="Buscar por nome, raça ou espécie...">
+                    <button class="clear-icon" id="clearSearch">X</button>
                 </div>
             </div>
         </div>
@@ -109,6 +140,45 @@
         </div>
 
     </div>
+    </div>
+
+    <!-- ── Modal de Solicitação de Adoção ── -->
+    <div class="sol-overlay" id="solOverlay">
+        <div class="sol-modal">
+            <div class="sol-header">
+                <h2>Solicitação de Adoção</h2>
+                <p id="sol-animal-label">Carregando...</p>
+                <button class="sol-close" id="solClose">&#x2715;</button>
+            </div>
+            <div class="sol-body">
+                <div class="sol-field">
+                    <label>Nome do adotante</label>
+                    <span id="sol-nome">—</span>
+                </div>
+                <div class="sol-divider"></div>
+                <div class="sol-field">
+                    <label>E-mail</label>
+                    <a id="sol-email" href="#">—</a>
+                </div>
+                <div class="sol-field">
+                    <label>Telefone / WhatsApp</label>
+                    <a id="sol-telefone" href="#">—</a>
+                </div>
+                <div class="sol-divider"></div>
+                <div class="sol-field">
+                    <label>Mensagem do adotante</label>
+                    <div class="sol-mensagem" id="sol-mensagem">—</div>
+                </div>
+                <div class="sol-field">
+                    <label>Data da solicitação</label>
+                    <span id="sol-data">—</span>
+                </div>
+            </div>
+            <div class="sol-footer">
+                <button class="btn-reprovar" id="btnReprovar">Reprovar</button>
+                <button class="btn-aprovar"  id="btnAprovar">Aprovar adoção</button>
+            </div>
+        </div>
     </div>
 
 </body>

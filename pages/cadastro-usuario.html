@@ -68,6 +68,34 @@
                     maxlength="15"
                     class="auth-input auth-input--filled">
 
+                <input
+                    type="date"
+                    name="dataNascimento"
+                    id="cadastro-data-nascimento"
+                    class="auth-input auth-input--filled cadastro-apoiador-field"
+                    style="display:none">
+
+                <input
+                    type="text"
+                    name="profissao"
+                    id="cadastro-profissao"
+                    placeholder="Profissão"
+                    autocomplete="organization-title"
+                    class="auth-input auth-input--filled cadastro-apoiador-field"
+                    style="display:none">
+
+                <select
+                    name="genero"
+                    id="cadastro-genero"
+                    class="auth-input auth-input--filled auth-select cadastro-apoiador-field"
+                    style="display:none">
+                    <option value="">Gênero</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Outro">Outro</option>
+                    <option value="Prefiro não dizer">Prefiro não dizer</option>
+                </select>
+
                 <div class="auth-password-wrapper">
                     <input
                         type="password"
