@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../config/conexao.php';
+require_once '../config/auditoria.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../pages/cadastro-usuario.html');
@@ -60,6 +61,9 @@ $stmt = $pdo->prepare('
     VALUES (?, ?, ?, ?, ?, ?, CURDATE(), ?, ?, ?)
 ');
 $stmt->execute([$nome, $documento, $email, $telefone, $senha_hash, $id_tipo, $dataNascimento, $profissao, $genero]);
+$id_novo = (int) $pdo->lastInsertId();
+
+registrarLog($pdo, 'CADASTRO_USUARIO', 'usuario', $id_novo, "Novo cadastro: $nome (perfil: $perfil)");
 
 header('Location: ../pages/login-usuario.html?cadastro=sucesso');
 exit;

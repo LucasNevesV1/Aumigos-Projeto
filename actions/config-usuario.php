@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../config/conexao.php';
+require_once '../config/auditoria.php';
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['id_usuario'])) {
@@ -103,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $_SESSION['nome'] = $nome;
+    registrarLog($pdo, 'EDICAO_PERFIL', 'usuario', $id, "Perfil atualizado: $nome");
     echo json_encode(['ok' => true]);
     exit;
 }

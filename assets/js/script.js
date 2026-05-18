@@ -149,6 +149,14 @@ document.addEventListener('DOMContentLoaded', function () {
             msg.textContent = 'E-mail ou senha incorretos.';
             loginForm.insertAdjacentElement('beforebegin', msg);
         }
+
+        if (loginParams.get('erro') === 'conta_desativada') {
+            const emailDigitado = encodeURIComponent(document.getElementById('email')?.value ?? '');
+            const msg = document.createElement('p');
+            msg.className = 'auth-feedback auth-feedback--erro';
+            msg.innerHTML = 'Esta conta foi desativada. <a href="conta-desativada.html?email=' + emailDigitado + '" style="color:inherit;font-weight:700;text-decoration:underline">Solicitar reativação</a>.';
+            loginForm.insertAdjacentElement('beforebegin', msg);
+        }
     }
 
     // ===== ESQUECI SENHA - FEEDBACK =====

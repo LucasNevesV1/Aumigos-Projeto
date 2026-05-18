@@ -2,6 +2,7 @@
 header('Content-Type: application/json');
 session_start();
 require_once '../config/conexao.php';
+require_once '../config/auditoria.php';
 
 if (!isset($_SESSION['id_usuario'])) {
     echo json_encode(['erro' => 'Não autorizado']);
@@ -88,8 +89,10 @@ function registrarInteresse($pdo, $data, $id_usuario) {
             VALUES (?, NOW(), ?, ?, ?)
         ");
         $ins->execute([$id_usuario, $id_animal, $idStatusPendente, $mensagem]);
+        $id_adocao = (int) $pdo->lastInsertId();
 
         $pdo->commit();
+        registrarLog($pdo, 'INTERESSE_ADOCAO', 'adocao', $id_adocao, "Solicitação de adoção para animal ID: $id_animal");
         echo json_encode(['ok' => true]);
 
     } catch (Exception $e) {
