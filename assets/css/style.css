@@ -3035,6 +3035,49 @@ body.config-page {
     letter-spacing: 0.5px;
 }
 
+/* =========================================
+   1. BOTÃO "NOVO LANÇAMENTO" LARANJA
+   ========================================= */
+#btnAbrirModal {
+    background-color: #F89E19 !important; /* Laranja AuMigos */
+    color: #ffffff !important;
+}
+
+#btnAbrirModal:hover {
+    background-color: #e07a25 !important; /* Laranja um pouco mais escuro no hover */
+}
+
+/* =========================================
+   NAVBAR (TEMA CONSULTA/FINANCEIRO) LARANJA
+   ========================================= */
+/* Altera o fundo da barra principal e do conteúdo interno */
+.nav-consulta,
+.nav-consulta .navbar-content {
+    background-color: #F89E19 !important; /* Laranja AuMigos */
+}
+
+/* Altera o fundo dos menus que descem ao clicar (Hamburguer e Perfil) */
+.nav-consulta .dropdown-menu,
+.nav-consulta .profile-dropdown-menu {
+    background-color: #F89E19 !important;
+}
+
+/* Opcional: Para dar um contraste melhor no laranja, 
+   podemos garantir que as letras fiquem brancas e em negrito */
+.nav-consulta .menu-list a {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* Cor do botão de sair dentro do menu laranja */
+.nav-consulta .menu-sair {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+
+.nav-consulta .menu-sair:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
 
 /* ======================================
    RESPONSIVIDADE
