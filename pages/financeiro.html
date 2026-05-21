@@ -7,111 +7,6 @@
     <title>AuMigos - Financeiro</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <script src="../assets/js/script.js" defer></script>
-    <style>
-        /* Estilos específicos da página financeira para manter o grid alinhado */
-        .grid-layout-financeiro {
-            display: grid;
-            grid-template-columns: 40px 60px 1.2fr 2fr 1.2fr 1fr 1.2fr;
-            gap: 15px;
-            padding: 18px 20px;
-            align-items: center;
-        }
-
-        .list-item.grid-layout-financeiro {
-            border: 1px solid #F0DFCC;
-            border-radius: 8px;
-            background-color: #ffffff;
-            font-size: 0.9rem;
-            color: #34210a;
-            margin-bottom: 8px;
-        }
-
-        /* Cores dos valores para facilitar a leitura rápida */
-        .valor-entrada {
-            color: #2E7D32;
-            font-weight: 700;
-        }
-
-        .valor-saida {
-            color: #C62828;
-            font-weight: 700;
-        }
-
-        /* Badges de Tipo */
-        .badge-tipo {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-align: center;
-            display: inline-block;
-            width: fit-content;
-        }
-
-        .badge-entrada {
-            background-color: #C8E6C9;
-            color: #2E7D32;
-        }
-
-        .badge-saida {
-            background-color: #FFCDD2;
-            color: #C62828;
-        }
-
-        /* Customização do Modal para se integrar com o layout geral */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Ajuste do botão de tipo dentro do modal (estilo toggle) */
-        .tipo-toggle {
-            display: flex;
-            border: 1px solid #F6D6B3;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .tipo-toggle .btn-toggle {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            background: white;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: #34210a;
-            transition: background 0.3s;
-        }
-
-        .tipo-toggle .btn-toggle.active-entrada {
-            background-color: #C8E6C9;
-            color: #2E7D32;
-            font-weight: bold;
-        }
-
-        .tipo-toggle .btn-toggle.active-saida {
-            background-color: #FFCDD2;
-            color: #C62828;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 <body class="consulta-page">
@@ -151,49 +46,54 @@
     <div class="consulta-container">
         <h1 class="consulta-title" style="margin-bottom: 25px;">Controle Financeiro</h1>
 
-        <section class="estoque-stats-container" style="margin-top: 0; margin-bottom: 25px;">
-            <div class="estoque-stat-card">
-                <h2>R$ 4.850</h2>
-                <p>Saldo Atual<br><span class="text-verde">Em Caixa</span></p>
-            </div>
-            <div class="estoque-stat-card">
-                <h2>R$ 3.200</h2>
-                <p>Entradas<br><span>Este Mês</span></p>
-            </div>
-            <div class="estoque-stat-card">
-                <h2>R$ 1.350</h2>
-                <p>Saídas<br><span class="text-alerta">Este Mês</span></p>
-            </div>
-            <div class="estoque-stat-card">
-                <h2>R$ 1.850</h2>
-                <p>Balanço Geral<br><span class="text-verde">Superávit</span></p>
-            </div>
-        </section>
+        <div class="dashboard-top-wrapper">
+            
+            <section class="estoque-stats-container">
+                <div class="estoque-stat-card">
+                    <h2>R$ 4.850</h2>
+                    <p>Saldo Atual<br><span class="text-verde">Em Caixa</span></p>
+                </div>
+                <div class="estoque-stat-card">
+                    <h2>R$ 3.200</h2>
+                    <p>Entradas<br><span>Este Mês</span></p>
+                </div>
+                <div class="estoque-stat-card">
+                    <h2>R$ 1.350</h2>
+                    <p>Saídas<br><span class="text-alerta">Este Mês</span></p>
+                </div>
+                <div class="estoque-stat-card">
+                    <h2>R$ 1.850</h2>
+                    <p>Balanço Geral<br><span class="text-verde">Superávit</span></p>
+                </div>
+            </section>
 
-        <section class="financial-section" style="padding: 0 0 35px 0;">
-            <div class="financial-layout">
-                <div class="financial-chart" style="min-height: 220px;">
-                    <div class="financial-chart__title">Fluxo de Caixa Mensal (Entradas vs Saídas)</div>
-                    <div class="financial-chart__placeholder" style="display: flex; align-items: flex-end; justify-content: space-around; padding: 15px;">
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                            <div style="width: 35px; height: 110px; background-color: #4ECB82; border-radius: 4px 4px 0 0;"></div>
-                            <div style="width: 35px; height: 55px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;"></div>
-                            <span style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Março</span>
-                        </div>
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                            <div style="width: 35px; height: 135px; background-color: #4ECB82; border-radius: 4px 4px 0 0;"></div>
-                            <div style="width: 35px; height: 70px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;"></div>
-                            <span style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Abril</span>
-                        </div>
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                            <div style="width: 35px; height: 150px; background-color: #4ECB82; border-radius: 4px 4px 0 0;"></div>
-                            <div style="width: 35px; height: 60px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;"></div>
-                            <span style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Maio</span>
+            <section class="financial-section">
+                <div class="financial-layout">
+                    <div class="financial-chart">
+                        <div class="financial-chart__title">Fluxo de Caixa Mensal (Entradas vs Saídas)</div>
+                        <div class="financial-chart__placeholder" style="display: flex; align-items: flex-end; justify-content: space-around; padding: 15px; height: 100%;">
+                            <!-- Barras do gráfico mantidas com style inline pois são "desenhos" do layout -->
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                                <div style="width: 35px; height: 110px; background-color: #4ECB82; border-radius: 4px 4px 0 0;"></div>
+                                <div style="width: 35px; height: 55px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;"></div>
+                                <span style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Março</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                                <div style="width: 35px; height: 135px; background-color: #4ECB82; border-radius: 4px 4px 0 0;"></div>
+                                <div style="width: 35px; height: 70px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;"></div>
+                                <span style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Abril</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                                <div style="width: 35px; height: 150px; background-color: #4ECB82; border-radius: 4px 4px 0 0;"></div>
+                                <div style="width: 35px; height: 60px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;"></div>
+                                <span style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Maio</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+        </div>
 
         <div class="consulta-toolbar">
             <div class="toolbar-actions">
@@ -352,7 +252,6 @@
 
             // Abrir e Fechar Modal
             const abrirModal = () => {
-                // Seta a data de hoje automaticamente por conveniência visual
                 document.getElementById('fin-data').valueAsDate = new Date();
                 modal.classList.add('active');
             };
