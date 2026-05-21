@@ -9,8 +9,7 @@
     <script src="../assets/js/script.js" defer></script>
 </head>
 
-<body class="consulta-page">
-
+<body class="consulta-page page-financeiro">
     <nav class="floating-navbar nav-consulta" id="floatingNavbar">
         <div class="navbar-content">
             <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
@@ -47,7 +46,7 @@
         <h1 class="consulta-title" style="margin-bottom: 25px;">Controle Financeiro</h1>
 
         <div class="dashboard-top-wrapper">
-            
+
             <section class="estoque-stats-container">
                 <div class="estoque-stat-card">
                     <h2>R$ 4.850</h2>
@@ -71,22 +70,38 @@
                 <div class="financial-layout">
                     <div class="financial-chart">
                         <div class="financial-chart__title">Fluxo de Caixa Mensal (Entradas vs Saídas)</div>
-                        <div class="financial-chart__placeholder" style="display: flex; align-items: flex-end; justify-content: space-around; padding: 15px; height: 100%;">
+                        <div class="financial-chart__placeholder"
+                            style="display: flex; align-items: flex-end; justify-content: space-around; padding: 15px; height: 100%;">
                             <!-- Barras do gráfico mantidas com style inline pois são "desenhos" do layout -->
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                <div style="width: 35px; height: 110px; background-color: #4ECB82; border-radius: 4px 4px 0 0;"></div>
-                                <div style="width: 35px; height: 55px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;"></div>
-                                <span style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Março</span>
+                                <div
+                                    style="width: 35px; height: 110px; background-color: #4ECB82; border-radius: 4px 4px 0 0;">
+                                </div>
+                                <div
+                                    style="width: 35px; height: 55px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;">
+                                </div>
+                                <span
+                                    style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Março</span>
                             </div>
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                <div style="width: 35px; height: 135px; background-color: #4ECB82; border-radius: 4px 4px 0 0;"></div>
-                                <div style="width: 35px; height: 70px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;"></div>
-                                <span style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Abril</span>
+                                <div
+                                    style="width: 35px; height: 135px; background-color: #4ECB82; border-radius: 4px 4px 0 0;">
+                                </div>
+                                <div
+                                    style="width: 35px; height: 70px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;">
+                                </div>
+                                <span
+                                    style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Abril</span>
                             </div>
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                <div style="width: 35px; height: 150px; background-color: #4ECB82; border-radius: 4px 4px 0 0;"></div>
-                                <div style="width: 35px; height: 60px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;"></div>
-                                <span style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Maio</span>
+                                <div
+                                    style="width: 35px; height: 150px; background-color: #4ECB82; border-radius: 4px 4px 0 0;">
+                                </div>
+                                <div
+                                    style="width: 35px; height: 60px; background-color: #FC6662; border-radius: 4px 4px 0 0; margin-top: -5px;">
+                                </div>
+                                <span
+                                    style="font-size: 11px; font-weight: bold; color: #34210a; margin-top: 5px;">Maio</span>
                             </div>
                         </div>
                     </div>
@@ -98,7 +113,8 @@
         <div class="consulta-toolbar">
             <div class="toolbar-actions">
                 <div class="search-box">
-                    <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                    <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor"
+                        stroke-width="2" fill="none">
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
@@ -190,16 +206,17 @@
     <div class="modal-overlay" id="modalFinanceiro">
         <div class="modal-container" style="min-height: auto;">
             <button class="btn-close" id="btnFecharModal">X</button>
-            
+
             <div class="form-content">
                 <h2>Novo Lançamento</h2>
                 <p class="subtitle">Insira os dados da movimentação financeira no caixa do abrigo.</p>
-                
+
                 <form class="form-grid" onsubmit="event.preventDefault();">
                     <div class="input-group full-width">
                         <label>Tipo de Movimentação</label>
                         <div class="tipo-toggle">
-                            <button type="button" class="btn-toggle active-entrada" id="toggleEntrada">Entrada (Receita)</button>
+                            <button type="button" class="btn-toggle active-entrada" id="toggleEntrada">Entrada
+                                (Receita)</button>
                             <button type="button" class="btn-toggle" id="toggleSaida">Saída (Despesa)</button>
                         </div>
                     </div>
@@ -233,7 +250,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="btnCancelar" style="margin-right: 10px;">Cancelar</button>
+                <button type="button" class="btn btn-secondary" id="btnCancelar"
+                    style="margin-right: 10px;">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="btnSalvar">Salvar Lançamento</button>
             </div>
         </div>

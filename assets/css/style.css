@@ -3039,27 +3039,27 @@ body.config-page {
    ESTILOS ESPECÍFICOS - PÁGINA FINANCEIRO
    ========================================================================== */
 
-/* Força a Navbar, o Conteúdo Interno e os Menus para Laranja */
-#floatingNavbar,
-#floatingNavbar .navbar-content,
-#floatingNavbar .dropdown-menu,
-#floatingNavbar .profile-dropdown-menu {
+/* 1. Cores exclusivas (Laranja) APENAS na página Financeiro */
+.page-financeiro #floatingNavbar,
+.page-financeiro #floatingNavbar .navbar-content,
+.page-financeiro #floatingNavbar .dropdown-menu,
+.page-financeiro #floatingNavbar .profile-dropdown-menu {
     background-color: #FF8C00 !important; 
     background: #FF8C00 !important;
 }
 
-.btn-adicionar {
+.page-financeiro .btn-adicionar {
     background-color: #FF8C00 !important;
     color: #ffffff !important;
     border: none;
 }
 
-.btn-adicionar:hover {
+.page-financeiro .btn-adicionar:hover {
     background-color: #E67E00 !important;
 }
 
-/* Layout do Topo (Gráfico e Cards Lado a Lado) */
-.dashboard-top-wrapper {
+/* 2. Layout do Topo exclusivo do Financeiro (Gráfico e Cards Lado a Lado) */
+.page-financeiro .dashboard-top-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
@@ -3067,13 +3067,15 @@ body.config-page {
     align-items: stretch;
 }
 
-.estoque-stats-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+/* Transforma os cards do financeiro em grid 2x2 SEM quebrar o flex original do Estoque */
+.page-financeiro .estoque-stats-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 15px !important;
     margin: 0 !important;
 }
 
+/* 3. Componentes que só existem no Financeiro (sem risco de conflito) */
 .financial-section {
     padding: 0 !important;
     display: flex;
@@ -3086,11 +3088,6 @@ body.config-page {
     flex-grow: 1;
 }
 
-.financial-chart {
-   background-color: #ffffff;
-}
-
-/* Grid da Listagem Financeira */
 .grid-layout-financeiro {
     display: grid;
     grid-template-columns: 40px 60px 1.2fr 2fr 1.2fr 1fr 1.2fr;
@@ -3108,7 +3105,6 @@ body.config-page {
     margin-bottom: 8px;
 }
 
-/* Cores dos Valores e Badges */
 .valor-entrada {
     color: #2E7D32;
     font-weight: 700;
@@ -3139,7 +3135,7 @@ body.config-page {
     color: #C62828;
 }
 
-/* Modal e Toggle Financeiro */
+/* Modal do Financeiro */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -3191,6 +3187,7 @@ body.config-page {
     color: #C62828;
     font-weight: bold;
 }
+
 /* ======================================
    RESPONSIVIDADE
    ====================================== */
