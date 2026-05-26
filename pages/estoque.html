@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuMigos - Estoque</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/script.js" defer></script>
+</head>
+
+<body class="consulta-page">
+
+    <nav class="floating-navbar nav-consulta" id="floatingNavbar">
+        <div class="navbar-content">
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path class="burger-line" d="M3 6H21" stroke="#391F01" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 12H21" stroke="#391F01" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 18H21" stroke="#391F01" stroke-width="3" stroke-linecap="round" />
+                </svg>
+            </button>
+
+            <img src="../assets/img/Prancheta 4.png" alt="AuMigos Logo" class="navbar-logo" id="navLogo">
+        </div>
+
+        <div class="dropdown-menu" id="mainDropdown">
+            <ul class="menu-list">
+                <li><a href="tela-inicial-ongs.html">Tela inicial</a></li>
+                <li><a href="consulta-animal.html">Animais do Abrigo</a></li>
+                <li><a href="estoque.html">Estoque</a></li>
+                <li><a href="#">Financeiro</a></li>
+                <li><a href="tela_config_usuario.html">Configurações</a></li>
+            </ul>
+            <a href="../index.html" class="menu-sair">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Sair da conta
+            </a>
+        </div>
+    </nav>
+
+
+
+    <div class="consulta-container">
+        <h1 class="consulta-title titulo-estoque">Estoque de Insumos</h1>
+
+        <section class="estoque-stats-container">
+            <div class="estoque-stat-card">
+                <h2>38</h2>
+                <p>itens<br><span>cadastrados</span></p>
+            </div>
+
+            <div class="estoque-stat-card">
+                <h2>5</h2>
+                <p>itens em<br><span class="text-alerta">alerta</span></p>
+            </div>
+
+            <div class="estoque-stat-card">
+                <h2>2</h2>
+                <p>insumos<br><span class="text-critico">críticos</span></p>
+            </div>
+
+            <div class="estoque-stat-card">
+                <h2>4</h2>
+                <p>categorias<br><span class="text-verde">ativas</span></p>
+            </div>
+        </section>
+
+        <div class="consulta-toolbar">
+
+            <div class="toolbar-actions">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor"
+                        stroke-width="2" fill="none">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" placeholder="Buscar item no estoque...">
+                    <button class="clear-icon">X</button>
+                </div>
+
+                <button class="btn-icon" title="Filtrar">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="toolbar-btns">
+                <a href="#" class="btn-adicionar">Adicionar</a>
+
+            </div>
+
+        </div>
+
+        
+
+        <div class="consulta-list">
+
+            <div class="list-header grid-layout">
+                <div class="col-checkbox">
+                    <input type="checkbox" class="custom-checkbox">
+                </div>
+                <div class="col-id">#</div>
+                <div class="col-nome">Item</div>
+                <div class="col-categoria">Categoria</div>
+                <div class="col-quantidade">Quantidade</div>
+                <div class="col-unidade">Unidade de Medida</div>
+                <div class="col-status">Status</div>
+            </div>
+
+            <div class="list-item grid-layout-estoque">
+                <div class="col-checkbox"><input type="checkbox" class="custom-checkbox"></div>
+                <div class="col-id">001</div>
+                <div class="col-nome" style="font-weight: 600;">Ração Golden Premium 15kg</div>
+                <div class="col-categoria">Ração</div>
+                <div class="col-quantidade">12</div>
+                <div class="col-unidade">Sacos</div>
+                <div class="col-status" style="color: #38A169; font-weight: bold;">Estável</div>
+            </div>
+
+        </div>
+
+        <div class="pagination">
+            <button class="page-btn" title="Página Anterior">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <span class="page-dots">...</span>
+            <button class="page-btn">5</button>
+
+            <button class="page-btn" title="Próxima Página">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

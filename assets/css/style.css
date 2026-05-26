@@ -3279,6 +3279,298 @@ body.config-page {
     display: none;
 }
 
+/* =========================================
+   ESTILOS DA PÁGINA DE ESTOQUE
+   ========================================= */
+
+/* Ajuste no header para alinhar o botão à direita */
+.flex-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.titulo-estoque {
+    margin-bottom: 5px; /* Ajuste para o valor menor que pretender */
+}
+
+.btn-adicionar {
+    background-color: #005a50; /* Cor primária do AuMigos */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.btn-adicionar:hover {
+    background-color: #e07a25;
+}
+
+/* Controles (Busca e Abas) */
+.estoque-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.grid-layout-estoque {
+    display: grid;
+    /* Ajuste as larguras conforme a necessidade dos dados do estoque */
+    grid-template-columns: 40px 60px 2fr 1fr 1fr 1.5fr 1fr;
+    gap: 15px;
+    padding: 24px 20px;
+    align-items: center;
+}
+
+.list-item.grid-layout-estoque {
+    border: 1px solid #F0DFCC;
+    border-radius: 8px;
+    background-color: #ffffff; /* <-- MUDE ESTA COR (ex: #FCF9F2 para o creme do fundo) */
+    font-size: 0.9rem;
+    color: #34210a;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    margin-bottom: 8px; /* Adiciona um espaço entre os itens se o design pedir */
+}
+
+/* ============================================
+   AUMIGOS - CONTADORES DE ESTOQUE (CARDS)
+   ============================================ */
+
+.estoque-stats-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 30px; /* <--- ADICIONE ESTA LINHA PARA EMPURRAR PARA BAIXO */
+    margin-bottom: 35px; 
+}
+.estoque-stat-card {
+    background-color: #ffffff;
+    border: 1px solid #F0DFCC; /* Reaproveita a cor da borda da tabela */
+    border-radius: 12px;
+    padding: 20px 25px;
+    flex: 1; /* Garante que os 4 cartões tenham exatamente a mesma largura */
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efeito ao passar o rato por cima */
+.estoque-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+}
+
+.estoque-stat-card h2 {
+    font-size: 2.8rem; /* Tamanho ajustado, não tão gigante como no ecrã inicial */
+    color: #34210a;
+    line-height: 1;
+    margin: 0;
+}
+
+.estoque-stat-card p {
+    font-size: 0.95rem;
+    color: #34210a;
+    line-height: 1.3;
+    font-weight: 700;
+    margin: 0;
+}
+
+.estoque-stat-card p span {
+    font-weight: 500;
+    color: #888888;
+}
+
+/* --- Cores de Destaque para os Status --- */
+.estoque-stat-card .text-alerta {
+    color: #F89E19; /* Laranja da paleta AuMigos */
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.80rem;
+    letter-spacing: 0.5px;
+}
+
+.estoque-stat-card .text-critico {
+    color: #e05252; /* Vermelho (mesmo do botão excluir) */
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.80rem;
+    letter-spacing: 0.5px;
+}
+
+.estoque-stat-card .text-verde {
+    color: #00A89D; /* Verde primário da marca */
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.80rem;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   ESTILOS ESPECÍFICOS - PÁGINA FINANCEIRO
+   ========================================================================== */
+
+/* 1. Cores exclusivas (Laranja) APENAS na página Financeiro */
+.page-financeiro #floatingNavbar,
+.page-financeiro #floatingNavbar .navbar-content,
+.page-financeiro #floatingNavbar .dropdown-menu,
+.page-financeiro #floatingNavbar .profile-dropdown-menu {
+    background-color: #FF8C00 !important; 
+    background: #FF8C00 !important;
+}
+
+.page-financeiro .btn-adicionar {
+    background-color: #FF8C00 !important;
+    color: #ffffff !important;
+    border: none;
+}
+
+.page-financeiro .btn-adicionar:hover {
+    background-color: #E67E00 !important;
+}
+
+/* 2. Layout do Topo exclusivo do Financeiro (Gráfico e Cards Lado a Lado) */
+.page-financeiro .dashboard-top-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+    align-items: stretch;
+}
+
+/* Transforma os cards do financeiro em grid 2x2 SEM quebrar o flex original do Estoque */
+.page-financeiro .estoque-stats-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 15px !important;
+    margin: 0 !important;
+}
+
+/* 3. Componentes que só existem no Financeiro (sem risco de conflito) */
+.financial-section {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.financial-layout, .financial-chart {
+    height: 100%;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.grid-layout-financeiro {
+    display: grid;
+    grid-template-columns: 40px 60px 1.2fr 2fr 1.2fr 1fr 1.2fr;
+    gap: 15px;
+    padding: 18px 20px;
+    align-items: center;
+}
+
+.list-item.grid-layout-financeiro {
+    border: 1px solid #F0DFCC;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 0.9rem;
+    color: #34210a;
+    margin-bottom: 8px;
+}
+
+.valor-entrada {
+    color: #2E7D32;
+    font-weight: 700;
+}
+
+.valor-saida {
+    color: #C62828;
+    font-weight: 700;
+}
+
+.badge-tipo {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: center;
+    display: inline-block;
+    width: fit-content;
+}
+
+.badge-entrada {
+    background-color: #C8E6C9;
+    color: #2E7D32;
+}
+
+.badge-saida {
+    background-color: #FFCDD2;
+    color: #C62828;
+}
+
+/* Modal do Financeiro */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tipo-toggle {
+    display: flex;
+    border: 1px solid #F6D6B3;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tipo-toggle .btn-toggle {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #34210a;
+    transition: background 0.3s;
+}
+
+.tipo-toggle .btn-toggle.active-entrada {
+    background-color: #C8E6C9;
+    color: #2E7D32;
+    font-weight: bold;
+}
+
+.tipo-toggle .btn-toggle.active-saida {
+    background-color: #FFCDD2;
+    color: #C62828;
+    font-weight: bold;
+}
+
 /* ======================================
    RESPONSIVIDADE
    ====================================== */
