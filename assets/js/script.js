@@ -440,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ===== CONSULTA ANIMAL - LISTA E PAGINAÇÃO =====
     const listaContainer = document.querySelector('.consulta-list');
 
-    if (listaContainer) {
+    if (listaContainer && document.getElementById('statTotal')) {
         const itensPorPagina = 10;
         let paginaAtual  = 1;
         let todosAnimais = [];

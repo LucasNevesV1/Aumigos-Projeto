@@ -20,7 +20,6 @@
                     <path class="burger-line" d="M3 18H21" stroke="#391F01" stroke-width="3" stroke-linecap="round" />
                 </svg>
             </button>
-
             <img src="../assets/img/Prancheta 4.png" alt="AuMigos Logo" class="navbar-logo" id="navLogo">
         </div>
 
@@ -29,7 +28,7 @@
                 <li><a href="tela-inicial-ongs.html">Tela inicial</a></li>
                 <li><a href="consulta-animal.html">Animais do Abrigo</a></li>
                 <li><a href="estoque.html">Estoque</a></li>
-                <li><a href="#">Financeiro</a></li>
+                <li><a href="financeiro.html">Financeiro</a></li>
                 <li><a href="tela_config_usuario.html">Configurações</a></li>
             </ul>
             <a href="../index.html" class="menu-sair">
@@ -44,35 +43,29 @@
         </div>
     </nav>
 
-
-
     <div class="consulta-container">
         <h1 class="consulta-title titulo-estoque">Estoque de Insumos</h1>
 
         <section class="estoque-stats-container">
             <div class="estoque-stat-card">
-                <h2>38</h2>
+                <h2 id="statCadastrados">0</h2>
                 <p>itens<br><span>cadastrados</span></p>
             </div>
-
             <div class="estoque-stat-card">
-                <h2>5</h2>
+                <h2 id="statAlerta">0</h2>
                 <p>itens em<br><span class="text-alerta">alerta</span></p>
             </div>
-
             <div class="estoque-stat-card">
-                <h2>2</h2>
+                <h2 id="statCritico">0</h2>
                 <p>insumos<br><span class="text-critico">críticos</span></p>
             </div>
-
             <div class="estoque-stat-card">
-                <h2>4</h2>
+                <h2 id="statCategorias">0</h2>
                 <p>categorias<br><span class="text-verde">ativas</span></p>
             </div>
         </section>
 
         <div class="consulta-toolbar">
-
             <div class="toolbar-actions">
                 <div class="search-box">
                     <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor"
@@ -80,73 +73,506 @@
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    <input type="text" placeholder="Buscar item no estoque...">
-                    <button class="clear-icon">X</button>
+                    <input type="text" id="searchEstoque" placeholder="Buscar item no estoque...">
+                    <button class="clear-icon" id="clearSearchEstoque">X</button>
                 </div>
-
-                <button class="btn-icon" title="Filtrar">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </div>
+            <div class="toolbar-btns">
+                <button id="btnExcluirEstoque" class="btn-icon" title="Excluir selecionados"
+                    style="color:#e05252;border-color:#e05252;" disabled>
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6l-1 14H6L5 6"></path>
+                        <path d="M10 11v6M14 11v6"></path>
+                        <path d="M9 6V4h6v2"></path>
                     </svg>
                 </button>
+                <button id="btnAbrirAdicionar" class="btn-adicionar">+ Adicionar Item</button>
             </div>
-
-            <div class="toolbar-btns">
-                <a href="#" class="btn-adicionar">Adicionar</a>
-
-            </div>
-
         </div>
 
-        
-
-        <div class="consulta-list">
-
-            <div class="list-header grid-layout">
+        <div class="consulta-list" id="listaEstoque">
+            <div class="list-header grid-layout-estoque">
                 <div class="col-checkbox">
-                    <input type="checkbox" class="custom-checkbox">
+                    <input type="checkbox" class="custom-checkbox" id="checkMasterEstoque">
                 </div>
                 <div class="col-id">#</div>
                 <div class="col-nome">Item</div>
                 <div class="col-categoria">Categoria</div>
                 <div class="col-quantidade">Quantidade</div>
-                <div class="col-unidade">Unidade de Medida</div>
+                <div class="col-unidade">Unidade</div>
                 <div class="col-status">Status</div>
             </div>
-
-            <div class="list-item grid-layout-estoque">
-                <div class="col-checkbox"><input type="checkbox" class="custom-checkbox"></div>
-                <div class="col-id">001</div>
-                <div class="col-nome" style="font-weight: 600;">Ração Golden Premium 15kg</div>
-                <div class="col-categoria">Ração</div>
-                <div class="col-quantidade">12</div>
-                <div class="col-unidade">Sacos</div>
-                <div class="col-status" style="color: #38A169; font-weight: bold;">Estável</div>
-            </div>
-
+            <div id="estoqueRows"></div>
         </div>
 
-        <div class="pagination">
-            <button class="page-btn" title="Página Anterior">
-                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-            </button>
-
-            <button class="page-btn active">1</button>
-            <button class="page-btn">2</button>
-            <button class="page-btn">3</button>
-            <span class="page-dots">...</span>
-            <button class="page-btn">5</button>
-
-            <button class="page-btn" title="Próxima Página">
-                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </button>
-        </div>
-
+        <div class="pagination" id="paginacaoEstoque"></div>
     </div>
+
+    <!-- ===== MODAL ADICIONAR ITEM ===== -->
+    <div class="modal-overlay" id="modalAdicionar">
+        <div class="modal-container">
+            <button class="btn-close" id="btnFecharAdicionar">✕</button>
+            <div class="form-content">
+                <h2>Novo Item no Estoque</h2>
+                <p class="subtitle">Preencha os dados do produto e da entrada inicial.</p>
+                <form class="form-grid" id="formAdicionar" onsubmit="return false;">
+                    <div class="input-group full-width">
+                        <label for="add-nome">Nome do Produto *</label>
+                        <input type="text" id="add-nome" placeholder="Ex: Ração Golden Premium 15kg" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="add-marca">Marca</label>
+                        <input type="text" id="add-marca" placeholder="Ex: Pedigree">
+                    </div>
+                    <div class="input-group">
+                        <label for="add-categoria">Categoria *</label>
+                        <select id="add-categoria" required></select>
+                    </div>
+                    <div class="input-group">
+                        <label for="add-unidade">Unidade de Medida *</label>
+                        <select id="add-unidade" required>
+                            <option value="kg">kg</option>
+                            <option value="unidade">Unidade</option>
+                            <option value="litro">Litro</option>
+                            <option value="ml">ml</option>
+                            <option value="mg">mg</option>
+                            <option value="saco">Saco</option>
+                            <option value="caixa">Caixa</option>
+                            <option value="ampola">Ampola</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="add-quantidade">Quantidade Inicial *</label>
+                        <input type="number" id="add-quantidade" placeholder="0" min="0" step="0.01" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="add-qtd-minima">Quantidade Mínima</label>
+                        <input type="number" id="add-qtd-minima" placeholder="5" min="0" step="0.01" value="5">
+                    </div>
+                    <div class="input-group">
+                        <label for="add-custo">Custo Unitário (R$)</label>
+                        <input type="number" id="add-custo" placeholder="0,00" min="0" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="add-lote">Lote</label>
+                        <input type="text" id="add-lote" placeholder="Ex: L001">
+                    </div>
+                    <div class="input-group">
+                        <label for="add-origem">Tipo de Origem</label>
+                        <select id="add-origem">
+                            <option value="Compra">Compra</option>
+                            <option value="Doação">Doação</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="add-validade">Data de Validade</label>
+                        <input type="date" id="add-validade">
+                    </div>
+                    <div class="input-group full-width">
+                        <label for="add-descricao">Descrição</label>
+                        <input type="text" id="add-descricao" placeholder="Observações sobre o produto">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnCancelarAdicionar">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnSalvarAdicionar">Salvar Item</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL MOVIMENTAÇÃO ===== -->
+    <div class="modal-overlay" id="modalMovimentar">
+        <div class="modal-container" style="min-height:auto;">
+            <button class="btn-close" id="btnFecharMovimentar">✕</button>
+            <div class="form-content">
+                <h2 id="movTitulo">Registrar Movimentação</h2>
+                <p class="subtitle" id="movSubtitulo"></p>
+                <form class="form-grid" id="formMovimentar" onsubmit="return false;">
+                    <div class="input-group full-width">
+                        <label>Tipo de Movimentação</label>
+                        <div class="tipo-toggle">
+                            <button type="button" class="btn-toggle active-entrada" id="movToggleEntrada">Entrada</button>
+                            <button type="button" class="btn-toggle" id="movToggleSaida">Saída</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="mov-quantidade">Quantidade *</label>
+                        <input type="number" id="mov-quantidade" placeholder="0" min="0.01" step="0.01" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="mov-valor">Valor Total (R$)</label>
+                        <input type="number" id="mov-valor" placeholder="0,00" min="0" step="0.01">
+                    </div>
+                    <div class="input-group">
+                        <label for="mov-data">Data</label>
+                        <input type="date" id="mov-data">
+                    </div>
+                    <div class="input-group full-width">
+                        <label for="mov-descricao">Descrição</label>
+                        <input type="text" id="mov-descricao" placeholder="Ex: Uso em animais, Doação recebida...">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnCancelarMovimentar">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnSalvarMovimentar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .status-badge-estoque {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+        .status-estavel { background:#e6f4f1; color:#2d7a6e; }
+        .status-alerta  { background:#fff3e0; color:#c07a00; }
+        .status-critico { background:#fdecea; color:#c0392b; }
+        .btn-mover {
+            background: none;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 2px 7px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #666;
+            transition: border-color 0.2s, color 0.2s;
+            flex-shrink: 0;
+        }
+        .btn-mover:hover { border-color: #00A89D; color: #00A89D; }
+        #estoqueRows .list-empty { padding: 48px 0; text-align:center; color:#aaa; font-size:14px; font-weight:600; }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        /* ─── estado ─── */
+        let todosItens  = [];
+        let dadosFiltrados = [];
+        let paginaAtual = 1;
+        const POR_PAGINA = 10;
+        let idMovimentando = null;
+        let tipoMovimentacao = 'Entrada';
+
+        /* ─── elementos ─── */
+        const listaRows    = document.getElementById('estoqueRows');
+        const paginacao    = document.getElementById('paginacaoEstoque');
+        const searchInput  = document.getElementById('searchEstoque');
+        const btnClear     = document.getElementById('clearSearchEstoque');
+        const checkMaster  = document.getElementById('checkMasterEstoque');
+        const btnExcluir   = document.getElementById('btnExcluirEstoque');
+
+        /* ─── status helpers ─── */
+        function statusLabel(s) {
+            return { estavel:'Estável', alerta:'Alerta', critico:'Crítico' }[s] || s;
+        }
+        function statusClass(s) {
+            return 'status-badge-estoque status-' + (s || 'estavel');
+        }
+
+        /* ─── carregar lista ─── */
+        function carregar() {
+            fetch('../actions/estoque.php?action=listar')
+                .then(r => r.json())
+                .then(lista => {
+                    if (lista.erro) { console.error(lista.erro); return; }
+                    todosItens = lista;
+                    aplicarFiltro();
+                    atualizarStats();
+                })
+                .catch(() => console.error('Erro ao carregar estoque'));
+        }
+
+        /* ─── stats ─── */
+        function atualizarStats() {
+            document.getElementById('statCadastrados').textContent = todosItens.length;
+            document.getElementById('statAlerta').textContent      = todosItens.filter(i => i.status === 'alerta').length;
+            document.getElementById('statCritico').textContent     = todosItens.filter(i => i.status === 'critico').length;
+            const cats = new Set(todosItens.map(i => i.id_categoriaProduto));
+            document.getElementById('statCategorias').textContent  = cats.size;
+        }
+
+        /* ─── filtro/busca ─── */
+        function aplicarFiltro() {
+            const termo = (searchInput.value || '').toLowerCase().trim();
+            dadosFiltrados = todosItens.filter(i =>
+                !termo ||
+                i.nomeProduto.toLowerCase().includes(termo) ||
+                i.categoria.toLowerCase().includes(termo) ||
+                (i.marca || '').toLowerCase().includes(termo)
+            );
+            paginaAtual = 1;
+            renderizar();
+        }
+
+        /* ─── renderizar tabela ─── */
+        function renderizar() {
+            listaRows.innerHTML = '';
+            if (dadosFiltrados.length === 0) {
+                listaRows.innerHTML = '<div class="list-empty">Nenhum item encontrado.</div>';
+                renderizarPaginacao();
+                return;
+            }
+            const inicio = (paginaAtual - 1) * POR_PAGINA;
+            dadosFiltrados.slice(inicio, inicio + POR_PAGINA).forEach((item, idx) => {
+                const row = document.createElement('div');
+                row.className = 'list-item grid-layout-estoque';
+                row.dataset.id = item.id_estoque;
+                row.innerHTML = `
+                    <div class="col-checkbox">
+                        <input type="checkbox" class="custom-checkbox estoque-check" data-id="${item.id_estoque}">
+                    </div>
+                    <div class="col-id">${inicio + idx + 1}</div>
+                    <div class="col-nome" style="font-weight:600;">${item.nomeProduto}<br>
+                        <small style="font-weight:400;color:#888;">${item.marca || ''}</small>
+                    </div>
+                    <div class="col-categoria">${item.categoria}</div>
+                    <div class="col-quantidade" style="font-weight:700;">${parseFloat(item.quantidadeAtual)}</div>
+                    <div class="col-unidade">${item.unidadeMedida}</div>
+                    <div class="col-status">
+                        <span class="${statusClass(item.status)}">${statusLabel(item.status)}</span>
+                        <button class="btn-mover" data-id="${item.id_estoque}" data-nome="${item.nomeProduto}" title="Registrar movimentação">↕</button>
+                    </div>
+                `;
+                listaRows.appendChild(row);
+            });
+
+            /* listeners de checkbox */
+            listaRows.querySelectorAll('.estoque-check').forEach(cb => {
+                cb.addEventListener('change', atualizarBotoesAcao);
+            });
+
+            /* listeners de movimentação */
+            listaRows.querySelectorAll('.btn-mover').forEach(btn => {
+                btn.addEventListener('click', () => abrirMovimentar(btn.dataset.id, btn.dataset.nome));
+            });
+
+            renderizarPaginacao();
+        }
+
+        /* ─── paginação ─── */
+        function renderizarPaginacao() {
+            paginacao.innerHTML = '';
+            const total = Math.ceil(dadosFiltrados.length / POR_PAGINA);
+            if (total <= 1) return;
+
+            const prev = document.createElement('button');
+            prev.className = 'page-btn';
+            prev.disabled  = paginaAtual === 1;
+            prev.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>';
+            prev.onclick = () => { paginaAtual--; renderizar(); };
+            paginacao.appendChild(prev);
+
+            for (let i = 1; i <= total; i++) {
+                const btn = document.createElement('button');
+                btn.className = `page-btn${i === paginaAtual ? ' active' : ''}`;
+                btn.textContent = i;
+                btn.onclick = () => { paginaAtual = i; renderizar(); };
+                paginacao.appendChild(btn);
+            }
+
+            const next = document.createElement('button');
+            next.className = 'page-btn';
+            next.disabled  = paginaAtual === total;
+            next.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+            next.onclick = () => { paginaAtual++; renderizar(); };
+            paginacao.appendChild(next);
+        }
+
+        /* ─── checkbox master ─── */
+        checkMaster.addEventListener('change', () => {
+            listaRows.querySelectorAll('.estoque-check').forEach(cb => cb.checked = checkMaster.checked);
+            atualizarBotoesAcao();
+        });
+
+        function atualizarBotoesAcao() {
+            const selecionados = listaRows.querySelectorAll('.estoque-check:checked').length;
+            btnExcluir.disabled = selecionados === 0;
+        }
+
+        /* ─── busca ─── */
+        searchInput.addEventListener('input', aplicarFiltro);
+        btnClear.addEventListener('click', () => { searchInput.value = ''; aplicarFiltro(); });
+
+        /* ════════════════════════════════════════
+           MODAL ADICIONAR
+        ════════════════════════════════════════ */
+        const modalAdicionar     = document.getElementById('modalAdicionar');
+        const btnAbrirAdicionar  = document.getElementById('btnAbrirAdicionar');
+        const btnFecharAdicionar = document.getElementById('btnFecharAdicionar');
+        const btnCancelarAdd     = document.getElementById('btnCancelarAdicionar');
+        const btnSalvarAdd       = document.getElementById('btnSalvarAdicionar');
+        const selectCategoria    = document.getElementById('add-categoria');
+
+        function abrirModalAdicionar() {
+            document.getElementById('formAdicionar').reset();
+            modalAdicionar.classList.add('active');
+
+            if (selectCategoria.options.length <= 1) {
+                fetch('../actions/estoque.php?action=categorias')
+                    .then(r => r.json())
+                    .then(cats => {
+                        selectCategoria.innerHTML = cats.map(c =>
+                            `<option value="${c.id_categoriaProduto}">${c.categoria}</option>`
+                        ).join('');
+                    });
+            }
+        }
+
+        function fecharModalAdicionar() { modalAdicionar.classList.remove('active'); }
+
+        btnAbrirAdicionar.addEventListener('click', abrirModalAdicionar);
+        btnFecharAdicionar.addEventListener('click', fecharModalAdicionar);
+        btnCancelarAdd.addEventListener('click', fecharModalAdicionar);
+
+        btnSalvarAdd.addEventListener('click', () => {
+            const nome = document.getElementById('add-nome').value.trim();
+            const qtd  = parseFloat(document.getElementById('add-quantidade').value);
+            if (!nome) { alert('Informe o nome do produto.'); return; }
+            if (isNaN(qtd) || qtd < 0) { alert('Informe uma quantidade válida.'); return; }
+
+            btnSalvarAdd.disabled = true;
+            fetch('../actions/estoque.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action:           'criar',
+                    nomeProduto:      nome,
+                    marca:            document.getElementById('add-marca').value.trim(),
+                    id_categoria:     document.getElementById('add-categoria').value,
+                    unidade:          document.getElementById('add-unidade').value,
+                    quantidade:       qtd,
+                    quantidadeMinima: parseFloat(document.getElementById('add-qtd-minima').value) || 5,
+                    custoUnitario:    parseFloat(document.getElementById('add-custo').value) || 0,
+                    lote:             document.getElementById('add-lote').value.trim(),
+                    tipoOrigem:       document.getElementById('add-origem').value,
+                    dataValidade:     document.getElementById('add-validade').value || null,
+                    descricao:        document.getElementById('add-descricao').value.trim(),
+                })
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.erro) { alert('Erro: ' + res.erro); return; }
+                fecharModalAdicionar();
+                carregar();
+            })
+            .catch(() => alert('Erro ao conectar com o servidor.'))
+            .finally(() => { btnSalvarAdd.disabled = false; });
+        });
+
+        /* ════════════════════════════════════════
+           MODAL MOVIMENTAR
+        ════════════════════════════════════════ */
+        const modalMovimentar     = document.getElementById('modalMovimentar');
+        const btnFecharMovimentar = document.getElementById('btnFecharMovimentar');
+        const btnCancelarMov      = document.getElementById('btnCancelarMovimentar');
+        const btnSalvarMov        = document.getElementById('btnSalvarMovimentar');
+        const toggleEntrada       = document.getElementById('movToggleEntrada');
+        const toggleSaida         = document.getElementById('movToggleSaida');
+
+        function abrirMovimentar(id, nome) {
+            idMovimentando = id;
+            tipoMovimentacao = 'Entrada';
+            toggleEntrada.classList.add('active-entrada');
+            toggleSaida.classList.remove('active-saida');
+            document.getElementById('movTitulo').textContent    = 'Registrar Movimentação';
+            document.getElementById('movSubtitulo').textContent = nome;
+            document.getElementById('mov-quantidade').value     = '';
+            document.getElementById('mov-valor').value          = '';
+            document.getElementById('mov-descricao').value      = '';
+            document.getElementById('mov-data').valueAsDate     = new Date();
+            modalMovimentar.classList.add('active');
+        }
+
+        function fecharMovimentar() {
+            modalMovimentar.classList.remove('active');
+            idMovimentando = null;
+        }
+
+        btnFecharMovimentar.addEventListener('click', fecharMovimentar);
+        btnCancelarMov.addEventListener('click', fecharMovimentar);
+
+        toggleEntrada.addEventListener('click', () => {
+            tipoMovimentacao = 'Entrada';
+            toggleEntrada.classList.add('active-entrada');
+            toggleSaida.classList.remove('active-saida');
+        });
+        toggleSaida.addEventListener('click', () => {
+            tipoMovimentacao = 'Saida';
+            toggleSaida.classList.add('active-saida');
+            toggleEntrada.classList.remove('active-entrada');
+        });
+
+        btnSalvarMov.addEventListener('click', () => {
+            const qtd = parseFloat(document.getElementById('mov-quantidade').value);
+            if (!idMovimentando || isNaN(qtd) || qtd <= 0) {
+                alert('Informe uma quantidade válida.');
+                return;
+            }
+            btnSalvarMov.disabled = true;
+            fetch('../actions/estoque.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action:     'movimentar',
+                    id_estoque: idMovimentando,
+                    tipo:       tipoMovimentacao,
+                    quantidade: qtd,
+                    valor:      parseFloat(document.getElementById('mov-valor').value) || 0,
+                    descricao:  document.getElementById('mov-descricao').value.trim(),
+                    data:       document.getElementById('mov-data').value,
+                })
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.erro) { alert('Erro: ' + res.erro); return; }
+                /* atualiza a linha sem recarregar tudo */
+                const item = todosItens.find(i => i.id_estoque == idMovimentando);
+                if (item) {
+                    item.quantidadeAtual = res.novaQuantidade;
+                    item.status          = res.novoStatus;
+                }
+                fecharMovimentar();
+                aplicarFiltro();
+                atualizarStats();
+            })
+            .catch(() => alert('Erro ao conectar com o servidor.'))
+            .finally(() => { btnSalvarMov.disabled = false; });
+        });
+
+        /* ─── Excluir selecionados ─── */
+        btnExcluir.addEventListener('click', () => {
+            const ids = [...listaRows.querySelectorAll('.estoque-check:checked')].map(cb => cb.dataset.id);
+            if (!ids.length) return;
+            if (!confirm(`Excluir ${ids.length} item(ns) do estoque?`)) return;
+
+            fetch('../actions/estoque.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'excluir', ids })
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.erro) { alert('Erro: ' + res.erro); return; }
+                todosItens = todosItens.filter(i => !ids.includes(String(i.id_estoque)));
+                aplicarFiltro();
+                atualizarStats();
+                atualizarBotoesAcao();
+                checkMaster.checked = false;
+            })
+            .catch(() => alert('Erro ao conectar com o servidor.'));
+        });
+
+        /* ─── inicialização ─── */
+        carregar();
+    });
+    </script>
 
 </body>
 

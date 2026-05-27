@@ -1684,29 +1684,49 @@ body.dashboard-page {
 
 /* --- Estatísticas --- */
 .stats-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0 30px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 0 0 30px 0;
     border-bottom: 2px solid #F0E8D9;
 }
 
 .stat-item {
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px 20px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border-left: 5px solid #F0E8D9;
+}
+
+.stat-item--animais     { border-left-color: #F89E19; }
+.stat-item--disponiveis { border-left-color: #00A89D; }
+.stat-item--adotados    { border-left-color: #4ECB82; }
+.stat-item--tratamento  { border-left-color: #FC6662; }
+
+.stat-item--link {
+    text-decoration: none;
+    transition: box-shadow 0.18s, transform 0.18s;
+}
+.stat-item--link:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.11);
+    transform: translateY(-2px);
 }
 
 .stat-item h2 {
-    font-size: 4.5rem;
+    font-size: 2.6rem;
     color: var(--color-text-dark);
     line-height: 1;
+    white-space: nowrap;
 }
 
 .stat-item p {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     color: var(--color-text-dark);
-    line-height: 1.2;
+    line-height: 1.3;
     font-weight: 600;
 }
 
@@ -1725,7 +1745,20 @@ body.dashboard-page {
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
+
+.financial-title-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+.financial-title-link:hover { opacity: 1; }
 
 .financial-layout {
     display: flex;
@@ -1738,21 +1771,33 @@ body.dashboard-page {
     flex-direction: column;
     gap: 12px;
     flex-shrink: 0;
-    width: 230px;
+    width: 250px;
 }
 
 .financial-card {
     background-color: #0a4a45;
-    border-radius: 12px;
-    padding: 24px 30px;
+    border-radius: 14px;
+    padding: 20px 26px;
+    position: relative;
+    overflow: hidden;
 }
 
-.financial-card--saidas {
-    background-color: #1a7a72;
+.financial-card::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
 }
+
+.financial-card--entradas { background-color: #1A5C38; }
+.financial-card--saidas   { background-color: #7B1E1E; }
 
 .financial-card__value {
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 700;
     color: #fff;
     line-height: 1;
@@ -1760,16 +1805,16 @@ body.dashboard-page {
 }
 
 .financial-card__label {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(255, 255, 255, 0.6);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .financial-chart {
     flex: 1;
-    background-color: #fdf6ec;
+    background-color: #ffffff;
     border-radius: 16px;
     padding: 20px 24px;
     border: 1.5px solid #f0e4c8;
@@ -1788,30 +1833,10 @@ body.dashboard-page {
 
 .financial-chart__placeholder {
     flex: 1;
-    background: linear-gradient(
-        to bottom,
-        transparent 30%,
-        rgba(248, 158, 25, 0.3) 30%,
-        rgba(248, 158, 25, 0.5) 60%,
-        #E2943A 100%
-    );
-    border-radius: 8px;
     position: relative;
     overflow: hidden;
 }
 
-.financial-chart__placeholder::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom right,
-        transparent 40%,
-        rgba(0, 102, 102, 0.25) 40%,
-        rgba(0, 102, 102, 0.45) 100%
-    );
-    border-radius: 8px;
-}
 
 /* --- Pets Espiando (Footer do Main) --- */
 .peeking-pets {
@@ -3465,19 +3490,71 @@ body.config-page {
     flex-direction: column;
 }
 
-.financial-layout, .financial-chart {
+.page-financeiro .financial-layout,
+.page-financeiro .financial-chart {
     height: 100%;
     margin: 0;
     flex-grow: 1;
 }
 
+.dashboard-page .financial-chart {
+    height: auto;
+    min-height: 0;
+    flex: 1;
+}
+
 .grid-layout-financeiro {
     display: grid;
-    grid-template-columns: 40px 60px 1.2fr 2fr 1.2fr 1fr 1.2fr;
-    gap: 15px;
-    padding: 18px 20px;
+    grid-template-columns: 36px 48px 88px 1fr 140px 90px 96px 140px;
+    gap: 10px;
+    padding: 16px 20px;
     align-items: center;
 }
+
+.badge-status {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+}
+.badge-pago      { background: #C8E6C9; color: #2E7D32; }
+.badge-pendente  { background: #FFF3E0; color: #E65100; }
+.badge-cancelado { background: #EEEEEE; color: #616161; }
+
+.btn-editar-row {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 3px 7px;
+    cursor: pointer;
+    color: #666;
+    transition: border-color 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+}
+.btn-editar-row:hover { border-color: #00A89D; color: #00A89D; }
+
+.periodo-filtro {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+}
+.periodo-filtro input[type="month"] {
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    color: #34210a;
+    outline: none;
+    cursor: pointer;
+}
+.periodo-filtro input[type="month"]:focus { border-color: #00A89D; }
 
 .list-item.grid-layout-financeiro {
     border: 1px solid #F0DFCC;
