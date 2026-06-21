@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuMigos - Financeiro</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="../assets/js/script.js" defer></script>
+</head>
+
+<body class="consulta-page page-financeiro">
+    <nav class="floating-navbar nav-consulta" id="floatingNavbar">
+        <div class="navbar-content">
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path class="burger-line" d="M3 6H21" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 12H21" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 18H21" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+                </svg>
+            </button>
+            <img src="../assets/img/Prancheta 4.png" alt="AuMigos Logo" class="navbar-logo" id="navLogo">
+        </div>
+
+        <div class="dropdown-menu" id="mainDropdown">
+            <ul class="menu-list">
+                <li><a href="tela-inicial-ongs.html">Tela inicial</a></li>
+                <li><a href="consulta-animal.html">Animais do Abrigo</a></li>
+                <li><a href="estoque.html">Estoque</a></li>
+                <li><a href="#">Financeiro</a></li>
+                <li><a href="tela_config_usuario.html">Configurações</a></li>
+            </ul>
+            <a href="../index.html" class="menu-sair">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Sair da conta
+            </a>
+        </div>
+    </nav>
+
+    <div class="consulta-container">
+        <h1 class="consulta-title" style="margin-bottom:25px;">Controle Financeiro</h1>
+
+        <div class="dashboard-top-wrapper">
+            <section class="estoque-stats-container">
+                <div class="estoque-stat-card">
+                    <div>
+                        <h2 id="statSaldo">R$ 0</h2>
+                        <p>Saldo Atual<br><span class="text-verde" id="statSaldoLabel">Em Caixa</span></p>
+                    </div>
+                </div>
+                <div class="estoque-stat-card">
+                    <div>
+                        <h2 id="statEntrada">R$ 0</h2>
+                        <p>Entradas<br><span id="statEntradaPeriodo">Este Mês</span></p>
+                    </div>
+                </div>
+                <div class="estoque-stat-card">
+                    <div>
+                        <h2 id="statSaida">R$ 0</h2>
+                        <p>Saídas<br><span class="text-alerta" id="statSaidaPeriodo">Este Mês</span></p>
+                    </div>
+                </div>
+                <div class="estoque-stat-card">
+                    <div>
+                        <h2 id="statBalanco">R$ 0</h2>
+                        <p>Balanço<br><span class="text-verde" id="statBalancoLabel">Superávit</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="financial-section">
+                <div class="financial-layout">
+                    <div class="financial-chart">
+                        <div class="financial-chart__title">Fluxo de Caixa Mensal (Entradas vs Saídas)</div>
+                        <div class="financial-chart__placeholder" style="flex:1;position:relative;padding:0;">
+                            <canvas id="graficoFluxo"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ── Toolbar ── -->
+        <div class="consulta-toolbar">
+            <!-- esquerda: busca + filtro tipo -->
+            <div class="toolbar-actions">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor"
+                        stroke-width="2" fill="none">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="searchFinanceiro" placeholder="Buscar transação...">
+                    <button class="clear-icon" id="clearSearchFin">X</button>
+                </div>
+
+                <div style="position:relative;">
+                    <button class="btn-icon" id="btnFiltroTipo" title="Filtrar por tipo">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                        </svg>
+                    </button>
+                    <div id="filtroDropdownFin" style="display:none;position:absolute;top:calc(100% + 4px);left:0;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:6px;z-index:200;min-width:130px;">
+                        <button class="filter-opt active" data-tipo="">Todos</button>
+                        <button class="filter-opt" data-tipo="Entrada">Entradas</button>
+                        <button class="filter-opt" data-tipo="Saida">Saídas</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- direita: período + excluir + novo -->
+            <div class="toolbar-btns">
+                <div class="periodo-filtro">
+                    <span>Período:</span>
+                    <input type="month" id="filtroPeriodo">
+                    <button id="btnLimparPeriodo" title="Ver todos os períodos"
+                        style="background:none;border:none;cursor:pointer;color:#aaa;font-size:1rem;padding:0 2px;line-height:1;">✕</button>
+                </div>
+
+                <button id="btnExcluirFin" class="btn-icon" title="Excluir selecionados"
+                    style="color:#e05252;border-color:#e05252;" disabled>
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6l-1 14H6L5 6"></path>
+                        <path d="M10 11v6M14 11v6"></path>
+                        <path d="M9 6V4h6v2"></path>
+                    </svg>
+                </button>
+                <button class="btn-adicionar" id="btnAbrirModal">+ Novo Lançamento</button>
+            </div>
+        </div>
+
+        <!-- ── Lista ── -->
+        <div class="consulta-list" id="listaFinanceiro">
+            <div class="list-header grid-layout-financeiro">
+                <div class="col-checkbox">
+                    <input type="checkbox" class="custom-checkbox" id="checkMasterFin">
+                </div>
+                <div class="col-id">#</div>
+                <div>Data</div>
+                <div>Descrição</div>
+                <div>Categoria</div>
+                <div>Tipo</div>
+                <div>Status</div>
+                <div>Valor</div>
+            </div>
+            <div id="finRows"></div>
+        </div>
+
+        <div class="pagination" id="paginacaoFin"></div>
+    </div>
+
+    <!-- ===== MODAL LANÇAMENTO (criar / editar) ===== -->
+    <div class="modal-overlay" id="modalFinanceiro">
+        <div class="modal-container" style="min-height:auto;">
+            <button class="btn-close" id="btnFecharModal">✕</button>
+
+            <div class="form-content">
+                <h2 id="modalTitulo">Novo Lançamento</h2>
+                <p class="subtitle">Insira os dados da movimentação financeira no caixa do abrigo.</p>
+
+                <form class="form-grid" id="formFinanceiro" onsubmit="return false;">
+                    <div class="input-group full-width">
+                        <label>Tipo de Movimentação</label>
+                        <div class="tipo-toggle">
+                            <button type="button" class="btn-toggle active-entrada" id="toggleEntrada">Entrada (Receita)</button>
+                            <button type="button" class="btn-toggle" id="toggleSaida">Saída (Despesa)</button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="fin-valor">Valor (R$) *</label>
+                        <input type="number" id="fin-valor" placeholder="0,00" step="0.01" min="0.01" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="fin-data">Data *</label>
+                        <input type="date" id="fin-data" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="fin-categoria">Categoria *</label>
+                        <select id="fin-categoria" required></select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="fin-forma">Forma de Pagamento</label>
+                        <select id="fin-forma">
+                            <option value="">— Selecione —</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="fin-status">Status do Pagamento *</label>
+                        <select id="fin-status" required></select>
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label for="fin-descricao">Descrição / Observação</label>
+                        <input type="text" id="fin-descricao" placeholder="Ex: Compra de 5 pacotes de tapete higiênico">
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnSalvar">Salvar Lançamento</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        /* ─── estado ─── */
+        let todosLancamentos = [];
+        let dadosFiltrados   = [];
+        let paginaAtual      = 1;
+        const POR_PAGINA     = 10;
+        let tipoMovimentacao = 'Entrada';
+        let filtroTipo       = '';
+        let filtroPeriodo    = '';
+        let editandoId       = null;
+        let opcoesCarregadas = false;
+        let grafico          = null;
+
+        /* ─── elementos ─── */
+        const finRows     = document.getElementById('finRows');
+        const paginacao   = document.getElementById('paginacaoFin');
+        const searchInput = document.getElementById('searchFinanceiro');
+        const checkMaster = document.getElementById('checkMasterFin');
+        const btnExcluir  = document.getElementById('btnExcluirFin');
+        const inputPeriodo = document.getElementById('filtroPeriodo');
+
+        /* ─── helpers ─── */
+        function fmt(v) {
+            return 'R$ ' + parseFloat(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        function fmtData(str) {
+            if (!str) return '—';
+            const p = str.split('T')[0].split('-');
+            return `${p[2]}/${p[1]}/${p[0]}`;
+        }
+        function anoMes(str) {
+            if (!str) return '';
+            return str.split('T')[0].substring(0, 7); // "YYYY-MM"
+        }
+        function statusBadge(s) {
+            if (!s) return '—';
+            const map = { Pago: 'badge-pago', Pendente: 'badge-pendente', Cancelado: 'badge-cancelado' };
+            return `<span class="badge-status ${map[s] || ''}">${s}</span>`;
+        }
+
+        /* ─── stats ─── */
+        function carregarStats() {
+            fetch('../actions/financeiro.php?action=stats')
+                .then(r => r.json())
+                .then(s => {
+                    if (s.erro) return;
+                    document.getElementById('statSaldo').textContent   = fmt(s.saldoAtual);
+                    document.getElementById('statEntrada').textContent = fmt(s.entradaMes);
+                    document.getElementById('statSaida').textContent   = fmt(s.saidaMes);
+                    document.getElementById('statBalanco').textContent = fmt(s.balanco);
+
+                    const sl = document.getElementById('statSaldoLabel');
+                    sl.textContent = s.saldoAtual >= 0 ? 'Em Caixa' : 'Déficit';
+                    sl.className   = s.saldoAtual >= 0 ? 'text-verde' : 'text-critico';
+
+                    const bl = document.getElementById('statBalancoLabel');
+                    bl.textContent = s.balanco >= 0 ? 'Superávit' : 'Déficit';
+                    bl.className   = s.balanco >= 0 ? 'text-verde' : 'text-critico';
+                });
+        }
+
+        /* ─── carregar lista ─── */
+        function carregar() {
+            fetch('../actions/financeiro.php?action=listar')
+                .then(r => r.json())
+                .then(lista => {
+                    if (lista.erro) { console.error(lista.erro); return; }
+                    todosLancamentos = lista;
+                    aplicarFiltro();
+                    renderizarGrafico();
+                });
+        }
+
+        /* ─── filtro ─── */
+        function aplicarFiltro() {
+            const termo = (searchInput.value || '').toLowerCase().trim();
+            dadosFiltrados = todosLancamentos.filter(l => {
+                const matchTipo    = !filtroTipo   || l.tipoMovimentacao === filtroTipo;
+                const matchPeriodo = !filtroPeriodo || anoMes(l.dataMovimentacao) === filtroPeriodo;
+                const matchBusca   = !termo ||
+                    (l.descricao           || '').toLowerCase().includes(termo) ||
+                    (l.categoriaFinanceira || '').toLowerCase().includes(termo) ||
+                    (l.formaPagamento      || '').toLowerCase().includes(termo) ||
+                    (l.statusPagamento     || '').toLowerCase().includes(termo);
+                return matchTipo && matchPeriodo && matchBusca;
+            });
+
+            /* stats dinâmicos do período selecionado */
+            atualizarStatsPeriodo();
+            paginaAtual = 1;
+            renderizar();
+        }
+
+        function atualizarStatsPeriodo() {
+            const base = filtroPeriodo ? dadosFiltrados : todosLancamentos;
+            const entrada = base.filter(l => l.tipoMovimentacao === 'Entrada').reduce((s, l) => s + parseFloat(l.valor), 0);
+            const saida   = base.filter(l => l.tipoMovimentacao === 'Saida').reduce((s, l) => s + parseFloat(l.valor), 0);
+            const labelPeriodo = filtroPeriodo
+                ? (() => { const [y, m] = filtroPeriodo.split('-'); return `${m}/${y}`; })()
+                : 'Este Mês';
+            document.getElementById('statEntradaPeriodo').textContent = labelPeriodo;
+            document.getElementById('statSaidaPeriodo').textContent   = labelPeriodo;
+        }
+
+        /* ─── renderizar tabela ─── */
+        function renderizar() {
+            finRows.innerHTML = '';
+            if (dadosFiltrados.length === 0) {
+                finRows.innerHTML = '<div class="list-empty" style="padding:48px 0;text-align:center;color:#aaa;font-size:14px;font-weight:600;">Nenhum lançamento encontrado.</div>';
+                renderizarPaginacao();
+                return;
+            }
+            const inicio = (paginaAtual - 1) * POR_PAGINA;
+            dadosFiltrados.slice(inicio, inicio + POR_PAGINA).forEach(l => {
+                const isEntrada = l.tipoMovimentacao === 'Entrada';
+                const row = document.createElement('div');
+                row.className = 'list-item grid-layout-financeiro';
+                row.dataset.id = l.id_financeiro;
+                row.innerHTML = `
+                    <div class="col-checkbox">
+                        <input type="checkbox" class="custom-checkbox fin-check" data-id="${l.id_financeiro}">
+                    </div>
+                    <div class="col-id">${l.id_financeiro}</div>
+                    <div>${fmtData(l.dataMovimentacao)}</div>
+                    <div style="font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${l.descricao || ''}">${l.descricao || '—'}</div>
+                    <div>${l.categoriaFinanceira || '—'}</div>
+                    <div>
+                        <span class="badge-tipo ${isEntrada ? 'badge-entrada' : 'badge-saida'}">
+                            ${isEntrada ? 'Entrada' : 'Saída'}
+                        </span>
+                    </div>
+                    <div>${statusBadge(l.statusPagamento)}</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
+                        <span class="${isEntrada ? 'valor-entrada' : 'valor-saida'}" style="white-space:nowrap;">
+                            ${isEntrada ? '' : '- '}${fmt(l.valor)}
+                        </span>
+                        <button class="btn-editar-row" data-id="${l.id_financeiro}" title="Editar lançamento">
+                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                finRows.appendChild(row);
+            });
+
+            finRows.querySelectorAll('.fin-check').forEach(cb =>
+                cb.addEventListener('change', atualizarBotoesAcao)
+            );
+            finRows.querySelectorAll('.btn-editar-row').forEach(btn =>
+                btn.addEventListener('click', () => abrirEditar(Number(btn.dataset.id)))
+            );
+            renderizarPaginacao();
+        }
+
+        /* ─── paginação ─── */
+        function renderizarPaginacao() {
+            paginacao.innerHTML = '';
+            const total = Math.ceil(dadosFiltrados.length / POR_PAGINA);
+            if (total <= 1) return;
+
+            const prev = document.createElement('button');
+            prev.className = 'page-btn';
+            prev.disabled  = paginaAtual === 1;
+            prev.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>';
+            prev.onclick = () => { paginaAtual--; renderizar(); };
+            paginacao.appendChild(prev);
+
+            for (let i = 1; i <= total; i++) {
+                const btn = document.createElement('button');
+                btn.className = `page-btn${i === paginaAtual ? ' active' : ''}`;
+                btn.textContent = i;
+                btn.onclick = () => { paginaAtual = i; renderizar(); };
+                paginacao.appendChild(btn);
+            }
+
+            const next = document.createElement('button');
+            next.className = 'page-btn';
+            next.disabled  = paginaAtual === total;
+            next.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+            next.onclick = () => { paginaAtual++; renderizar(); };
+            paginacao.appendChild(next);
+        }
+
+        /* ─── checkboxes ─── */
+        checkMaster.addEventListener('change', () => {
+            finRows.querySelectorAll('.fin-check').forEach(cb => cb.checked = checkMaster.checked);
+            atualizarBotoesAcao();
+        });
+        function atualizarBotoesAcao() {
+            btnExcluir.disabled = finRows.querySelectorAll('.fin-check:checked').length === 0;
+        }
+
+        /* ─── busca e filtros ─── */
+        searchInput.addEventListener('input', aplicarFiltro);
+        document.getElementById('clearSearchFin').addEventListener('click', () => {
+            searchInput.value = ''; aplicarFiltro();
+        });
+
+        inputPeriodo.addEventListener('change', () => {
+            filtroPeriodo = inputPeriodo.value;
+            aplicarFiltro();
+        });
+        document.getElementById('btnLimparPeriodo').addEventListener('click', () => {
+            inputPeriodo.value = '';
+            filtroPeriodo = '';
+            aplicarFiltro();
+        });
+
+        const btnFiltroTipo     = document.getElementById('btnFiltroTipo');
+        const filtroDropdownFin = document.getElementById('filtroDropdownFin');
+        btnFiltroTipo.addEventListener('click', e => {
+            filtroDropdownFin.style.display = filtroDropdownFin.style.display === 'none' ? 'block' : 'none';
+            e.stopPropagation();
+        });
+        document.addEventListener('click', () => { filtroDropdownFin.style.display = 'none'; });
+        filtroDropdownFin.querySelectorAll('.filter-opt').forEach(btn => {
+            btn.addEventListener('click', () => {
+                filtroTipo = btn.dataset.tipo;
+                filtroDropdownFin.querySelectorAll('.filter-opt').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                btnFiltroTipo.classList.toggle('btn-icon--active', !!filtroTipo);
+                filtroDropdownFin.style.display = 'none';
+                aplicarFiltro();
+            });
+        });
+
+        /* ════════════════════════════════════════
+           MODAL (criar e editar)
+        ════════════════════════════════════════ */
+        const modal         = document.getElementById('modalFinanceiro');
+        const btnAbrir      = document.getElementById('btnAbrirModal');
+        const btnFechar     = document.getElementById('btnFecharModal');
+        const btnCancelar   = document.getElementById('btnCancelar');
+        const btnSalvar     = document.getElementById('btnSalvar');
+        const toggleEntrada = document.getElementById('toggleEntrada');
+        const toggleSaida   = document.getElementById('toggleSaida');
+
+        function garantirOpcoes() {
+            if (opcoesCarregadas) return Promise.resolve();
+            return fetch('../actions/financeiro.php?action=opcoes')
+                .then(r => r.json())
+                .then(({ categorias, formas, status }) => {
+                    document.getElementById('fin-categoria').innerHTML =
+                        categorias.map(c => `<option value="${c.id_categoriaFinanceira}">${c.categoriaFinanceira}</option>`).join('');
+                    document.getElementById('fin-forma').innerHTML =
+                        '<option value="">— Selecione —</option>' +
+                        formas.map(f => `<option value="${f.id_formaPagamento}">${f.formaPagamento}</option>`).join('');
+                    document.getElementById('fin-status').innerHTML =
+                        status.map(s => `<option value="${s.id_statusPagamento}">${s.statusPagamento}</option>`).join('');
+                    opcoesCarregadas = true;
+                });
+        }
+
+        function setToggle(tipo) {
+            tipoMovimentacao = tipo;
+            toggleEntrada.classList.toggle('active-entrada', tipo === 'Entrada');
+            toggleSaida.classList.toggle('active-saida',    tipo === 'Saida');
+        }
+
+        function abrirNovo() {
+            editandoId = null;
+            document.getElementById('modalTitulo').textContent = 'Novo Lançamento';
+            btnSalvar.textContent = 'Salvar Lançamento';
+            document.getElementById('formFinanceiro').reset();
+            setToggle('Entrada');
+            document.getElementById('fin-data').valueAsDate = new Date();
+            garantirOpcoes().then(() => {
+                /* pré-seleciona "Pago" */
+                const sel = document.getElementById('fin-status');
+                const pago = [...sel.options].find(o => o.text === 'Pago');
+                if (pago) sel.value = pago.value;
+            });
+            modal.classList.add('active');
+        }
+
+        function abrirEditar(id) {
+            const l = todosLancamentos.find(x => x.id_financeiro == id);
+            if (!l) return;
+            editandoId = id;
+            document.getElementById('modalTitulo').textContent = 'Editar Lançamento';
+            btnSalvar.textContent = 'Salvar Alterações';
+            garantirOpcoes().then(() => {
+                setToggle(l.tipoMovimentacao);
+                document.getElementById('fin-valor').value    = parseFloat(l.valor).toFixed(2);
+                document.getElementById('fin-data').value     = (l.dataMovimentacao || '').split('T')[0];
+                document.getElementById('fin-descricao').value = l.descricao || '';
+                /* selects — busca pelo texto */
+                selPorTexto('fin-categoria', l.categoriaFinanceira);
+                selPorTexto('fin-forma',     l.formaPagamento);
+                selPorTexto('fin-status',    l.statusPagamento);
+                modal.classList.add('active');
+            });
+        }
+
+        function selPorTexto(elId, texto) {
+            const sel = document.getElementById(elId);
+            const opt = [...sel.options].find(o => o.text === texto);
+            if (opt) sel.value = opt.value;
+        }
+
+        const fecharModal = () => { modal.classList.remove('active'); editandoId = null; };
+
+        btnAbrir.addEventListener('click', abrirNovo);
+        btnFechar.addEventListener('click', fecharModal);
+        btnCancelar.addEventListener('click', fecharModal);
+
+        toggleEntrada.addEventListener('click', () => setToggle('Entrada'));
+        toggleSaida.addEventListener('click',   () => setToggle('Saida'));
+
+        btnSalvar.addEventListener('click', () => {
+            const valor = parseFloat(document.getElementById('fin-valor').value);
+            const data  = document.getElementById('fin-data').value;
+            if (!valor || valor <= 0) { alert('Informe um valor válido.'); return; }
+            if (!data)                { alert('Informe a data.');           return; }
+
+            const payload = {
+                action:       editandoId ? 'editar' : 'criar',
+                id:           editandoId,
+                tipo:         tipoMovimentacao,
+                valor,
+                data,
+                id_categoria: document.getElementById('fin-categoria').value,
+                id_forma:     document.getElementById('fin-forma').value || null,
+                id_status:    document.getElementById('fin-status').value,
+                descricao:    document.getElementById('fin-descricao').value.trim(),
+            };
+
+            btnSalvar.disabled = true;
+            fetch('../actions/financeiro.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.erro) { alert('Erro: ' + res.erro); return; }
+                fecharModal();
+                carregar();
+                carregarStats();
+            })
+            .catch(() => alert('Erro ao conectar com o servidor.'))
+            .finally(() => { btnSalvar.disabled = false; });
+        });
+
+        /* ─── excluir ─── */
+        btnExcluir.addEventListener('click', () => {
+            const ids = [...finRows.querySelectorAll('.fin-check:checked')].map(cb => cb.dataset.id);
+            if (!ids.length) return;
+            if (!confirm(`Excluir ${ids.length} lançamento(s)?`)) return;
+
+            fetch('../actions/financeiro.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'excluir', ids }),
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.erro) { alert('Erro: ' + res.erro); return; }
+                todosLancamentos = todosLancamentos.filter(l => !ids.includes(String(l.id_financeiro)));
+                aplicarFiltro();
+                renderizarGrafico();
+                carregarStats();
+                atualizarBotoesAcao();
+                checkMaster.checked = false;
+            })
+            .catch(() => alert('Erro ao conectar com o servidor.'));
+        });
+
+        /* ─── gráfico ─── */
+        function ultimos6Meses() {
+            const meses = [];
+            const agora = new Date();
+            for (let i = 5; i >= 0; i--) {
+                const d = new Date(agora.getFullYear(), agora.getMonth() - i, 1);
+                const key   = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                const label = d.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' })
+                               .replace('. de ', '/').replace('.', '');
+                meses.push({ key, label });
+            }
+            return meses;
+        }
+
+        function renderizarGrafico() {
+            const meses    = ultimos6Meses();
+            const entradas = [];
+            const saidas   = [];
+            meses.forEach(({ key }) => {
+                const doMes = todosLancamentos.filter(l => anoMes(l.dataMovimentacao) === key);
+                entradas.push(doMes.filter(l => l.tipoMovimentacao === 'Entrada').reduce((s, l) => s + parseFloat(l.valor), 0));
+                saidas.push(doMes.filter(l => l.tipoMovimentacao === 'Saida').reduce((s, l) => s + parseFloat(l.valor), 0));
+            });
+
+            const ctx = document.getElementById('graficoFluxo').getContext('2d');
+            if (grafico) grafico.destroy();
+            grafico = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: meses.map(m => m.label),
+                    datasets: [
+                        { label: 'Entradas', data: entradas, backgroundColor: '#4ECB82', borderRadius: 4, borderSkipped: false },
+                        { label: 'Saídas',   data: saidas,   backgroundColor: '#FC6662', borderRadius: 4, borderSkipped: false }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { font: { family: 'inherit', size: 11 }, color: '#34210a', boxWidth: 12, padding: 10 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: c => `${c.dataset.label}: R$ ${c.parsed.y.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#F0DFCC' },
+                            ticks: {
+                                maxTicksLimit: 5,
+                                color: '#34210a',
+                                font: { family: 'inherit', size: 10 },
+                                callback: v => 'R$ ' + v.toLocaleString('pt-BR')
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#34210a', font: { family: 'inherit', size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        /* ─── inicialização ─── */
+        carregar();
+        carregarStats();
+
+        /* define período atual no input como padrão */
+        const hoje = new Date();
+        inputPeriodo.value = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}`;
+        filtroPeriodo = inputPeriodo.value;
+    });
+    </script>
+</body>
+
+</html>

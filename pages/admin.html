@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuMigos - Painel Admin</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .admin-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #e0cbb8;
+            padding-bottom: 0;
+        }
+
+        .admin-tab {
+            padding: 10px 24px;
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #9b8a7a;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: color .15s, border-color .15s;
+        }
+
+        .admin-tab.active,
+        .admin-tab:hover {
+            color: #391F01;
+            border-bottom-color: #C97D2E;
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-table-wrap {
+            overflow-x: auto;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px rgba(57,31,1,.08);
+            background: #fff;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .admin-table thead {
+            background: #391F01;
+            color: #fff;
+        }
+
+        .admin-table thead th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .admin-table tbody tr {
+            border-bottom: 1px solid #f0e8de;
+            transition: background .15s;
+        }
+
+        .admin-table tbody tr:hover {
+            background: #fdf7f0;
+        }
+
+        .admin-table tbody td {
+            padding: 10px 16px;
+            vertical-align: middle;
+            color: #391F01;
+        }
+
+        .badge-ativo   { background: #d4edda; color: #155724; padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 700; }
+        .badge-inativo { background: #f8d7da; color: #721c24; padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 700; }
+        .badge-tipo    { background: #cce5ff; color: #004085; padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 700; }
+
+        .btn-acao {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 4px;
+        }
+
+        .btn-desativar { background: #fff3cd; color: #856404; }
+        .btn-reativar  { background: #d4edda; color: #155724; }
+        .btn-excluir   { background: #f8d7da; color: #721c24; }
+
+        .btn-acao:hover { opacity: .8; }
+
+        .admin-empty {
+            text-align: center;
+            padding: 40px;
+            color: #9b8a7a;
+            font-style: italic;
+        }
+
+        .admin-search {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .admin-search input {
+            padding: 8px 14px;
+            border: 2px solid #e0cbb8;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            color: #391F01;
+            flex: 1;
+            min-width: 200px;
+            outline: none;
+        }
+
+        .admin-search input:focus {
+            border-color: #C97D2E;
+        }
+
+        .admin-counter {
+            background: #fdf0e0;
+            border-radius: 10px;
+            padding: 10px 18px;
+            margin-bottom: 16px;
+            font-size: 0.88rem;
+            color: #6b5040;
+        }
+
+        .admin-counter strong { color: #391F01; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open { display: flex; }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,.18);
+        }
+
+        .modal-box h3 { color: #391F01; margin-bottom: 12px; }
+        .modal-box p  { color: #6b5040; margin-bottom: 24px; font-size: .9rem; }
+
+        .modal-btns { display: flex; gap: 12px; justify-content: center; }
+
+        .btn-confirmar-excluir {
+            padding: 10px 24px;
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .btn-cancelar {
+            padding: 10px 24px;
+            background: #e9ecef;
+            color: #391F01;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="dashboard-page">
+
+    <nav class="floating-navbar" id="floatingNavbar">
+        <div class="navbar-content">
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path class="burger-line" d="M3 6H21" stroke="#391F01" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 12H21" stroke="#391F01" stroke-width="3" stroke-linecap="round" />
+                    <path class="burger-line" d="M3 18H21" stroke="#391F01" stroke-width="3" stroke-linecap="round" />
+                </svg>
+            </button>
+
+            <img src="../assets/img/Prancheta 5.png" alt="AuMigos Logo" class="navbar-logo" id="navLogo">
+
+            <span class="profile-name-nav">Administrador</span>
+        </div>
+
+        <div class="dropdown-menu" id="mainDropdown">
+            <ul class="menu-list">
+                <li><a href="admin.html">Painel Admin</a></li>
+                <li><a href="logs-auditoria.html">Logs de Auditoria</a></li>
+            </ul>
+            <a href="../index.html" class="menu-sair">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Sair da conta
+            </a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+
+        <header class="dash-header">
+            <div class="dash-header__content">
+                <h1>Painel Administrativo</h1>
+                <p>Gerencie contas de usuários e acompanhe os registros do sistema.</p>
+            </div>
+        </header>
+
+        <main class="dash-main">
+
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="abrirTab('usuarios', this)">Usuários</button>
+                <button class="admin-tab" onclick="abrirTab('logs', this)">Logs de Auditoria</button>
+            </div>
+
+            <!-- PAINEL: USUÁRIOS -->
+            <div id="panel-usuarios" class="admin-panel active">
+
+                <div class="admin-search">
+                    <input type="text" id="buscaUsuario" placeholder="Buscar por nome ou e-mail..."
+                        oninput="filtrarUsuarios()" />
+                </div>
+
+                <div class="admin-counter" id="counterUsuarios">Carregando...</div>
+
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Documento</th>
+                                <th>Tipo</th>
+                                <th>Cadastro</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaUsuarios">
+                            <tr><td colspan="8" class="admin-empty">Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PAINEL: LOGS -->
+            <div id="panel-logs" class="admin-panel">
+
+                <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px">
+                    <input type="text" id="inputBusca" placeholder="Buscar por usuário ou descrição..."
+                        style="padding:8px 14px;border:2px solid #e0cbb8;border-radius:10px;font-size:.9rem;font-family:inherit;color:#391F01;flex:1;min-width:200px;outline:none" />
+                    <select id="selectAcao"
+                        style="padding:8px 14px;border:2px solid #e0cbb8;border-radius:10px;font-size:.9rem;font-family:inherit;color:#391F01;background:#fff;outline:none">
+                        <option value="">Todas as ações</option>
+                        <option value="LOGIN">Login</option>
+                        <option value="LOGIN_FALHA">Login inválido</option>
+                        <option value="CADASTRO_USUARIO">Cadastro de usuário</option>
+                        <option value="CADASTRO_ANIMAL">Cadastro de animal</option>
+                        <option value="EDICAO_ANIMAL">Edição de animal</option>
+                        <option value="EXCLUSAO_ANIMAL">Exclusão de animal</option>
+                        <option value="STATUS_ANIMAL">Alteração de status</option>
+                        <option value="INTERESSE_ADOCAO">Solicitação de adoção</option>
+                        <option value="ADOCAO_APROVADA">Adoção aprovada</option>
+                        <option value="ADOCAO_REJEITADA">Adoção rejeitada</option>
+                        <option value="EDICAO_PERFIL">Edição de perfil</option>
+                        <option value="DESATIVACAO_USUARIO">Desativação de conta</option>
+                        <option value="EXCLUSAO_USUARIO">Exclusão de conta</option>
+                        <option value="TENTATIVA_EXCLUSAO_USUARIO">Tentativa de exclusão bloqueada</option>
+                    </select>
+                    <button onclick="carregarLogs(1)"
+                        style="padding:8px 20px;background:#C97D2E;color:#fff;border:none;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit">
+                        Filtrar
+                    </button>
+                </div>
+
+                <div class="admin-counter" id="auditCounter">Carregando...</div>
+
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Data / Hora</th>
+                                <th>Usuário</th>
+                                <th>Ação</th>
+                                <th>Tabela</th>
+                                <th>ID Reg.</th>
+                                <th>Descrição</th>
+                                <th>IP</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaLogs">
+                            <tr><td colspan="8" class="admin-empty">Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:.85rem;color:#6b5040">
+                    <span id="paginacaoInfo"></span>
+                    <div style="display:flex;gap:8px">
+                        <button id="btnAnterior" onclick="mudarPagina(-1)"
+                            style="padding:6px 16px;border:2px solid #e0cbb8;border-radius:8px;background:#fff;color:#391F01;font-family:inherit;font-weight:600;cursor:pointer"
+                            disabled>&#8592; Anterior</button>
+                        <button id="btnProximo" onclick="mudarPagina(1)"
+                            style="padding:6px 16px;border:2px solid #e0cbb8;border-radius:8px;background:#fff;color:#391F01;font-family:inherit;font-weight:600;cursor:pointer">
+                            Próxima &#8594;</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="dash-footer">
+            <img src="../assets/img/Prancheta 4.png" alt="Logo AuMigos Branca">
+        </footer>
+
+    </div>
+
+    <!-- Modal de confirmação de exclusão -->
+    <div class="modal-overlay" id="modalExcluir">
+        <div class="modal-box">
+            <h3>Excluir conta</h3>
+            <p id="modalExcluirTexto">Tem certeza que deseja excluir esta conta? Esta ação não pode ser desfeita.</p>
+            <div class="modal-btns">
+                <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+                <button class="btn-confirmar-excluir" id="btnConfirmarExcluir">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/script.js"></script>
+    <script>
+        // ── TABS ──────────────────────────────────────────────────────
+        function abrirTab(nome, btn) {
+            document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+            document.getElementById('panel-' + nome).classList.add('active');
+            btn.classList.add('active');
+
+            if (nome === 'logs' && paginaAtual === 1) carregarLogs(1);
+        }
+
+        // ── USUÁRIOS ──────────────────────────────────────────────────
+        let todosUsuarios = [];
+
+        async function carregarUsuarios() {
+            try {
+                const res  = await fetch('../actions/admin-usuarios.php', { credentials: 'include' });
+                const data = await res.json();
+                if (data.erro) {
+                    document.getElementById('tabelaUsuarios').innerHTML =
+                        `<tr><td colspan="8" class="admin-empty">${data.erro}</td></tr>`;
+                    return;
+                }
+                todosUsuarios = data;
+                filtrarUsuarios();
+            } catch {
+                document.getElementById('tabelaUsuarios').innerHTML =
+                    `<tr><td colspan="8" class="admin-empty">Erro ao carregar usuários.</td></tr>`;
+            }
+        }
+
+        function filtrarUsuarios() {
+            const busca = document.getElementById('buscaUsuario').value.toLowerCase();
+            const lista = busca
+                ? todosUsuarios.filter(u =>
+                    u.nome.toLowerCase().includes(busca) || u.email.toLowerCase().includes(busca))
+                : todosUsuarios;
+            renderizarUsuarios(lista);
+        }
+
+        function renderizarUsuarios(lista) {
+            document.getElementById('counterUsuarios').innerHTML =
+                `<strong>${lista.length}</strong> usuário(s) encontrado(s)`;
+
+            if (!lista.length) {
+                document.getElementById('tabelaUsuarios').innerHTML =
+                    `<tr><td colspan="8" class="admin-empty">Nenhum usuário encontrado.</td></tr>`;
+                return;
+            }
+
+            document.getElementById('tabelaUsuarios').innerHTML = lista.map(u => {
+                const statusBadge = parseInt(u.ativo)
+                    ? '<span class="badge-ativo">Ativo</span>'
+                    : '<span class="badge-inativo">Inativo</span>';
+
+                const btnStatus = parseInt(u.ativo)
+                    ? `<button class="btn-acao btn-desativar" onclick="alterarStatus(${u.id_usuario}, 'desativar')">Desativar</button>`
+                    : `<button class="btn-acao btn-reativar"  onclick="alterarStatus(${u.id_usuario}, 'reativar')">Reativar</button>`;
+
+                return `
+                    <tr>
+                        <td>${u.id_usuario}</td>
+                        <td>${u.nome}</td>
+                        <td>${u.email}</td>
+                        <td>${u.documento}</td>
+                        <td><span class="badge-tipo">${u.tipo}</span></td>
+                        <td>${formatarData(u.dataCadastro)}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            ${btnStatus}
+                            <button class="btn-acao btn-excluir"
+                                onclick="abrirModalExcluir(${u.id_usuario}, '${u.nome.replace(/'/g, "\\'")}')">
+                                Excluir
+                            </button>
+                        </td>
+                    </tr>`;
+            }).join('');
+        }
+
+        async function alterarStatus(id, acao) {
+            const res  = await fetch('../actions/admin-usuarios.php', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ acao, id }),
+            });
+            const data = await res.json();
+            if (data.ok) carregarUsuarios();
+            else alert(data.erro ?? 'Erro ao atualizar');
+        }
+
+        // ── MODAL EXCLUSÃO ────────────────────────────────────────────
+        let idParaExcluir = null;
+
+        function abrirModalExcluir(id, nome) {
+            idParaExcluir = id;
+            document.getElementById('modalExcluirTexto').textContent =
+                `Tem certeza que deseja excluir a conta de "${nome}"? Esta ação não pode ser desfeita.`;
+            document.getElementById('modalExcluir').classList.add('open');
+        }
+
+        function fecharModal() {
+            document.getElementById('modalExcluir').classList.remove('open');
+            idParaExcluir = null;
+        }
+
+        document.getElementById('btnConfirmarExcluir').addEventListener('click', async () => {
+            if (!idParaExcluir) return;
+            try {
+                const res  = await fetch('../actions/admin-usuarios.php', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ acao: 'excluir', id: idParaExcluir }),
+                });
+                const data = await res.json();
+                fecharModal();
+                if (data.ok) carregarUsuarios();
+                else alert(data.erro ?? 'Erro ao excluir.');
+            } catch {
+                fecharModal();
+                alert('Erro ao conectar com o servidor.');
+            }
+        });
+
+        // ── LOGS ──────────────────────────────────────────────────────
+        let paginaAtual = 1;
+        const LIMITE = 50;
+
+        const LABELS = {
+            LOGIN:               { label: 'Login',               cor: '#d4edda', txt: '#155724' },
+            LOGIN_FALHA:         { label: 'Login inválido',      cor: '#f8d7da', txt: '#721c24' },
+            CADASTRO_USUARIO:    { label: 'Cadastro usuário',    cor: '#cce5ff', txt: '#004085' },
+            CADASTRO_ANIMAL:     { label: 'Cadastro animal',     cor: '#fff3cd', txt: '#856404' },
+            EDICAO_ANIMAL:       { label: 'Edição animal',       cor: '#fff3cd', txt: '#856404' },
+            EXCLUSAO_ANIMAL:     { label: 'Exclusão animal',     cor: '#fff3cd', txt: '#856404' },
+            STATUS_ANIMAL:       { label: 'Status animal',       cor: '#fde8d0', txt: '#7d3c00' },
+            INTERESSE_ADOCAO:    { label: 'Solicitação adoção',  cor: '#e2d9f3', txt: '#4a235a' },
+            ADOCAO_APROVADA:     { label: 'Adoção aprovada',     cor: '#d4edda', txt: '#155724' },
+            ADOCAO_REJEITADA:    { label: 'Adoção rejeitada',    cor: '#f8d7da', txt: '#721c24' },
+            EDICAO_PERFIL:       { label: 'Edição perfil',       cor: '#d1ecf1', txt: '#0c5460' },
+            DESATIVACAO_USUARIO: { label: 'Desativação conta',   cor: '#fde8d0', txt: '#7d3c00' },
+            REATIVACAO_USUARIO:  { label: 'Reativação conta',    cor: '#d4edda', txt: '#155724' },
+            EXCLUSAO_USUARIO:             { label: 'Exclusão conta',          cor: '#f8d7da', txt: '#721c24' },
+            TENTATIVA_EXCLUSAO_USUARIO:   { label: 'Tentativa exclusão',      cor: '#fff3cd', txt: '#856404' },
+        };
+
+        function badgeAcao(acao) {
+            const i = LABELS[acao] ?? { label: acao, cor: '#e9ecef', txt: '#495057' };
+            return `<span style="background:${i.cor};color:${i.txt};padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">${i.label}</span>`;
+        }
+
+        function formatarData(dt) {
+            if (!dt) return '—';
+            return new Date(dt).toLocaleDateString('pt-BR');
+        }
+
+        function formatarDataHora(dt) {
+            if (!dt) return '—';
+            return new Date(dt).toLocaleString('pt-BR');
+        }
+
+        async function carregarLogs(pagina = 1) {
+            paginaAtual = pagina;
+            const busca = encodeURIComponent(document.getElementById('inputBusca').value.trim());
+            const acao  = encodeURIComponent(document.getElementById('selectAcao').value);
+            const url   = `../actions/logs.php?pagina=${pagina}&busca=${busca}&acao=${acao}`;
+
+            try {
+                const res  = await fetch(url, { credentials: 'include' });
+                const data = await res.json();
+
+                if (data.erro) {
+                    document.getElementById('tabelaLogs').innerHTML =
+                        `<tr><td colspan="8" class="admin-empty">${data.erro}</td></tr>`;
+                    return;
+                }
+
+                renderizarLogs(data.logs);
+                atualizarPaginacao(data.total, pagina, data.limite);
+            } catch {
+                document.getElementById('tabelaLogs').innerHTML =
+                    `<tr><td colspan="8" class="admin-empty">Erro ao carregar logs.</td></tr>`;
+            }
+        }
+
+        function renderizarLogs(logs) {
+            if (!logs || !logs.length) {
+                document.getElementById('tabelaLogs').innerHTML =
+                    `<tr><td colspan="8" class="admin-empty">Nenhum log encontrado.</td></tr>`;
+                return;
+            }
+            document.getElementById('tabelaLogs').innerHTML = logs.map(l => `
+                <tr>
+                    <td>${l.id}</td>
+                    <td style="white-space:nowrap">${formatarDataHora(l.data_hora)}</td>
+                    <td>${l.usuario_nome}</td>
+                    <td>${badgeAcao(l.acao)}</td>
+                    <td>${l.tabela_afetada ?? '—'}</td>
+                    <td>${l.id_registro ?? '—'}</td>
+                    <td>${l.descricao ?? '—'}</td>
+                    <td>${l.ip_origem ?? '—'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function atualizarPaginacao(total, pagina, limite) {
+            const inicio = total === 0 ? 0 : (pagina - 1) * limite + 1;
+            const fim    = Math.min(pagina * limite, total);
+            document.getElementById('auditCounter').innerHTML =
+                `Exibindo <strong>${inicio}–${fim}</strong> de <strong>${total}</strong> registros`;
+            document.getElementById('paginacaoInfo').textContent =
+                `Página ${pagina} de ${Math.ceil(total / limite) || 1}`;
+            document.getElementById('btnAnterior').disabled = pagina <= 1;
+            document.getElementById('btnProximo').disabled  = pagina * limite >= total;
+        }
+
+        function mudarPagina(delta) {
+            carregarLogs(paginaAtual + delta);
+        }
+
+        document.getElementById('inputBusca').addEventListener('keydown', e => {
+            if (e.key === 'Enter') carregarLogs(1);
+        });
+
+        // Fecha modal ao clicar fora
+        document.getElementById('modalExcluir').addEventListener('click', e => {
+            if (e.target === e.currentTarget) fecharModal();
+        });
+
+        carregarUsuarios();
+    </script>
+
+</body>
+
+</html>

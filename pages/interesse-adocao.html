@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuMigos - Interesse em Adoção</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /* ── page layout ── */
+    body.adocao-page {
+      background-color: #FCF9F2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* ── hero banner ── */
+    .adocao-hero {
+      width: 100%;
+      background-color: #006666;
+      padding: 90px 60px 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .adocao-hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.15);
+      color: #f9f7f2;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .adocao-hero h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.15;
+    }
+
+    .adocao-hero p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.75);
+      margin-top: 4px;
+    }
+
+    /* ── main content ── */
+    .adocao-container {
+      width: 100%;
+      max-width: 1200px;
+      padding: 48px 60px;
+    }
+
+    /* ── gallery grid ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    /* ── animal card ── */
+    .animal-card {
+      background: #ffffff;
+      border: 1px solid #F0DFCC;
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .animal-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 102, 102, 0.10);
+    }
+
+    .animal-card__img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      background: #f0e8d9;
+    }
+
+    .animal-card__body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .animal-card__row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .animal-card__name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #34210a;
+    }
+
+    .animal-card__age {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 3px;
+    }
+
+    /* ── status pill ── */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+      letter-spacing: 0.2px;
+    }
+
+    .status-pill::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .status-pill.disponivel {
+      background-color: #C8E6C9;
+      color: #1B5E20;
+    }
+    .status-pill.disponivel::before { background: #2E7D32; }
+
+    .status-pill.analise {
+      background-color: #FFE0B2;
+      color: #E65100;
+    }
+    .status-pill.analise::before {
+      background: #F57C00;
+      animation: blink 1.4s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.25; }
+    }
+
+    /* ── interest button ── */
+    .btn-interest {
+      width: 100%;
+      padding: 12px;
+      background-color: #00A89D;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease, opacity 0.2s;
+    }
+
+    .btn-interest:hover:not(:disabled) {
+      background-color: #008a80;
+      transform: translateY(-1px);
+    }
+
+    .btn-interest:active:not(:disabled) { transform: translateY(0); }
+
+    .btn-interest:disabled {
+      background-color: #f0e8d9;
+      color: #999;
+      cursor: not-allowed;
+      border: 1px solid #F0DFCC;
+    }
+
+    /* ── modal overlay ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(34, 21, 10, 0.55);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+      z-index: 10000;
+    }
+
+    .overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── modal box ── */
+    .adoption-modal {
+      background: #ffffff;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.28s ease;
+      position: relative;
+    }
+
+    .overlay.open .adoption-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      background-color: #006666;
+      padding: 28px 32px 24px;
+      color: #fff;
+    }
+
+    .modal-header__title {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .modal-header__sub {
+      margin-top: 4px;
+      font-size: 0.83rem;
+      color: rgba(255,255,255,0.75);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      background: rgba(255,255,255,0.18);
+      border: none;
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .modal-close:hover { background: rgba(255,255,255,0.35); }
+
+    .modal-body {
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* ── form fields ── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #34210a;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .field input,
+    .field textarea {
+      background: #fff;
+      border: 1px solid #F6D6B3;
+      border-radius: 10px;
+      color: #34210a;
+      font-family: inherit;
+      font-size: 0.92rem;
+      padding: 11px 16px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: vertical;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder { color: #aaa; }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: #00A89D;
+      box-shadow: 0 0 0 3px rgba(0, 168, 157, 0.15);
+    }
+
+    .field.error input,
+    .field.error textarea {
+      border-color: #FC6662;
+      box-shadow: 0 0 0 3px rgba(252, 102, 98, 0.12);
+    }
+
+    .field .err-msg {
+      font-size: 0.74rem;
+      color: #FC6662;
+      display: none;
+    }
+
+    .field.error .err-msg { display: block; }
+
+    /* ── modal footer ── */
+    .modal-footer {
+      background-color: #FCB063;
+      padding: 18px 32px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-submit {
+      padding: 11px 32px;
+      background-color: #006666;
+      color: #ffffff;
+      border: none;
+      border-radius: 20px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-submit:hover { background-color: #004d4d; transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+
+    /* ── toast ── */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #ffffff;
+      border: 1px solid #C8E6C9;
+      border-left: 4px solid #00A89D;
+      border-radius: 10px;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #1B5E20;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), opacity 0.4s ease;
+      opacity: 0;
+      z-index: 20000;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast-icon { font-size: 1.1rem; color: #00A89D; }
+
+    /* ── section title ── */
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #34210a;
+      margin-bottom: 24px;
+    }
+
+    /* ── ong tag ── */
+    .animal-card__ong {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.75rem;
+      color: #006666;
+      font-weight: 600;
+      padding: 3px 0;
+    }
+
+    .animal-card__ong svg { flex-shrink: 0; }
+
+    /* ── species tag ── */
+    .animal-card__species {
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 1px;
+    }
+
+    /* ── empty / loading state ── */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+      font-size: 0.95rem;
+      grid-column: 1 / -1;
+    }
+
+    .loading-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #00A89D;
+      font-size: 0.95rem;
+      font-weight: 600;
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 768px) {
+      .adocao-hero { padding: 80px 24px 36px; }
+      .adocao-hero h1 { font-size: 1.8rem; }
+      .adocao-container { padding: 32px 20px; }
+      .modal-body { padding: 22px 20px; }
+      .modal-header { padding: 24px 20px 20px; }
+      .modal-footer { padding: 16px 20px; }
+    }
+  </style>
+</head>
+<body class="adocao-page">
+
+  <!-- ── Navbar (mesmo padrão do projeto) ── -->
+  <nav class="floating-navbar nav-consulta" id="floatingNavbar">
+    <div class="navbar-content">
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="burger-line" d="M3 6H21"  stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+          <path class="burger-line" d="M3 12H21" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+          <path class="burger-line" d="M3 18H21" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <img src="../assets/img/Prancheta 5.png" alt="AuMigos Logo" class="navbar-logo" id="navLogo">
+    </div>
+
+    <div class="dropdown-menu" id="mainDropdown">
+      <ul class="menu-list">
+        <li><a href="interesse-adocao.html">Início</a></li>
+        <li><a href="tela_config_usuario.html">Configurações</a></li>
+      </ul>
+      <a href="../index.html" class="menu-sair">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Sair da conta
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <div class="adocao-hero">
+    <span class="adocao-hero__badge">&#x1F43E; Adoção responsável</span>
+    <h1>Encontre seu Aumigo</h1>
+    <p>Animais disponíveis para adoção — sinalize seu interesse e entraremos em contato.</p>
+  </div>
+
+  <!-- ── Gallery ── -->
+  <main class="adocao-container">
+    <p class="section-title">Animais disponíveis</p>
+    <section class="gallery" id="gallery"></section>
+  </main>
+
+  <!-- ── Modal ── -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="adoption-modal">
+      <div class="modal-header">
+        <p class="modal-header__title" id="modal-title">Tenho interesse em adotar</p>
+        <p class="modal-header__sub" id="modal-animal-name">Preencha o formulário e entraremos em contato.</p>
+        <button class="modal-close" id="modal-close" aria-label="Fechar">&#x2715;</button>
+      </div>
+
+      <form id="adoption-form" novalidate>
+        <div class="modal-body">
+          <div class="field" id="field-message">
+            <label for="inp-message">Por que deseja adotar?</label>
+            <textarea id="inp-message" rows="5" placeholder="Conte um pouco sobre você e o seu lar..."></textarea>
+            <span class="err-msg">Escreva uma breve mensagem (mín. 10 caracteres).</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn-submit">Confirmar interesse</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Toast ── -->
+  <div class="toast" id="toast">
+    <span class="toast-icon">&#x2714;</span>
+    <span id="toast-msg">Interesse registrado com sucesso!</span>
+  </div>
+
+  <script src="../assets/js/script.js"></script>
+  <script>
+    let ANIMALS        = [];
+    let activeAnimalId = null;
+
+    const $ = id => document.getElementById(id);
+
+    /* ─── helpers ─── */
+    function showToast(msg, isError = false) {
+      const t = $('toast');
+      $('toast-msg').textContent = msg;
+      t.style.borderLeftColor = isError ? '#FC6662' : '#00A89D';
+      t.style.color           = isError ? '#b91c1c' : '#1B5E20';
+      $('toast-icon').textContent = isError ? '✕' : '✔';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3800);
+    }
+
+    function calcAge(dataNascimento) {
+      if (!dataNascimento) return 'Idade não informada';
+      const birth  = new Date(dataNascimento);
+      const now    = new Date();
+      const months = (now.getFullYear() - birth.getFullYear()) * 12
+                   + (now.getMonth() - birth.getMonth());
+      if (months < 1)  return 'Menos de 1 mês';
+      if (months < 12) return `${months} ${months === 1 ? 'mês' : 'meses'}`;
+      const years = Math.floor(months / 12);
+      return `${years} ${years === 1 ? 'ano' : 'anos'}`;
+    }
+
+    function placeholderImg(especie) {
+      const e = (especie || '').toLowerCase();
+      if (e.includes('gato') || e.includes('felino')) return 'https://placecats.com/400/300';
+      return `https://placedog.net/400/300?id=${Math.floor(Math.random() * 50) + 1}`;
+    }
+
+    /* ─── renderiza galeria ─── */
+    function renderGallery() {
+      const gallery = $('gallery');
+      gallery.innerHTML = '';
+
+      if (ANIMALS.length === 0) {
+        gallery.innerHTML = '<p class="empty-state">Nenhum animal disponível para adoção no momento.</p>';
+        return;
+      }
+
+      ANIMALS.forEach(animal => {
+        const id         = String(animal.id_animal);
+        const emProcesso = animal.status === 'processo';
+        const age        = calcAge(animal.dataNascimento);
+        const img        = placeholderImg(animal.especie);
+        const especie    = animal.especie || '';
+        const raca       = animal.raca ? ` · ${animal.raca}` : '';
+
+        const card = document.createElement('article');
+        card.className = 'animal-card';
+        card.innerHTML = `
+          <img class="animal-card__img" src="${img}" alt="Foto de ${animal.nome}" loading="lazy"
+               onerror="this.src='../assets/img/animais-de-estimacao.png'" />
+          <div class="animal-card__body">
+            <div class="animal-card__row">
+              <div>
+                <p class="animal-card__name">${animal.nome}</p>
+                <p class="animal-card__species">${especie}${raca}</p>
+                <p class="animal-card__age">${age}</p>
+              </div>
+              <span class="status-pill ${emProcesso ? 'analise' : 'disponivel'}">
+                ${emProcesso ? 'Em análise' : 'Disponível'}
+              </span>
+            </div>
+            <p class="animal-card__ong">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                fill="none" stroke="#006666" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              ${animal.ong_nome}
+            </p>
+            <button class="btn-interest" data-id="${id}" ${emProcesso ? 'disabled' : ''}>
+              ${emProcesso ? 'Solicitação em andamento' : 'Tenho interesse'}
+            </button>
+          </div>`;
+        gallery.appendChild(card);
+      });
+
+      gallery.querySelectorAll('.btn-interest:not([disabled])').forEach(btn => {
+        btn.addEventListener('click', () => openModal(btn.dataset.id));
+      });
+    }
+
+    /* ─── carrega animais do banco ─── */
+    async function loadAnimals() {
+      const gallery = $('gallery');
+      gallery.innerHTML = '<p class="loading-state">Carregando animais...</p>';
+      try {
+        const res  = await fetch('../actions/animais-adocao.php');
+        const data = await res.json();
+        if (data.erro) {
+          gallery.innerHTML = `<p class="empty-state">Erro ao carregar: ${data.erro}</p>`;
+          return;
+        }
+        ANIMALS = data;
+        renderGallery();
+      } catch {
+        gallery.innerHTML = '<p class="empty-state">Não foi possível conectar ao servidor.</p>';
+      }
+    }
+
+    /* ─── modal ─── */
+    function openModal(animalId) {
+      activeAnimalId = animalId;
+      const animal = ANIMALS.find(a => String(a.id_animal) === animalId);
+      $('modal-animal-name').textContent = `${animal.nome} · ${calcAge(animal.dataNascimento)}`;
+      clearErrors();
+      $('adoption-form').reset();
+      $('overlay').classList.add('open');
+      setTimeout(() => $('inp-name').focus(), 100);
+    }
+
+    function closeModal() {
+      $('overlay').classList.remove('open');
+      activeAnimalId = null;
+    }
+
+    $('modal-close').addEventListener('click', closeModal);
+    $('overlay').addEventListener('click', e => { if (e.target === $('overlay')) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ─── validação ─── */
+    function setError(fieldId, hasError) {
+      $('field-' + fieldId).classList.toggle('error', hasError);
+    }
+
+    function clearErrors() {
+      setError('message', false);
+    }
+
+    function validate() {
+      const message = $('inp-message').value.trim();
+      const ok = message.length >= 10;
+      setError('message', !ok);
+      return ok;
+    }
+
+    /* ─── submit → chama o backend ─── */
+    $('adoption-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      if (!validate() || !activeAnimalId) return;
+
+      const btn  = this.querySelector('.btn-submit');
+      const animal = ANIMALS.find(a => String(a.id_animal) === activeAnimalId);
+
+      btn.disabled    = true;
+      btn.textContent = 'Enviando...';
+
+      try {
+        const res  = await fetch('../actions/animais-adocao.php', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({
+            id_animal: parseInt(activeAnimalId),
+            mensagem:  $('inp-message').value.trim(),
+          }),
+        });
+
+        const data = await res.json();
+
+        if (data.erro) {
+          showToast(data.erro, true);
+          btn.disabled    = false;
+          btn.textContent = 'Confirmar interesse';
+          return;
+        }
+
+        /* Atualiza o status localmente para não precisar recarregar a página toda */
+        const idx = ANIMALS.findIndex(a => String(a.id_animal) === activeAnimalId);
+        if (idx !== -1) ANIMALS[idx].status = 'processo';
+
+        closeModal();
+        renderGallery();
+        showToast(`Interesse em ${animal ? animal.nome : 'animal'} registrado com sucesso!`);
+
+      } catch {
+        showToast('Erro de conexão. Tente novamente.', true);
+        btn.disabled    = false;
+        btn.textContent = 'Confirmar interesse';
+      }
+    });
+
+    /* ─── init ─── */
+    loadAnimals();
+  </script>
+</body>
+</html>

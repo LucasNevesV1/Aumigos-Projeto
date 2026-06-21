@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../config/conexao.php';
+require_once '../config/auditoria.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../pages/cadastro-usuario.html');
@@ -15,12 +16,15 @@ $senha    = $_POST['senha'] ?? '';
 $confirmar = $_POST['confirmar-senha'] ?? '';
 $perfil   = $_POST['perfil'] ?? '';
 
-// Mapeia perfil para id_tipoUsuario
+// Mapeia perfil para id_tipoUsuario (conforme tabela tipousuario)
 $tipos = [
     'ong'      => 2,
-    'adotante' => 3,
-    'apoiador' => 5,
+    'apoiador' => 3,
 ];
+
+$dataNascimento = trim($_POST['dataNascimento'] ?? '') ?: null;
+$profissao      = trim($_POST['profissao']      ?? '');
+$genero         = trim($_POST['genero']         ?? '');
 
 // Validações básicas
 if (!$nome || !$documento || !$email || !$telefone || !$senha || !$perfil) {
@@ -53,10 +57,13 @@ if ($stmt->rowCount() > 0) {
 $senha_hash = password_hash($senha, PASSWORD_BCRYPT);
 
 $stmt = $pdo->prepare('
-    INSERT INTO usuario (nome, documento, email, telefone, senha, id_tipoUsuario, dataCadastro)
-    VALUES (?, ?, ?, ?, ?, ?, CURDATE())
+    INSERT INTO usuario (nome, documento, email, telefone, senha, id_tipoUsuario, dataCadastro, dataNascimento, profissao, genero)
+    VALUES (?, ?, ?, ?, ?, ?, CURDATE(), ?, ?, ?)
 ');
-$stmt->execute([$nome, $documento, $email, $telefone, $senha_hash, $id_tipo]);
+$stmt->execute([$nome, $documento, $email, $telefone, $senha_hash, $id_tipo, $dataNascimento, $profissao, $genero]);
+$id_novo = (int) $pdo->lastInsertId();
+
+registrarLog($pdo, 'CADASTRO_USUARIO', 'usuario', $id_novo, "Novo cadastro: $nome (perfil: $perfil)");
 
 header('Location: ../pages/login-usuario.html?cadastro=sucesso');
 exit;

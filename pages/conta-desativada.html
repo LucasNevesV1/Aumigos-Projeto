@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuMigos - Conta Desativada</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body class="auth-page">
+
+    <a href="login-usuario.html" class="back-button" title="Voltar para login">
+        <img src="../assets/img/arrowback.png" alt="Voltar" class="back-button__icon">
+    </a>
+
+    <div class="auth-container">
+        <div class="auth-card">
+
+            <div id="view-formulario">
+                <div class="auth-header">
+                    <img src="../assets/img/Prancheta 3.png" alt="AuMigos Logo" class="auth-logo">
+                    <h1 class="auth-title">Conta desativada</h1>
+                </div>
+
+                <p id="feedback-msg" style="display:none"></p>
+
+                <form id="form-recurso" class="auth-form" novalidate>
+
+                    <input
+                        type="text"
+                        id="nome"
+                        placeholder="Nome completo"
+                        required
+                        class="auth-input auth-input--filled">
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="E-mail da conta"
+                        required
+                        class="auth-input auth-input--filled">
+
+                    <textarea
+                        id="mensagem"
+                        placeholder="Explique o motivo do seu pedido de reativação..."
+                        required
+                        rows="4"
+                        class="auth-input auth-input--filled"
+                        style="resize:vertical;height:auto;padding-top:14px;padding-bottom:14px"></textarea>
+
+                    <button type="submit" class="auth-button auth-button--primary" id="btnEnviar">
+                        Enviar solicitação
+                    </button>
+
+                </form>
+
+                <p class="auth-link-text">
+                    <a href="login-usuario.html">&#8592; Voltar ao login</a>
+                </p>
+            </div>
+
+            <div id="view-sucesso" style="display:none;text-align:center;padding:16px 0">
+                <div class="auth-header">
+                    <img src="../assets/img/Prancheta 3.png" alt="AuMigos Logo" class="auth-logo">
+                    <h1 class="auth-title">Solicitação enviada!</h1>
+                </div>
+                <p style="color:#6b5040;font-size:.95rem;margin-bottom:24px">
+                    Seu pedido foi enviado ao administrador.<br>Aguarde o contato por e-mail.
+                </p>
+                <a href="login-usuario.html" class="auth-button auth-button--primary"
+                    style="display:inline-block;text-decoration:none;text-align:center">
+                    Voltar ao login
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const form     = document.getElementById('form-recurso');
+        const feedback = document.getElementById('feedback-msg');
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('email')) {
+            document.getElementById('email').value = params.get('email');
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nome     = document.getElementById('nome').value.trim();
+            const email    = document.getElementById('email').value.trim();
+            const mensagem = document.getElementById('mensagem').value.trim();
+
+            if (!nome || !email || !mensagem) {
+                mostrarErro('Preencha todos os campos.');
+                return;
+            }
+
+            const btn = document.getElementById('btnEnviar');
+            btn.disabled    = true;
+            btn.textContent = 'Enviando...';
+
+            try {
+                const res  = await fetch('../actions/solicitar-reativacao.php', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ nome, email, mensagem }),
+                });
+                const data = await res.json();
+
+                if (data.ok) {
+                    document.getElementById('view-formulario').style.display = 'none';
+                    document.getElementById('view-sucesso').style.display    = 'block';
+                } else {
+                    mostrarErro(data.erro ?? 'Erro ao enviar. Tente novamente.');
+                    btn.disabled    = false;
+                    btn.textContent = 'Enviar solicitação';
+                }
+            } catch {
+                mostrarErro('Erro de conexão. Tente novamente.');
+                btn.disabled    = false;
+                btn.textContent = 'Enviar solicitação';
+            }
+        });
+
+        function mostrarErro(msg) {
+            feedback.textContent = msg;
+            feedback.className   = 'auth-feedback auth-feedback--erro';
+            feedback.style.display = 'block';
+        }
+    </script>
+
+</body>
+
+</html>

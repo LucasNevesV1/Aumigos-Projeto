@@ -2,6 +2,7 @@
 header('Content-Type: application/json');
 session_start();
 require_once '../config/conexao.php';
+require_once '../config/auditoria.php';
 
 if (!isset($_SESSION['id_usuario'])) {
     echo json_encode(['erro' => 'Não autorizado']);
@@ -42,7 +43,7 @@ try {
 
 function listar($pdo, $id_usuario) {
     $stmt = $pdo->prepare("
-        SELECT a.*, e.dataEntrada, e.motivoEntrada, e.statusSaude
+        SELECT a.*, e.dataEntrada, e.motivoEntrada, e.statusSaude, e.descricaoEntrada
         FROM animal a
         LEFT JOIN entradaanimal e ON a.id_entrada = e.id_entrada
         WHERE a.status != 'excluido' AND a.id_usuario = ?
@@ -58,31 +59,35 @@ function criar($pdo, $data, $id_usuario) {
         VALUES (?, ?, ?, ?)
     ');
     $stmtEntrada->execute([
-        $data['dataEntrada']    ?: null,
-        $data['motivoEntrada']  ?? '',
-        $data['statusSaude']    ?? '',
-        $data['descricao']      ?? ''
+        $data['dataEntrada']   ?: null,
+        $data['motivoEntrada'] ?? '',
+        $data['statusSaude']   ?? '',
+        $data['descricao']     ?? ''
     ]);
     $idEntrada = $pdo->lastInsertId();
 
     $stmt = $pdo->prepare('
-        INSERT INTO animal (id_entrada, id_usuario, nome, especie, raca, genero, dataNascimento, cor, tamanho, descricao, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO animal (id_entrada, id_usuario, nome, especie, raca, genero, dataNascimento, cor, tamanho, idadeAproximada, residenteAbrigo, descricao, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ');
     $stmt->execute([
         $idEntrada,
         $id_usuario,
-        $data['nome']           ?? '',
-        $data['especie']        ?? '',
-        $data['raca']           ?? '',
-        $data['genero']         ?? '',
-        $data['dataNascimento'] ?: null,
-        $data['cor']            ?? '',
-        $data['tamanho']        ?? '',
-        $data['descricao']      ?? '',
+        $data['nome']             ?? '',
+        $data['especie']          ?? '',
+        $data['raca']             ?? '',
+        $data['genero']           ?? '',
+        $data['dataNascimento']   ?: null,
+        $data['cor']              ?? '',
+        $data['tamanho']          ?? '',
+        isset($data['idadeAproximada']) ? (int)$data['idadeAproximada'] : null,
+        isset($data['residenteAbrigo']) ? (int)$data['residenteAbrigo'] : 1,
+        $data['descricao']        ?? '',
         'disponivel'
     ]);
-    echo json_encode(['id' => $pdo->lastInsertId()]);
+    $id_animal = (int) $pdo->lastInsertId();
+    registrarLog($pdo, 'CADASTRO_ANIMAL', 'animal', $id_animal, "Animal cadastrado: {$data['nome']} ({$data['especie']})");
+    echo json_encode(['id' => $id_animal]);
 }
 
 function editar($pdo, $data, $id_usuario) {
@@ -98,34 +103,38 @@ function editar($pdo, $data, $id_usuario) {
     if ($animal['id_entrada']) {
         $stmtEntrada = $pdo->prepare('
             UPDATE entradaanimal
-            SET dataEntrada = ?, motivoEntrada = ?, statusSaude = ?
+            SET dataEntrada = ?, motivoEntrada = ?, statusSaude = ?, descricaoEntrada = ?
             WHERE id_entrada = ?
         ');
         $stmtEntrada->execute([
             $data['dataEntrada']   ?: null,
             $data['motivoEntrada'] ?? '',
             $data['statusSaude']   ?? '',
+            $data['descricao']     ?? '',
             $animal['id_entrada']
         ]);
     }
 
     $stmt = $pdo->prepare('
         UPDATE animal
-        SET nome = ?, especie = ?, raca = ?, genero = ?, dataNascimento = ?, cor = ?, tamanho = ?, descricao = ?
+        SET nome = ?, especie = ?, raca = ?, genero = ?, dataNascimento = ?, cor = ?, tamanho = ?, idadeAproximada = ?, residenteAbrigo = ?, descricao = ?
         WHERE id_animal = ? AND id_usuario = ?
     ');
     $stmt->execute([
-        $data['nome']           ?? '',
-        $data['especie']        ?? '',
-        $data['raca']           ?? '',
-        $data['genero']         ?? '',
-        $data['dataNascimento'] ?: null,
-        $data['cor']            ?? '',
-        $data['tamanho']        ?? '',
-        $data['descricao']      ?? '',
-        $data['id']             ?? 0,
+        $data['nome']             ?? '',
+        $data['especie']          ?? '',
+        $data['raca']             ?? '',
+        $data['genero']           ?? '',
+        $data['dataNascimento']   ?: null,
+        $data['cor']              ?? '',
+        $data['tamanho']          ?? '',
+        isset($data['idadeAproximada']) ? (int)$data['idadeAproximada'] : null,
+        isset($data['residenteAbrigo']) ? (int)$data['residenteAbrigo'] : 1,
+        $data['descricao']        ?? '',
+        $data['id']               ?? 0,
         $id_usuario
     ]);
+    registrarLog($pdo, 'EDICAO_ANIMAL', 'animal', (int)($data['id'] ?? 0), "Animal editado: {$data['nome']}");
     echo json_encode(['ok' => true]);
 }
 
@@ -139,11 +148,16 @@ function excluir($pdo, $data, $id_usuario) {
     $params = array_merge($ids, [$id_usuario]);
     $stmt = $pdo->prepare("UPDATE animal SET status = 'excluido' WHERE id_animal IN ($placeholders) AND id_usuario = ?");
     $stmt->execute($params);
+    registrarLog($pdo, 'EXCLUSAO_ANIMAL', 'animal', null, "Animais excluídos (IDs): " . implode(', ', $ids));
     echo json_encode(['ok' => true]);
 }
 
 function atualizarStatus($pdo, $data, $id_usuario) {
-    $stmt = $pdo->prepare('UPDATE animal SET status = ? WHERE id_animal = ? AND id_usuario = ?');
-    $stmt->execute([$data['status'], $data['id'], $id_usuario]);
+    $status = $data['status'] ?? '';
+    $residenteAbrigo = $status === 'adotado' ? 0 : 1;
+
+    $stmt = $pdo->prepare('UPDATE animal SET status = ?, residenteAbrigo = ? WHERE id_animal = ? AND id_usuario = ?');
+    $stmt->execute([$status, $residenteAbrigo, $data['id'], $id_usuario]);
+    registrarLog($pdo, 'STATUS_ANIMAL', 'animal', (int)$data['id'], "Status alterado para: $status (animal ID: {$data['id']})");
     echo json_encode(['ok' => true]);
 }

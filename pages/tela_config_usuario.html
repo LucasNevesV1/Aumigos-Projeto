@@ -16,17 +16,16 @@
 
     <header class="config-header-bar">
         <div class="navbar-calendar">
-            <span class="day">08</span>
-            <span class="month">Abr</span>
+            <span class="day" id="headerDay"></span>
+            <span class="month" id="headerMonth"></span>
         </div>
 
-        <a href="tela-inicial-ongs.html" class="navbar-logo-link">
+        <a href="#" id="configLogoLink" class="navbar-logo-link">
             <img src="../assets/img/Prancheta 4.png" alt="AuMigos Logo Branca">
         </a>
 
         <div class="navbar-profile">
-            <span class="profile-name">ONG Salva Patas</span>
-            <div class="profile-photo-space"></div>
+            <span class="profile-name" id="navbarOngNome"></span>
         </div>
     </header>
 
@@ -40,95 +39,175 @@
 
             <div class="config-left-column">
                 <aside class="config-sidebar">
-                    <a href="#" class="sidebar-item active">Perfil ONG</a>
+                    <a href="#" class="sidebar-item active" id="sidebarPerfilLabel">Perfil</a>
                     <a href="#" class="sidebar-item normal">Segurança</a>
                     <a href="../index.html" class="sidebar-item danger">Log out</a>
                 </aside>
 
                 <div class="config-back-container">
-                    <a href="tela-inicial-ongs.html" class="config-btn-voltar">Voltar</a>
+                    <a href="#" id="btnVoltar" class="config-btn-voltar">Voltar</a>
                 </div>
             </div>
 
             <main class="config-content-card">
-                <div class="config-form-grid">
+                <form id="configForm">
+                    <input type="hidden" id="config-id-endereco" name="id_endereco">
 
-                    <div class="config-input-group">
-                        <label>Nome Completo</label>
-                        <input type="text" placeholder="Nome" name="nome">
+                    <!-- Dados Pessoais -->
+                    <p class="config-section-label">Dados Pessoais</p>
+                    <div class="config-form-grid">
+
+                        <div class="config-input-group">
+                            <label>Nome Completo</label>
+                            <input type="text" placeholder="Nome" name="nome" id="config-nome">
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>E-mail</label>
+                            <input type="email" placeholder="E-mail" name="email" id="config-email">
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>Documento (CPF/CNPJ)</label>
+                            <input type="text" id="config-documento" class="config-input-disabled" disabled>
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>Telefone</label>
+                            <input type="tel" placeholder="Telefone" name="telefone" id="config-telefone">
+                        </div>
+
+                        <div class="config-input-group config-campo-nao-ong">
+                            <label>Data de Nascimento</label>
+                            <input type="date" name="dataNascimento" id="config-data-nascimento">
+                        </div>
+
+                        <div class="config-input-group config-campo-apoiador">
+                            <label>Profissão</label>
+                            <input type="text" placeholder="Profissão" name="profissao" id="config-profissao">
+                        </div>
+
+                        <div class="config-input-group config-campo-apoiador">
+                            <label>Gênero</label>
+                            <select name="genero" id="config-genero" class="config-select">
+                                <option value="">Selecione</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Outro">Outro</option>
+                                <option value="Prefiro não dizer">Prefiro não dizer</option>
+                            </select>
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>Tipo de Conta</label>
+                            <input type="text" id="config-tipo-conta" class="config-input-disabled" disabled>
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>Data de Cadastro</label>
+                            <input type="text" id="config-data-cadastro" class="config-input-disabled" disabled>
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>Status (Ativo)</label>
+                            <input type="text" id="config-ativo" class="config-input-disabled" disabled>
+                        </div>
+
                     </div>
 
-                    <div class="config-input-group">
-                        <label>E-mail</label>
-                        <input type="email" placeholder="E-mail" name="email">
+                    <!-- Segurança -->
+                    <p class="config-section-label" style="margin-top: 36px;">Segurança</p>
+                    <div class="config-form-grid">
+
+                        <div class="config-input-group config-full-width">
+                            <label>Nova Senha</label>
+                            <input type="password" placeholder="Deixe em branco para manter a senha atual" name="senha" id="config-senha">
+                        </div>
+
                     </div>
 
-                    <div class="config-input-group">
-                        <label>Senha</label>
-                        <input type="password" placeholder="Nova Senha" name="senha">
+                    <!-- Endereço -->
+                    <p class="config-section-label" style="margin-top: 36px;">Endereço</p>
+                    <div class="config-form-grid">
+
+                        <div class="config-input-group">
+                            <label>Tipo de Logradouro</label>
+                            <select name="logradouro_tipo" id="config-logradouro-tipo" class="config-select">
+                                <option value="">Selecione</option>
+                                <option value="Rua">Rua</option>
+                                <option value="Avenida">Avenida</option>
+                                <option value="Alameda">Alameda</option>
+                                <option value="Travessa">Travessa</option>
+                                <option value="Praça">Praça</option>
+                                <option value="Rodovia">Rodovia</option>
+                            </select>
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>Nome do Logradouro</label>
+                            <input type="text" placeholder="Ex: XV de Novembro" name="logradouro_nome" id="config-logradouro-nome">
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>Número</label>
+                            <input type="text" placeholder="Ex: 123" name="numero" id="config-numero">
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>CEP</label>
+                            <input type="text" placeholder="Ex: 80010-000" name="cep" id="config-cep">
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>Bairro</label>
+                            <input type="text" placeholder="Ex: Centro" name="bairro" id="config-bairro">
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>Complemento</label>
+                            <input type="text" placeholder="Ex: Apto 101" name="complemento" id="config-complemento">
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>Cidade</label>
+                            <input type="text" placeholder="Ex: Curitiba" name="cidade" id="config-cidade">
+                        </div>
+
+                        <div class="config-input-group">
+                            <label>Estado</label>
+                            <select name="estado" id="config-estado" class="config-select">
+                                <option value="">Selecione</option>
+                                <option value="AC">AC</option><option value="AL">AL</option>
+                                <option value="AP">AP</option><option value="AM">AM</option>
+                                <option value="BA">BA</option><option value="CE">CE</option>
+                                <option value="DF">DF</option><option value="ES">ES</option>
+                                <option value="GO">GO</option><option value="MA">MA</option>
+                                <option value="MT">MT</option><option value="MS">MS</option>
+                                <option value="MG">MG</option><option value="PA">PA</option>
+                                <option value="PB">PB</option><option value="PR">PR</option>
+                                <option value="PE">PE</option><option value="PI">PI</option>
+                                <option value="RJ">RJ</option><option value="RN">RN</option>
+                                <option value="RS">RS</option><option value="RO">RO</option>
+                                <option value="RR">RR</option><option value="SC">SC</option>
+                                <option value="SP">SP</option><option value="SE">SE</option>
+                                <option value="TO">TO</option>
+                            </select>
+                        </div>
+
                     </div>
 
-                    <div class="config-input-group">
-                        <label>Documento (CPF/CNPJ)</label>
-                        <input type="text" placeholder="Documento" name="documento">
+                    <div class="config-form-actions">
+                        <div id="configFeedback" class="config-feedback" aria-live="polite"></div>
+                        <button type="submit" class="config-btn-salvar">Salvar Alterações</button>
                     </div>
 
-                    <div class="config-input-group">
-                        <label>Telefone</label>
-                        <input type="tel" placeholder="Telefone" name="telefone">
-                    </div>
+                </form>
+            </main>
 
-                    <div class="config-input-group">
-                        <label>Data de Nascimento</label>
-                        <input type="date" name="dataNascimento">
-                    </div>
-
-                    <div class="config-input-group">
-                        <label>Profissão</label>
-                        <input type="text" placeholder="Profissão" name="profissao">
-                    </div>
-
-                    <div class="config-input-group">
-                        <label>Gênero</label>
-                        <select name="genero"
-                            style="border: 1px solid #00A89D; border-radius: 30px; padding: 14px 20px; font-size: 14px; outline: none; color: #333; background-color: #fff; appearance: none; cursor: pointer;">
-                            <option value="">Selecione</option>
-                            <option value="feminino">Feminino</option>
-                            <option value="masculino">Masculino</option>
-                            <option value="outro">Outro</option>
-                            <option value="prefiro_nao_dizer">Prefiro não dizer</option>
-                        </select>
-                    </div>
-
-                    <div class="config-input-group">
-                        <label>Data de Cadastro</label>
-                        <input type="text" placeholder="08/04/2026" disabled
-                            style="background-color: #f5f5f5; cursor: not-allowed;" name="dataCadastro">
-                    </div>
-
-                    <div class="config-input-group">
-                        <label>Status (Ativo)</label>
-                        <select name="ativo"
-                            style="border: 1px solid #00A89D; border-radius: 30px; padding: 14px 20px; font-size: 14px; outline: none; color: #333; background-color: #fff; appearance: none; cursor: pointer;">
-                            <option value="1">Sim</option>
-                            <option value="0">Não</option>
-                        </select>
-                    </div>
-
-                </div>
-
-                <div style="margin-top: 40px; text-align: right;">
-                    <button type="submit"
-                        style="background-color: #00A89D; color: white; border: none; padding: 12px 30px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: opacity 0.2s;">
-                        Salvar Alterações
-                    </button>
-                </div>
         </div>
-        </main>
 
     </div>
-
-    </div>
+    <script src="../assets/js/script.js"></script>
 </body>
 
 </html>
