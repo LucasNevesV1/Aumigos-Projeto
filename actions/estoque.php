@@ -19,11 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 try {
     switch ($action) {
-        case 'listar':     listar($pdo);                          break;
-        case 'categorias': categorias($pdo);                      break;
-        case 'criar':      criar($pdo, $data, $id_usuario);       break;
-        case 'movimentar': movimentar($pdo, $data, $id_usuario);  break;
-        case 'excluir':    excluir($pdo, $data, $id_usuario);     break;
+        case 'listar':      listar($pdo);                          break;
+        case 'categorias':  categorias($pdo);                      break;
+        case 'valorTotal':  valorTotal($pdo);                      break;
+        case 'criar':       criar($pdo, $data, $id_usuario);       break;
+        case 'movimentar':  movimentar($pdo, $data, $id_usuario);  break;
+        case 'excluir':     excluir($pdo, $data, $id_usuario);     break;
         default:           echo json_encode(['erro' => 'Ação inválida']);
     }
 } catch (Exception $e) {
@@ -53,6 +54,14 @@ function listar($pdo) {
         $item['status'] = calcularStatus((float)$item['quantidadeAtual'], (float)$item['quantidadeMinima']);
     }
     echo json_encode($itens);
+}
+
+function valorTotal($pdo) {
+    $row = $pdo->query('
+        SELECT COALESCE(SUM(quantidadeAtual * custoUnitario), 0) AS valorEstoque
+        FROM estoque
+    ')->fetch(PDO::FETCH_ASSOC);
+    echo json_encode(['valorEstoque' => (float)$row['valorEstoque']]);
 }
 
 function categorias($pdo) {
