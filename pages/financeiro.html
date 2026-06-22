@@ -48,6 +48,7 @@
 
         <div class="dashboard-top-wrapper">
             <section class="estoque-stats-container">
+                <!-- Linha 1: o que a ONG tem -->
                 <div class="estoque-stat-card">
                     <div>
                         <h2 id="statSaldo">R$ 0</h2>
@@ -56,14 +57,28 @@
                 </div>
                 <div class="estoque-stat-card">
                     <div>
+                        <h2 id="statValorEstoque">R$ 0</h2>
+                        <p>Patrimônio em Estoque<br><span class="text-patrimonio">Em Estoque</span></p>
+                    </div>
+                </div>
+                <!-- Linha 2: movimentações -->
+                <div class="estoque-stat-card">
+                    <div>
                         <h2 id="statEntrada">R$ 0</h2>
-                        <p>Entradas<br><span id="statEntradaPeriodo">Este Mês</span></p>
+                        <p>Entradas<br><span class="text-verde" id="statEntradaPeriodo">Total</span></p>
                     </div>
                 </div>
                 <div class="estoque-stat-card">
                     <div>
                         <h2 id="statSaida">R$ 0</h2>
-                        <p>Saídas<br><span class="text-alerta" id="statSaidaPeriodo">Este Mês</span></p>
+                        <p>Saídas<br><span class="text-alerta" id="statSaidaPeriodo">Total</span></p>
+                    </div>
+                </div>
+                <!-- Linha 3: resumo -->
+                <div class="estoque-stat-card">
+                    <div>
+                        <h2 id="statPatrimonioTotal">R$ 0</h2>
+                        <p>Patrimônio Total<br><span class="text-patrimonio">Caixa + Materiais</span></p>
                     </div>
                 </div>
                 <div class="estoque-stat-card">
@@ -258,23 +273,26 @@
         }
 
         /* ─── stats ─── */
+        let _saldoAtual     = null;
+        let _valorEstoque   = null;
+
+        function atualizarPatrimonioTotal() {
+            if (_saldoAtual === null || _valorEstoque === null) return;
+            const total = _saldoAtual + _valorEstoque;
+            document.getElementById('statPatrimonioTotal').textContent = fmt(total);
+        }
+
         function carregarStats() {
             fetch('../actions/financeiro.php?action=stats')
                 .then(r => r.json())
                 .then(s => {
                     if (s.erro) return;
-                    document.getElementById('statSaldo').textContent   = fmt(s.saldoAtual);
-                    document.getElementById('statEntrada').textContent = fmt(s.entradaMes);
-                    document.getElementById('statSaida').textContent   = fmt(s.saidaMes);
-                    document.getElementById('statBalanco').textContent = fmt(s.balanco);
-
+                    _saldoAtual = s.saldoAtual;
+                    document.getElementById('statSaldo').textContent = fmt(s.saldoAtual);
                     const sl = document.getElementById('statSaldoLabel');
                     sl.textContent = s.saldoAtual >= 0 ? 'Em Caixa' : 'Déficit';
                     sl.className   = s.saldoAtual >= 0 ? 'text-verde' : 'text-critico';
-
-                    const bl = document.getElementById('statBalancoLabel');
-                    bl.textContent = s.balanco >= 0 ? 'Superávit' : 'Déficit';
-                    bl.className   = s.balanco >= 0 ? 'text-verde' : 'text-critico';
+                    atualizarPatrimonioTotal();
                 });
         }
 
@@ -314,11 +332,18 @@
             const base = filtroPeriodo ? dadosFiltrados : todosLancamentos;
             const entrada = base.filter(l => l.tipoMovimentacao === 'Entrada').reduce((s, l) => s + parseFloat(l.valor), 0);
             const saida   = base.filter(l => l.tipoMovimentacao === 'Saida').reduce((s, l) => s + parseFloat(l.valor), 0);
+            const balanco = entrada - saida;
             const labelPeriodo = filtroPeriodo
                 ? (() => { const [y, m] = filtroPeriodo.split('-'); return `${m}/${y}`; })()
-                : 'Este Mês';
+                : 'Total';
             document.getElementById('statEntradaPeriodo').textContent = labelPeriodo;
             document.getElementById('statSaidaPeriodo').textContent   = labelPeriodo;
+            document.getElementById('statEntrada').textContent = fmt(entrada);
+            document.getElementById('statSaida').textContent   = fmt(saida);
+            document.getElementById('statBalanco').textContent = fmt(balanco);
+            const bl = document.getElementById('statBalancoLabel');
+            bl.textContent = balanco >= 0 ? 'Superávit' : 'Déficit';
+            bl.className   = balanco >= 0 ? 'text-verde' : 'text-critico';
         }
 
         /* ─── renderizar tabela ─── */
@@ -656,14 +681,22 @@
             });
         }
 
+        /* ─── valor do estoque ─── */
+        function carregarValorEstoque() {
+            fetch('../actions/estoque.php?action=valorTotal')
+                .then(r => r.json())
+                .then(s => {
+                    if (s.erro) return;
+                    _valorEstoque = s.valorEstoque;
+                    document.getElementById('statValorEstoque').textContent = fmt(s.valorEstoque);
+                    atualizarPatrimonioTotal();
+                });
+        }
+
         /* ─── inicialização ─── */
         carregar();
         carregarStats();
-
-        /* define período atual no input como padrão */
-        const hoje = new Date();
-        inputPeriodo.value = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}`;
-        filtroPeriodo = inputPeriodo.value;
+        carregarValorEstoque();
     });
     </script>
 </body>

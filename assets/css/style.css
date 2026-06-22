@@ -3414,8 +3414,11 @@ body.config-page {
 }
 
 .estoque-stat-card p span {
-    font-weight: 500;
+    font-weight: 800;
     color: #888888;
+    text-transform: uppercase;
+    font-size: 0.80rem;
+    letter-spacing: 0.5px;
 }
 
 /* --- Cores de Destaque para os Status --- */
@@ -3437,6 +3440,14 @@ body.config-page {
 
 .estoque-stat-card .text-verde {
     color: #00A89D; /* Verde primário da marca */
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.80rem;
+    letter-spacing: 0.5px;
+}
+
+.estoque-stat-card .text-patrimonio {
+    color: #c47a00;
     font-weight: 800;
     text-transform: uppercase;
     font-size: 0.80rem;

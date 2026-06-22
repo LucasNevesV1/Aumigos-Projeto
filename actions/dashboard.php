@@ -17,8 +17,7 @@ $stmt = $pdo->prepare("
         COUNT(*)                                                          AS total,
         SUM(CASE WHEN a.status = 'disponivel' THEN 1 ELSE 0 END)        AS disponivel,
         SUM(CASE WHEN a.status = 'adotado'    THEN 1 ELSE 0 END)        AS adotado,
-        SUM(CASE WHEN e.statusSaude IS NOT NULL
-                  AND e.statusSaude != '' THEN 1 ELSE 0 END)            AS em_tratamento
+        SUM(CASE WHEN a.status = 'tratamento'  THEN 1 ELSE 0 END)        AS em_tratamento
     FROM animal a
     LEFT JOIN entradaanimal e ON a.id_entrada = e.id_entrada
     WHERE a.status != 'excluido' AND a.id_usuario = ?
